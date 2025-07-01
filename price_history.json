@@ -1,0 +1,338 @@
+{
+  "base_10002643": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-crew-polyamide-sock-3-pack-10002643-mp002/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 19.96,
+        "original_price": 24.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451430"
+      }
+    }
+  },
+  "item_9999": {
+    "name": "sports socks",
+    "purchase_url": "https://www.bjornborg.com/fi/sports-ankle-socks-2-pack-9999-1391-00011/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 8.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:23:22.769053"
+      }
+    }
+  },
+  "url_https://www.bjornborg.com/fi/men/socks-accessories/other-accessories/": {
+    "name": "Unknown",
+    "purchase_url": "https://www.bjornborg.com/fi/men/socks-accessories/other-accessories/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 18.36,
+        "original_price": 110.0,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-01T13:23:22.769071"
+      }
+    }
+  },
+  "url_https://www.bjornborg.com/can_en/men/socks-accessories/socks/": {
+    "name": "Men's Socks",
+    "purchase_url": "https://www.bjornborg.com/can_en/men/socks-accessories/socks/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 17.97,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:23:22.769091"
+      }
+    }
+  },
+  "base_10003428": {
+    "name": "Pack of two",
+    "purchase_url": "https://www.bjornborg.com/fi/core-ankle-rib-socks-2-pack-10003428-mp003/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 14.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:27:40.451410"
+      }
+    }
+  },
+  "url_https://www.bjornborg.com/se/herr/strumpor-accessoarer/strumpor/": {
+    "name": "Strumpor Herr",
+    "purchase_url": "https://www.bjornborg.com/se/herr/strumpor-accessoarer/strumpor/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 149.0,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:23:22.769120"
+      }
+    }
+  },
+  "base_10002938": {
+    "name": "Pack of five",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-ankle-sock-5-pack-10002938-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 14.97,
+        "original_price": 24.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-01T13:23:22.769135"
+      }
+    }
+  },
+  "base_10004092": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-rib-socks-3-pack-10004092-mp003/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 24.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:27:40.451592"
+      }
+    }
+  },
+  "base_10001762": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-ankle-socks-3-pack-10001762-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 6.36,
+        "original_price": 7.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:23:22.769162"
+      }
+    }
+  },
+  "url_https://www.bjornborg.com/au/men/socks-accessories/socks/": {
+    "name": "Men's Socks",
+    "purchase_url": "https://www.bjornborg.com/au/men/socks-accessories/socks/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 20.97,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:23:22.769174"
+      }
+    }
+  },
+  "base_10004564": {
+    "name": "Pack of ten",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:34:06.682998"
+      }
+    }
+  },
+  "url_https://www.bjornborg.com/fi/women/bags/backpacks/": {
+    "name": "Unknown",
+    "purchase_url": "https://www.bjornborg.com/fi/women/bags/backpacks/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 23.97,
+        "original_price": 136.95,
+        "discount_percent": 30,
+        "scraped_at": "2025-07-01T13:27:40.451264"
+      }
+    }
+  },
+  "base_10004086": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-crew-socks-3-pack-10004086-mp002/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 19.96,
+        "original_price": 24.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451297"
+      }
+    }
+  },
+  "base_10002143": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-crew-socks-3-pack-10002143-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 24.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:27:40.451318"
+      }
+    }
+  },
+  "base_10000016": {
+    "name": "Unknown",
+    "purchase_url": "https://www.bjornborg.com/fi/core-socks-3-pack-10000016-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 19.96,
+        "original_price": 24.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451340"
+      }
+    }
+  },
+  "base_10002846": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-crew-socks-3-pack-10002846-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 19.96,
+        "original_price": 24.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451357"
+      }
+    }
+  },
+  "base_10004085": {
+    "name": "Pack of ten",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004085-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451374"
+      }
+    }
+  },
+  "base_10004295": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-crew-socks-3-pack-10004295-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 9.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:27:40.451389"
+      }
+    }
+  },
+  "base_10004565": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-crew-socks-3-pack-10004565-mp002/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 19.96,
+        "original_price": 24.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451446"
+      }
+    }
+  },
+  "base_10001228": {
+    "name": "Pack of ten",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451461"
+      }
+    }
+  },
+  "url_https://www.bjornborg.com/fi/men/bags/backpacks/": {
+    "name": "Unknown",
+    "purchase_url": "https://www.bjornborg.com/fi/men/bags/backpacks/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 23.97,
+        "original_price": 136.95,
+        "discount_percent": 30,
+        "scraped_at": "2025-07-01T13:27:40.451476"
+      }
+    }
+  },
+  "base_10000019": {
+    "name": "Unknown",
+    "purchase_url": "https://www.bjornborg.com/fi/core-socks-2-pack-10000019-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 13.56,
+        "original_price": 16.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451493"
+      }
+    }
+  },
+  "base_10004088": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-crew-socks-3-pack-10004088-mp002/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 19.96,
+        "original_price": 24.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451507"
+      }
+    }
+  },
+  "url_https://www.bjornborg.com/fi/men/socks-accessories/socks/": {
+    "name": "Unknown",
+    "purchase_url": "https://www.bjornborg.com/fi/men/socks-accessories/socks/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 6.36,
+        "original_price": 44.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-01T13:27:40.451522"
+      }
+    }
+  },
+  "base_10001037": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-crew-sock-3p-10001037-mp002/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 19.96,
+        "original_price": 24.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451536"
+      }
+    }
+  },
+  "base_10004093": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/sports-socks-3-pack-10004093-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 24.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-01T13:27:40.451550"
+      }
+    }
+  },
+  "base_10004572": {
+    "name": "Performance socks",
+    "purchase_url": "https://www.bjornborg.com/fi/sports-ankle-socks-2-pack-10004572-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 7.16,
+        "original_price": 8.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451564"
+      }
+    }
+  },
+  "base_10004091": {
+    "name": "Pack of three",
+    "purchase_url": "https://www.bjornborg.com/fi/core-polyamide-crew-socks-3-pack-10004091-mp001/",
+    "price_history": {
+      "2025-07-01": {
+        "current_price": 19.96,
+        "original_price": 24.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-01T13:27:40.451578"
+      }
+    }
+  }
+}
