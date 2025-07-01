@@ -32,15 +32,9 @@ jobs:
         echo "🧦 Starting Björn Borg sock price monitoring..."
         python price_monitor.py
         echo "✅ Price monitoring completed!"
-    
-    - name: Commit updated price history
+        
+    - name: Display results
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action Bot"
-        git add price_history.json
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-        else
-          git commit -m "📊 Update price history - $(date +'%Y-%m-%d %H:%M UTC')"
-          git push
-        fi
+        echo "📊 Monitoring completed successfully!"
+        echo "📧 Email notifications sent if prices changed"
+        echo "💾 Price history updated (stored in runner, not committed)"
