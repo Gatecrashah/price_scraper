@@ -1,0 +1,46 @@
+name: Daily Björn Borg Sock Price Monitor
+
+on:
+  schedule:
+    # Run daily at 9:00 AM UTC (11:00 AM Finnish time)
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  monitor-prices:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run sock price monitor
+      env:
+        RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        EMAIL_TO: ${{ secrets.EMAIL_TO }}
+      run: |
+        echo "🧦 Starting Björn Borg sock price monitoring..."
+        python price_monitor.py
+        echo "✅ Price monitoring completed!"
+    
+    - name: Commit updated price history
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action Bot"
+        git add price_history.json
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "📊 Update price history - $(date +'%Y-%m-%d %H:%M UTC')"
+          git push
+        fi
