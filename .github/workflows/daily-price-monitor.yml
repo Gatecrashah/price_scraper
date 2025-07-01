@@ -10,9 +10,14 @@ jobs:
   monitor-prices:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write  # Allow writing to repository
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -32,9 +37,16 @@ jobs:
         echo "🧦 Starting Björn Borg sock price monitoring..."
         python price_monitor.py
         echo "✅ Price monitoring completed!"
-        
-    - name: Display results
+    
+    - name: Commit updated price history
       run: |
-        echo "📊 Monitoring completed successfully!"
-        echo "📧 Email notifications sent if prices changed"
-        echo "💾 Price history updated (stored in runner, not committed)"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action Bot"
+        git add price_history.json
+        if git diff --staged --quiet; then
+          echo "📊 No price changes detected - no commit needed"
+        else
+          git commit -m "📊 Update price history - $(date +'%Y-%m-%d %H:%M UTC')"
+          git push
+          echo "✅ Price history updated and committed"
+        fi
