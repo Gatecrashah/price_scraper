@@ -200,6 +200,23 @@ class PriceMonitor:
             
             if not current_products:
                 logger.warning("No products found during scraping")
+                
+                # Send failure alert email
+                error_details = "No Essential 10-pack products were found during scraping.\n\n"
+                error_details += "This likely means:\n"
+                error_details += "- Product URLs have changed or are no longer valid\n"
+                error_details += "- Website structure has been updated\n" 
+                error_details += "- Products are out of stock or discontinued\n"
+                error_details += "- Anti-bot measures are blocking access\n\n"
+                error_details += "Please check the product pages manually and update the scraper if needed."
+                
+                logger.info("Sending scraper failure alert email...")
+                alert_sent = self.email_sender.send_scraper_failure_alert(error_details)
+                if alert_sent:
+                    logger.info("Failure alert email sent successfully")
+                else:
+                    logger.error("Failed to send failure alert email")
+                
                 return False, []
             
             logger.info(f"Successfully scraped {len(current_products)} products")

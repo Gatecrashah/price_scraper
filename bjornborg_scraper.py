@@ -297,56 +297,70 @@ class BjornBorgScraper:
             return []
     
     def scrape_known_products(self) -> List[Dict]:
-        """Scrape known Essential 10-pack sock product URLs - one variant per product"""
-        # Essential socks 10-pack products - track one variant for focused monitoring
+        """Scrape known Essential 10-pack sock product URLs with backup variants"""
+        # Essential socks 10-pack products - multiple variants for redundancy
         essential_urls = [
-            "/fi/essential-socks-10-pack-10004564-mp001/",  # Main Essential 10-pack to track
+            "/fi/essential-socks-10-pack-10004564-mp001/",  # Main variant (Multi)
+            "/fi/essential-socks-10-pack-10001228-mp001/",  # Backup variant 1
+            "/fi/essential-socks-10-pack-10004085-mp001/",  # Backup variant 2
         ]
         
-        # You can add more specific Finnish multipack products here if desired:
-        # "/fi/essential-socks-5-pack-10004084-mp001/",  # 5-pack option
-        # "/fi/core-crew-socks-3-pack-10002643-mp001/",  # 3-pack option
+        logger.info(f"Attempting to scrape {len(essential_urls)} Essential 10-pack variants")
         
         products = []
+        successful_urls = []
+        failed_urls = []
+        
         for url in essential_urls:
             time.sleep(1)  # Be respectful
             product_info = self.scrape_product_page(url)
             if product_info:
                 # Ensure URL is always included for easy purchasing
                 product_info['purchase_url'] = self.base_url + url if not url.startswith('http') else url
-                logger.info(f"Successfully scraped: {product_info.get('name', 'Unknown')} at {product_info.get('current_price', 'N/A')} EUR")
+                logger.info(f"✅ Successfully scraped: {product_info.get('name', 'Unknown')} at {product_info.get('current_price', 'N/A')} EUR from {url}")
                 products.append(product_info)
+                successful_urls.append(url)
             else:
-                logger.warning(f"Failed to scrape product from {url}")
+                logger.warning(f"❌ Failed to scrape product from {url}")
+                failed_urls.append(url)
+        
+        # Log scraping health
+        logger.info(f"Scraping health: {len(successful_urls)}/{len(essential_urls)} URLs successful")
+        if failed_urls:
+            logger.warning(f"Failed URLs: {failed_urls}")
         
         return products
     
     def scrape_all_products(self) -> List[Dict]:
-        """Main scraping method - prioritizes known Essential products"""
+        """Main scraping method - focused on Essential 10-pack only"""
         all_products = []
         
-        # Method 1: Always scrape our target Essential 10-pack first
+        # Only scrape our target Essential 10-pack products (no main page scraping)
+        logger.info("Scraping Essential 10-pack products only (focused mode)")
         known_products = self.scrape_known_products()
         all_products.extend(known_products)
-        logger.info(f"Found {len(known_products)} known Essential products")
+        logger.info(f"Found {len(known_products)} Essential 10-pack products")
         
-        # Method 2: Only scrape main page if we want additional products
-        # Comment out this section if you only want the Essential 10-pack
-        # main_page_products = self.scrape_main_page()
-        # all_products.extend(main_page_products)
+        # Scraper health check
+        if not known_products:
+            logger.error("🚨 SCRAPER HEALTH ALERT: No Essential 10-pack products found!")
+            logger.error("This could indicate:")
+            logger.error("- Product URLs have changed")
+            logger.error("- Website structure changed") 
+            logger.error("- Anti-bot measures blocking access")
+            logger.error("- Products out of stock or discontinued")
         
-        # Remove duplicates based on base product code, keeping the first variant
+        # Remove duplicates based on base product code (keep best variant)
         seen_base_codes = set()
         seen_urls = set()
         unique_products = []
         
         for product in all_products:
-            # Use base product code if available, otherwise fall back to URL or product_id
+            # Use base product code if available, otherwise fall back to URL
             base_code = product.get('base_product_code')
-            product_id = product.get('product_id', product.get('url', ''))
             url = product.get('url', '')
             
-            # Create a unique identifier
+            # Create a unique identifier - prefer the first working variant
             if base_code:
                 unique_id = f"base_{base_code}"
             else:
@@ -357,9 +371,9 @@ class BjornBorgScraper:
                 seen_urls.add(url)
                 unique_products.append(product)
             else:
-                logger.info(f"Skipping duplicate variant: {product.get('name', 'Unknown')} - {url}")
+                logger.info(f"Skipping duplicate Essential variant: {product.get('name', 'Unknown')} - {url}")
         
-        logger.info(f"Found {len(all_products)} total products, {len(unique_products)} unique base products")
+        logger.info(f"Found {len(all_products)} total Essential variants, {len(unique_products)} unique products to track")
         return unique_products
 
 def main():

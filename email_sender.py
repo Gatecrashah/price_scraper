@@ -189,6 +189,71 @@ class EmailSender:
             logger.error(f"Failed to send email: {e}")
             return False
     
+    def send_scraper_failure_alert(self, error_details: str) -> bool:
+        """Send email notification when scraper completely fails"""
+        
+        try:
+            html_content = f"""
+            <html>
+            <body style="font-family: Arial, sans-serif; margin: 20px;">
+                <div style="background-color: #fdf2f2; border-left: 4px solid #e74c3c; padding: 20px; margin: 15px 0; border-radius: 8px;">
+                    <h2 style="color: #e74c3c;">🚨 Scraper Health Alert</h2>
+                    <p><strong>Your Björn Borg sock price monitor has failed!</strong></p>
+                    <div style="background-color: #fff; padding: 15px; border-radius: 4px; margin: 10px 0;">
+                        <h3>Error Details:</h3>
+                        <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto;">{error_details}</pre>
+                    </div>
+                    <h3>Possible Causes:</h3>
+                    <ul>
+                        <li>🔗 Product URLs have changed</li>
+                        <li>🏗️ Website structure updated</li>
+                        <li>🛡️ Anti-bot measures blocking access</li>
+                        <li>📦 Products out of stock or discontinued</li>
+                        <li>🌐 Network connectivity issues</li>
+                    </ul>
+                    <h3>Recommended Actions:</h3>
+                    <ol>
+                        <li>Check if the Essential 10-pack is still available on bjornborg.com/fi</li>
+                        <li>Verify the product URLs are still valid</li>
+                        <li>Check GitHub Actions logs for detailed error messages</li>
+                        <li>Update the scraper if needed</li>
+                    </ol>
+                </div>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #bdc3c7; color: #7f8c8d; font-size: 12px;">
+                    <p><strong>🤖 Automated alert from your Björn Borg sock price tracker</strong></p>
+                    <p><em>Powered by Resend API</em></p>
+                </div>
+            </body>
+            </html>
+            """
+            
+            payload = {
+                "from": "Sock Tracker Alert <onboarding@resend.dev>",
+                "to": [self.email_to],
+                "subject": "🚨 Sock Scraper Failure Alert - Action Required",
+                "html": html_content
+            }
+            
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            response = requests.post(self.api_url, json=payload, headers=headers)
+            
+            if response.status_code == 200:
+                result = response.json()
+                email_id = result.get('id', 'unknown')
+                logger.info(f"Scraper failure alert sent successfully (ID: {email_id})")
+                return True
+            else:
+                logger.error(f"Failed to send failure alert. Status: {response.status_code}, Response: {response.text}")
+                return False
+            
+        except Exception as e:
+            logger.error(f"Failed to send scraper failure alert: {e}")
+            return False
+    
     def send_test_email(self) -> bool:
         """Send a test email to verify Resend configuration"""
         
@@ -270,7 +335,7 @@ def main():
         print(f"❌ Configuration error: {e}")
         print("\nTo fix this, set the following environment variables:")
         print("export RESEND_API_KEY='your-resend-api-key'")
-        print("export EMAIL_TO='vili.koistinen@gmail.com'")
+        print("export EMAIL_TO='<your-email-address>'")
 
 if __name__ == "__main__":
     main()

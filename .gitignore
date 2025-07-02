@@ -11,3 +11,4 @@ wheels/
 .env
 
 .env
+price_history.json
