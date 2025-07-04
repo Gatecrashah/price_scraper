@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Email notification system for Björn Borg sock price changes using Resend API
+Email notification system for Björn Borg product price changes using Resend API
 """
 
 import requests
@@ -70,7 +70,7 @@ class EmailSender:
         </head>
         <body>
             <div class="header">
-                <h1>🧦 Björn Borg Sock Price Alert</h1>
+                <h1>Björn Borg Price Alert</h1>
                 <p>Price changes detected for your tracked products!</p>
             </div>
         """
@@ -128,7 +128,7 @@ class EmailSender:
         
         html_content += """
             <div class="footer">
-                <p><strong>🤖 Automated by your Björn Borg sock price tracker</strong></p>
+                <p><strong>🤖 Automated by your Björn Borg price tracker</strong></p>
                 <p>Happy shopping! 🛍️</p>
                 <p><em>Powered by Resend API</em></p>
             </div>
@@ -162,7 +162,7 @@ class EmailSender:
             
             # Prepare the email payload for Resend API
             payload = {
-                "from": "Sock Tracker <onboarding@resend.dev>",  # Using Resend's default domain
+                "from": "Price Tracker <onboarding@resend.dev>",  # Using Resend's default domain
                 "to": [self.email_to],
                 "subject": subject,
                 "html": html_content
@@ -198,7 +198,7 @@ class EmailSender:
             <body style="font-family: Arial, sans-serif; margin: 20px;">
                 <div style="background-color: #fdf2f2; border-left: 4px solid #e74c3c; padding: 20px; margin: 15px 0; border-radius: 8px;">
                     <h2 style="color: #e74c3c;">🚨 Scraper Health Alert</h2>
-                    <p><strong>Your Björn Borg sock price monitor has failed!</strong></p>
+                    <p><strong>Your Björn Borg product price monitor has failed!</strong></p>
                     <div style="background-color: #fff; padding: 15px; border-radius: 4px; margin: 10px 0;">
                         <h3>Error Details:</h3>
                         <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto;">{error_details}</pre>
@@ -220,7 +220,7 @@ class EmailSender:
                     </ol>
                 </div>
                 <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #bdc3c7; color: #7f8c8d; font-size: 12px;">
-                    <p><strong>🤖 Automated alert from your Björn Borg sock price tracker</strong></p>
+                    <p><strong>🤖 Automated alert from your Björn Borg product price tracker</strong></p>
                     <p><em>Powered by Resend API</em></p>
                 </div>
             </body>
@@ -228,9 +228,9 @@ class EmailSender:
             """
             
             payload = {
-                "from": "Sock Tracker Alert <onboarding@resend.dev>",
+                "from": "Price Tracker Alert <onboarding@resend.dev>",
                 "to": [self.email_to],
-                "subject": "🚨 Sock Scraper Failure Alert - Action Required",
+                "subject": "🚨 Procut Scraper Failure Alert - Action Required",
                 "html": html_content
             }
             
@@ -259,14 +259,14 @@ class EmailSender:
         
         try:
             payload = {
-                "from": "Sock Tracker <onboarding@resend.dev>",
+                "from": "Price Tracker <onboarding@resend.dev>",
                 "to": [self.email_to],
                 "subject": "🧦 Test Email - Björn Borg Price Tracker",
                 "html": """
                 <html>
                 <body style="font-family: Arial, sans-serif; margin: 20px;">
                     <h2>✅ Test Email Successful!</h2>
-                    <p>This is a test email from your Björn Borg sock price tracker.</p>
+                    <p>This is a test email from your Björn Borg product price tracker.</p>
                     <p><strong>Configuration is working correctly!</strong></p>
                     <hr>
                     <p style="color: #7f8c8d; font-size: 12px;">

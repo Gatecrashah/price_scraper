@@ -303,6 +303,9 @@ class BjornBorgScraper:
             "/fi/essential-socks-10-pack-10004564-mp001/",  # Main variant (Multi)
             "/fi/essential-socks-10-pack-10001228-mp001/",  # Backup variant 1
             "/fi/essential-socks-10-pack-10004085-mp001/",  # Backup variant 2
+            "/fi/centre-crew-9999-1431-gy013/", # color 1
+            "/fi/centre-crew-9999-1431-bl183/", # color 2
+            "/fi/centre-crew-9999-1431-90741/", # centre sweatshirt color 3
         ]
         
         logger.info(f"Attempting to scrape {len(essential_urls)} Essential 10-pack variants")
