@@ -297,9 +297,11 @@ class BjornBorgScraper:
             return []
     
     def scrape_known_products(self) -> List[Dict]:
-        """Scrape known Essential 10-pack sock product URLs with backup variants"""
-        # Essential socks 10-pack products - multiple variants for redundancy
-        essential_urls = [
+        """Scrape known products from both Björn Borg and Fitnesstukku"""
+        all_products = []
+        
+        # Björn Borg Essential products
+        bjornborg_urls = [
             "/fi/essential-socks-10-pack-10004564-mp001/",  # Main variant (Multi)
             "/fi/essential-socks-10-pack-10001228-mp001/",  # Backup variant 1
             "/fi/essential-socks-10-pack-10004085-mp001/",  # Backup variant 2
@@ -308,48 +310,67 @@ class BjornBorgScraper:
             "/fi/centre-crew-9999-1431-90741/", # centre sweatshirt color 3
         ]
         
-        logger.info(f"Attempting to scrape {len(essential_urls)} Essential 10-pack variants")
+        # Fitnesstukku products (full URLs)
+        fitnesstukku_urls = [
+            "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+            "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html"
+        ]
         
-        products = []
-        successful_urls = []
-        failed_urls = []
+        # Scrape Björn Borg products
+        logger.info(f"Attempting to scrape {len(bjornborg_urls)} Björn Borg products")
+        successful_bb_urls = []
+        failed_bb_urls = []
         
-        for url in essential_urls:
+        for url in bjornborg_urls:
             time.sleep(1)  # Be respectful
             product_info = self.scrape_product_page(url)
             if product_info:
                 # Ensure URL is always included for easy purchasing
                 product_info['purchase_url'] = self.base_url + url if not url.startswith('http') else url
+                product_info['site'] = 'bjornborg'
                 logger.info(f"✅ Successfully scraped: {product_info.get('name', 'Unknown')} at {product_info.get('current_price', 'N/A')} EUR from {url}")
-                products.append(product_info)
-                successful_urls.append(url)
+                all_products.append(product_info)
+                successful_bb_urls.append(url)
             else:
-                logger.warning(f"❌ Failed to scrape product from {url}")
-                failed_urls.append(url)
+                logger.warning(f"❌ Failed to scrape Björn Borg product from {url}")
+                failed_bb_urls.append(url)
         
-        # Log scraping health
-        logger.info(f"Scraping health: {len(successful_urls)}/{len(essential_urls)} URLs successful")
-        if failed_urls:
-            logger.warning(f"Failed URLs: {failed_urls}")
+        # Log Björn Borg scraping health
+        logger.info(f"Björn Borg scraping health: {len(successful_bb_urls)}/{len(bjornborg_urls)} URLs successful")
+        if failed_bb_urls:
+            logger.warning(f"Failed Björn Borg URLs: {failed_bb_urls}")
         
-        return products
+        # Scrape Fitnesstukku products
+        logger.info(f"Attempting to scrape {len(fitnesstukku_urls)} Fitnesstukku products")
+        fitnesstukku_scraper = FitnesstukuScraper()
+        fitnesstukku_products = fitnesstukku_scraper.scrape_fitnesstukku_products(fitnesstukku_urls)
+        all_products.extend(fitnesstukku_products)
+        
+        # Overall health summary
+        total_expected = len(bjornborg_urls) + len(fitnesstukku_urls)
+        total_successful = len(successful_bb_urls) + len(fitnesstukku_products)
+        logger.info(f"🎯 Overall scraping health: {total_successful}/{total_expected} products successful")
+        logger.info(f"   - Björn Borg: {len(successful_bb_urls)}/{len(bjornborg_urls)}")
+        logger.info(f"   - Fitnesstukku: {len(fitnesstukku_products)}/{len(fitnesstukku_urls)}")
+        
+        return all_products
     
     def scrape_all_products(self) -> List[Dict]:
-        """Main scraping method - focused on Essential 10-pack only"""
+        """Main scraping method - handles both Björn Borg and Fitnesstukku products"""
         all_products = []
         
-        # Only scrape our target Essential 10-pack products (no main page scraping)
-        logger.info("Scraping Essential 10-pack products only (focused mode)")
+        # Scrape products from both sites
+        logger.info("Scraping products from Björn Borg and Fitnesstukku")
         known_products = self.scrape_known_products()
         all_products.extend(known_products)
-        logger.info(f"Found {len(known_products)} Essential 10-pack products")
+        logger.info(f"Found {len(known_products)} products across all sites")
         
         # Scraper health check
         if not known_products:
-            logger.error("🚨 SCRAPER HEALTH ALERT: No Essential 10-pack products found!")
+            logger.error("🚨 SCRAPER HEALTH ALERT: No products found from any site!")
             logger.error("This could indicate:")
             logger.error("- Product URLs have changed")
-            logger.error("- Website structure changed") 
+            logger.error("- Website structures changed") 
             logger.error("- Anti-bot measures blocking access")
             logger.error("- Products out of stock or discontinued")
         
@@ -379,39 +400,225 @@ class BjornBorgScraper:
         logger.info(f"Found {len(all_products)} total Essential variants, {len(unique_products)} unique products to track")
         return unique_products
 
+class FitnesstukuScraper:
+    def __init__(self):
+        self.session = requests.Session()
+        
+        # Set headers to mimic a real browser
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'fi-FI,fi;q=0.9,en;q=0.8',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+        })
+    
+    def extract_fitnesstukku_product(self, soup: BeautifulSoup, url: str) -> Optional[Dict]:
+        """Extract product information from Fitnesstukku page"""
+        
+        product_info = {
+            'purchase_url': url,
+            'site': 'fitnesstukku'
+        }
+        
+        try:
+            # Extract product name
+            name_selectors = [
+                'h1.product-name',
+                'h1[data-testid="product-name"]', 
+                '.pdp-product-name h1',
+                'h1',
+                '.product-title',
+                '[data-automation-id="product-title"]'
+            ]
+            
+            for selector in name_selectors:
+                name_elem = soup.select_one(selector)
+                if name_elem:
+                    product_info['name'] = name_elem.get_text(strip=True)
+                    break
+            
+            # Extract brand if available
+            brand_selectors = [
+                '.product-brand',
+                '.brand-name', 
+                '[data-automation-id="product-brand"]',
+                'a[href*="kaikkituotemerkit"]'
+            ]
+            
+            for selector in brand_selectors:
+                brand_elem = soup.select_one(selector)
+                if brand_elem:
+                    product_info['brand'] = brand_elem.get_text(strip=True)
+                    break
+            
+            # Extract current price
+            price_selectors = [
+                '.price-sales',
+                '.price .current',
+                '.current-price',
+                '[data-automation-id="current-price"]',
+                '.price-current'
+            ]
+            
+            for selector in price_selectors:
+                price_elem = soup.select_one(selector)
+                if price_elem:
+                    price_text = price_elem.get_text(strip=True)
+                    
+                    # Extract numeric price from text like "22.90 €"
+                    price_match = re.search(r'(\d+[.,]\d+)', price_text.replace(',', '.'))
+                    if price_match:
+                        try:
+                            current_price = float(price_match.group(1))
+                            product_info['current_price'] = current_price
+                            break
+                        except ValueError:
+                            continue
+            
+            # Extract original/list price if available
+            original_price_selectors = [
+                '.price-ref__stmt--list .price__value',
+                '.price-original',
+                '.list-price',
+                '.price-was',
+                '[data-automation-id="list-price"]'
+            ]
+            
+            for selector in original_price_selectors:
+                orig_price_elem = soup.select_one(selector)
+                if orig_price_elem:
+                    orig_price_text = orig_price_elem.get_text(strip=True)
+                    
+                    orig_price_match = re.search(r'(\d+[.,]\d+)', orig_price_text.replace(',', '.'))
+                    if orig_price_match:
+                        try:
+                            original_price = float(orig_price_match.group(1))
+                            # Only set if different from current price
+                            if original_price != product_info.get('current_price'):
+                                product_info['original_price'] = original_price
+                            break
+                        except ValueError:
+                            continue
+            
+            # Calculate discount if we have both prices
+            if 'current_price' in product_info and 'original_price' in product_info:
+                current = product_info['current_price']
+                original = product_info['original_price']
+                if original > current:
+                    discount_pct = round(((original - current) / original) * 100)
+                    product_info['discount_percent'] = discount_pct
+            
+            # Generate a product ID for tracking
+            url_parts = url.split('/')
+            if len(url_parts) > 1:
+                product_slug = url_parts[-1].replace('.html', '')
+                product_info['product_id'] = f"fitnesstukku_{product_slug}"
+            
+            return product_info if 'current_price' in product_info else None
+            
+        except Exception as e:
+            logger.error(f"Error extracting Fitnesstukku product data: {e}")
+            return None
+    
+    def scrape_fitnesstukku_products(self, urls: List[str]) -> List[Dict]:
+        """Scrape multiple Fitnesstukku product URLs"""
+        products = []
+        successful_urls = []
+        failed_urls = []
+        
+        for url in urls:
+            time.sleep(1)  # Be respectful
+            
+            try:
+                response = self.session.get(url, timeout=30)
+                
+                if response.status_code != 200:
+                    logger.warning(f"❌ Failed to fetch Fitnesstukku page: HTTP {response.status_code} - {url}")
+                    failed_urls.append(url)
+                    continue
+                
+                soup = BeautifulSoup(response.content, 'html.parser')
+                product_info = self.extract_fitnesstukku_product(soup, url)
+                
+                if product_info:
+                    logger.info(f"✅ Successfully scraped: {product_info.get('name', 'Unknown')} at {product_info.get('current_price', 'N/A')} EUR from {url}")
+                    products.append(product_info)
+                    successful_urls.append(url)
+                else:
+                    logger.warning(f"❌ Failed to extract product info from {url}")
+                    failed_urls.append(url)
+                    
+            except Exception as e:
+                logger.error(f"❌ Error scraping Fitnesstukku {url}: {e}")
+                failed_urls.append(url)
+        
+        # Log scraping health
+        logger.info(f"Fitnesstukku scraping health: {len(successful_urls)}/{len(urls)} URLs successful")
+        if failed_urls:
+            logger.warning(f"Failed Fitnesstukku URLs: {failed_urls}")
+        
+        return products
+
 def main():
-    """Main function to run the scraper"""
+    """Main function to run the multi-site scraper"""
     scraper = BjornBorgScraper()
     
-    print("Starting Björn Borg sock price scraper...")
+    print("Starting multi-site price scraper (Björn Borg + Fitnesstukku)...")
     products = scraper.scrape_all_products()
     
     if products:
-        print(f"\nFound {len(products)} products:")
-        print("=" * 50)
+        # Group products by site for better display
+        bjornborg_products = [p for p in products if p.get('site') == 'bjornborg']
+        fitnesstukku_products = [p for p in products if p.get('site') == 'fitnesstukku']
         
-        for product in products:
-            print(f"Name: {product.get('name', 'Unknown')}")
-            print(f"Current Price: {product.get('current_price', 'N/A')} EUR")
-            if 'original_price' in product:
-                print(f"Original Price: {product.get('original_price')} EUR")
-            print(f"URL: {product.get('url', 'N/A')}")
-            print(f"Product ID: {product.get('product_id', 'N/A')}")
-            print("-" * 30)
+        print(f"\nFound {len(products)} products across all sites:")
+        print("=" * 60)
+        
+        if bjornborg_products:
+            print(f"\n🧦 BJÖRN BORG ({len(bjornborg_products)} products):")
+            print("-" * 40)
+            for product in bjornborg_products:
+                print(f"Name: {product.get('name', 'Unknown')}")
+                print(f"Current Price: {product.get('current_price', 'N/A')} EUR")
+                if 'original_price' in product:
+                    print(f"Original Price: {product.get('original_price')} EUR")
+                print(f"URL: {product.get('purchase_url', 'N/A')}")
+                print(f"Product ID: {product.get('product_id', 'N/A')}")
+                print("-" * 30)
+        
+        if fitnesstukku_products:
+            print(f"\n💪 FITNESSTUKKU ({len(fitnesstukku_products)} products):")
+            print("-" * 40)
+            for product in fitnesstukku_products:
+                print(f"Name: {product.get('name', 'Unknown')}")
+                print(f"Current Price: {product.get('current_price', 'N/A')} EUR")
+                if 'original_price' in product:
+                    print(f"Original Price: {product.get('original_price')} EUR")
+                if 'brand' in product:
+                    print(f"Brand: {product.get('brand')}")
+                print(f"URL: {product.get('purchase_url', 'N/A')}")
+                print(f"Product ID: {product.get('product_id', 'N/A')}")
+                print("-" * 30)
         
         # Save to JSON file
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        filename = f"bjornborg_prices_{timestamp}.json"
+        filename = f"multisite_prices_{timestamp}.json"
         
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump({
                 'timestamp': datetime.now().isoformat(),
-                'products': products
+                'products': products,
+                'summary': {
+                    'total_products': len(products),
+                    'bjornborg_products': len(bjornborg_products),
+                    'fitnesstukku_products': len(fitnesstukku_products)
+                }
             }, f, indent=2, ensure_ascii=False)
         
         print(f"\nResults saved to {filename}")
     else:
-        print("No products found. The website structure may have changed.")
+        print("No products found. The website structures may have changed.")
         print("Manual inspection may be required.")
 
 if __name__ == "__main__":
