@@ -13,7 +13,7 @@
         "current_price": 35.96,
         "original_price": 44.95,
         "discount_percent": 20,
-        "scraped_at": "2025-07-05T06:46:51.208112"
+        "scraped_at": "2025-07-05T10:20:26.246908"
       }
     }
   },
@@ -31,7 +31,7 @@
         "current_price": 35.96,
         "original_price": 44.95,
         "discount_percent": 20,
-        "scraped_at": "2025-07-05T06:46:51.208174"
+        "scraped_at": "2025-07-05T10:20:26.246926"
       }
     }
   },
@@ -49,11 +49,35 @@
         "current_price": 35.96,
         "original_price": 44.95,
         "discount_percent": 20,
-        "scraped_at": "2025-07-05T06:46:51.208222"
+        "scraped_at": "2025-07-05T10:20:26.246939"
       }
     }
   },
-  "item_9999": {
+  "id_centre-crew-9999-1431-gy013": {
+    "name": "Centre Crew",
+    "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-gy013/",
+    "price_history": {
+      "2025-07-05": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-05T10:20:26.246951"
+      }
+    }
+  },
+  "id_centre-crew-9999-1431-bl183": {
+    "name": "Centre Crew",
+    "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
+    "price_history": {
+      "2025-07-05": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-05T10:20:26.246961"
+      }
+    }
+  },
+  "id_centre-crew-9999-1431-90741": {
     "name": "Centre Crew",
     "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
     "price_history": {
@@ -61,11 +85,23 @@
         "current_price": 41.97,
         "original_price": 69.95,
         "discount_percent": 40,
-        "scraped_at": "2025-07-05T06:46:51.208357"
+        "scraped_at": "2025-07-05T10:20:26.246971"
       }
     }
   },
-  "url_unknown": {
+  "id_fitnesstukku_5854R": {
+    "name": "Whey-80 Heraproteiini 4 kgDouble Rich Chocolate",
+    "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+    "price_history": {
+      "2025-07-05": {
+        "current_price": 86.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-05T10:20:26.246981"
+      }
+    }
+  },
+  "id_fitnesstukku_609": {
     "name": "Kreatiinimonohydraatti 500 g",
     "purchase_url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
     "price_history": {
@@ -73,7 +109,7 @@
         "current_price": 22.9,
         "original_price": null,
         "discount_percent": null,
-        "scraped_at": "2025-07-05T06:46:51.208437"
+        "scraped_at": "2025-07-05T10:20:26.246991"
       }
     }
   }
