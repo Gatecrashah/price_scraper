@@ -1,6 +1,6 @@
 {
   "base_10004564": {
-    "name": "Pack of ten",
+    "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/",
     "price_history": {
       "2025-07-04": {
@@ -13,12 +13,12 @@
         "current_price": 35.96,
         "original_price": 44.95,
         "discount_percent": 20,
-        "scraped_at": "2025-07-05T06:35:08.390168"
+        "scraped_at": "2025-07-05T06:46:51.208112"
       }
     }
   },
   "base_10001228": {
-    "name": "Pack of ten",
+    "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
     "price_history": {
       "2025-07-04": {
@@ -31,12 +31,12 @@
         "current_price": 35.96,
         "original_price": 44.95,
         "discount_percent": 20,
-        "scraped_at": "2025-07-05T06:35:08.390232"
+        "scraped_at": "2025-07-05T06:46:51.208174"
       }
     }
   },
   "base_10004085": {
-    "name": "Pack of ten",
+    "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004085-mp001/",
     "price_history": {
       "2025-07-04": {
@@ -49,31 +49,31 @@
         "current_price": 35.96,
         "original_price": 44.95,
         "discount_percent": 20,
-        "scraped_at": "2025-07-05T06:35:08.390278"
+        "scraped_at": "2025-07-05T06:46:51.208222"
       }
     }
   },
   "item_9999": {
-    "name": "Unknown",
+    "name": "Centre Crew",
     "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
     "price_history": {
       "2025-07-05": {
         "current_price": 41.97,
         "original_price": 69.95,
         "discount_percent": 40,
-        "scraped_at": "2025-07-05T06:35:08.390410"
+        "scraped_at": "2025-07-05T06:46:51.208357"
       }
     }
   },
   "url_unknown": {
-    "name": "Whey-80 Heraproteiini 4 kgDouble Rich Chocolate",
-    "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+    "name": "Kreatiinimonohydraatti 500 g",
+    "purchase_url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
     "price_history": {
       "2025-07-05": {
-        "current_price": 86.9,
+        "current_price": 22.9,
         "original_price": null,
         "discount_percent": null,
-        "scraped_at": "2025-07-05T06:35:08.390452"
+        "scraped_at": "2025-07-05T06:46:51.208437"
       }
     }
   }
