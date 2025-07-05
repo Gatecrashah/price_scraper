@@ -51,18 +51,35 @@ class BjornBorgScraper:
         """Parse Björn Borg product page using known structure"""
         product_info = {}
         
-        # Extract product name from text content (observed pattern)
+        # Extract product name - improved to handle both socks and other products
+        # First try to get from page title
+        title_elem = soup.find('title')
+        if title_elem:
+            title_text = title_elem.get_text(strip=True)
+            # Extract product name from title like "Centre Crew - Peat | Björn Borg"
+            if ' | Björn Borg' in title_text:
+                product_name = title_text.split(' | Björn Borg')[0]
+                # Remove color variations like "- Peat"
+                if ' - ' in product_name:
+                    product_name = product_name.split(' - ')[0]
+                product_info['name'] = product_name
+        
+        # Fallback: extract from text content (for socks and packs)
+        if 'name' not in product_info:
+            text_content = soup.get_text()
+            lines = [line.strip() for line in text_content.split('\n') if line.strip()]
+            
+            # Look for product name (usually near the beginning)
+            for i, line in enumerate(lines):
+                if any(keyword in line.lower() for keyword in ['socks', 'pack', 'crew', 'sweater']):
+                    if len(line) < 100 and not any(char.isdigit() for char in line[:10]):
+                        product_info['name'] = line
+                        break
+        
+        # Extract prices - improved to handle the actual page structure
         text_content = soup.get_text()
         lines = [line.strip() for line in text_content.split('\n') if line.strip()]
         
-        # Look for product name (usually near the beginning)
-        for i, line in enumerate(lines):
-            if any(keyword in line.lower() for keyword in ['socks', 'pack']):
-                if len(line) < 100 and not any(char.isdigit() for char in line[:10]):
-                    product_info['name'] = line
-                    break
-        
-        # Extract prices - improved to handle the actual page structure
         eur_prices = []
         for line in lines:
             if 'EUR' in line and any(char.isdigit() for char in line):
@@ -382,7 +399,8 @@ class BjornBorgScraper:
         for product in all_products:
             # Use base product code if available, otherwise fall back to URL
             base_code = product.get('base_product_code')
-            url = product.get('url', '')
+            # Handle both 'url' (Björn Borg) and 'purchase_url' (Fitnesstukku) fields
+            url = product.get('url', '') or product.get('purchase_url', '')
             
             # Create a unique identifier - prefer the first working variant
             if base_code:
@@ -395,7 +413,7 @@ class BjornBorgScraper:
                 seen_urls.add(url)
                 unique_products.append(product)
             else:
-                logger.info(f"Skipping duplicate Essential variant: {product.get('name', 'Unknown')} - {url}")
+                logger.info(f"Skipping duplicate product: {product.get('name', 'Unknown')} - {url}")
         
         logger.info(f"Found {len(all_products)} total Essential variants, {len(unique_products)} unique products to track")
         return unique_products
