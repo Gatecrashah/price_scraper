@@ -48,9 +48,11 @@ class PriceMonitor:
     
     def get_product_key(self, product: Dict) -> str:
         """Generate a unique key for a product"""
-        # Use base product code if available, otherwise use item number or URL
+        # Use base product code if available, otherwise use product_id, then item number or URL
         if 'base_product_code' in product:
             return f"base_{product['base_product_code']}"
+        elif 'product_id' in product and product['product_id']:
+            return f"id_{product['product_id']}"
         elif 'item_number' in product:
             return f"item_{product['item_number']}"
         else:
