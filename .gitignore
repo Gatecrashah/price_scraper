@@ -10,4 +10,5 @@ wheels/
 .venv
 .env
 
-.env
+# AI Assistant context (keep local only)
+CLAUDE.md
