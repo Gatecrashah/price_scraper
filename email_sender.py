@@ -23,49 +23,55 @@ class EmailSender:
         if not self.email_to:
             raise ValueError("EMAIL_TO environment variable is required")
     
-    def format_price_change_email(self, price_changes: List[Dict]) -> str:
-        """Format price changes into HTML email content"""
+    def format_price_change_email(self, price_changes: List[Dict], new_variants: List[Dict] = None) -> str:
+        """Format price changes and new variants into HTML email content"""
         
-        if not price_changes:
-            return "No price changes detected."
+        if new_variants is None:
+            new_variants = []
+            
+        if not price_changes and not new_variants:
+            return "No price changes or new variants detected."
         
         # Group price changes by site
         bjornborg_changes = [p for p in price_changes if p.get('site') == 'bjornborg']
         fitnesstukku_changes = [p for p in price_changes if p.get('site') == 'fitnesstukku']
         other_changes = [p for p in price_changes if p.get('site') not in ['bjornborg', 'fitnesstukku']]
         
-        html_content = """
+        total_changes = len(price_changes)
+        summary_breakdown = f" (Björn Borg: {len(bjornborg_changes)}, Fitnesstukku: {len(fitnesstukku_changes)})" if bjornborg_changes or fitnesstukku_changes else ""
+        
+        html_content = f"""
         <html>
         <head>
             <style>
-                body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
-                .header { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
-                .site-section { 
+                body {{ font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }}
+                .header {{ color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }}
+                .site-section {{ 
                     margin: 25px 0; 
                     border: 2px solid #ecf0f1; 
                     border-radius: 10px; 
                     padding: 20px; 
                     background-color: #fdfdfe; 
-                }
-                .site-header { 
+                }}
+                .site-header {{ 
                     font-size: 22px; 
                     font-weight: bold; 
                     margin-bottom: 15px; 
                     padding-bottom: 8px; 
                     border-bottom: 2px solid #ecf0f1; 
-                }
-                .bjornborg { border-color: #e67e22; }
-                .bjornborg .site-header { color: #e67e22; }
-                .fitnesstukku { border-color: #9b59b6; }
-                .fitnesstukku .site-header { color: #9b59b6; }
-                .product { background-color: #f8f9fa; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3498db; }
-                .price-drop { border-left-color: #27ae60; background-color: #f0f9f4; }
-                .price-increase { border-left-color: #e74c3c; background-color: #fdf2f2; }
-                .price { font-size: 20px; font-weight: bold; margin: 10px 0; }
-                .old-price { text-decoration: line-through; color: #7f8c8d; }
-                .discount { color: #27ae60; font-weight: bold; font-size: 16px; }
-                .brand { color: #7f8c8d; font-style: italic; margin-bottom: 8px; }
-                .purchase-btn { 
+                }}
+                .bjornborg {{ border-color: #e67e22; }}
+                .bjornborg .site-header {{ color: #e67e22; }}
+                .fitnesstukku {{ border-color: #9b59b6; }}
+                .fitnesstukku .site-header {{ color: #9b59b6; }}
+                .product {{ background-color: #f8f9fa; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3498db; }}
+                .price-drop {{ border-left-color: #27ae60; background-color: #f0f9f4; }}
+                .price-increase {{ border-left-color: #e74c3c; background-color: #fdf2f2; }}
+                .price {{ font-size: 20px; font-weight: bold; margin: 10px 0; }}
+                .old-price {{ text-decoration: line-through; color: #7f8c8d; }}
+                .discount {{ color: #27ae60; font-weight: bold; font-size: 16px; }}
+                .brand {{ color: #7f8c8d; font-style: italic; margin-bottom: 8px; }}
+                .purchase-btn {{ 
                     display: inline-block; 
                     background-color: #3498db; 
                     color: white !important; 
@@ -74,29 +80,29 @@ class EmailSender:
                     border-radius: 6px; 
                     margin-top: 15px;
                     font-weight: bold;
-                }
-                .purchase-btn:hover { background-color: #2980b9; }
-                .change-highlight { 
+                }}
+                .purchase-btn:hover {{ background-color: #2980b9; }}
+                .change-highlight {{ 
                     background-color: #fff3cd; 
                     padding: 8px 12px; 
                     border-radius: 4px; 
                     border-left: 3px solid #ffc107;
                     margin: 10px 0;
-                }
-                .summary {
+                }}
+                .summary {{
                     background-color: #e8f4fd;
                     padding: 15px;
                     border-radius: 8px;
                     margin-bottom: 20px;
                     border-left: 4px solid #3498db;
-                }
-                .footer { 
+                }}
+                .footer {{ 
                     margin-top: 30px; 
                     padding-top: 20px; 
                     border-top: 1px solid #bdc3c7; 
                     color: #7f8c8d; 
                     font-size: 12px; 
-                }
+                }}
             </style>
         </head>
         <body>
@@ -109,17 +115,14 @@ class EmailSender:
                 <strong>📊 Summary:</strong> {total_changes} price changes detected
                 {summary_breakdown}
             </div>
-        """.format(
-            total_changes=len(price_changes),
-            summary_breakdown=f" (Björn Borg: {len(bjornborg_changes)}, Fitnesstukku: {len(fitnesstukku_changes)})" if bjornborg_changes or fitnesstukku_changes else ""
-        )
+        """
         
         # Add Björn Borg section
         if bjornborg_changes:
-            html_content += """
+            html_content += f"""
             <div class="site-section bjornborg">
-                <div class="site-header">🧦 Björn Borg ({count} products)</div>
-            """.format(count=len(bjornborg_changes))
+                <div class="site-header">🧦 Björn Borg ({len(bjornborg_changes)} products)</div>
+            """
             
             for change in bjornborg_changes:
                 html_content += self._format_product_change(change)
@@ -128,10 +131,10 @@ class EmailSender:
         
         # Add Fitnesstukku section  
         if fitnesstukku_changes:
-            html_content += """
+            html_content += f"""
             <div class="site-section fitnesstukku">
-                <div class="site-header">💪 Fitnesstukku ({count} products)</div>
-            """.format(count=len(fitnesstukku_changes))
+                <div class="site-header">💪 Fitnesstukku ({len(fitnesstukku_changes)} products)</div>
+            """
             
             for change in fitnesstukku_changes:
                 html_content += self._format_product_change(change)
@@ -140,13 +143,29 @@ class EmailSender:
         
         # Add other sites section if any
         if other_changes:
-            html_content += """
+            html_content += f"""
             <div class="site-section">
-                <div class="site-header">🌐 Other Sites ({count} products)</div>
-            """.format(count=len(other_changes))
+                <div class="site-header">🌐 Other Sites ({len(other_changes)} products)</div>
+            """
             
             for change in other_changes:
                 html_content += self._format_product_change(change)
+            
+            html_content += "</div>"
+        
+        # Add new variants section if any
+        if new_variants:
+            html_content += f"""
+            <div class="site-section">
+                <div class="site-header">✨ New Essential 10-pack Variants Discovered ({len(new_variants)} products)</div>
+                <p style="margin-bottom: 15px; color: #2c3e50;">
+                    <strong>Great news!</strong> We've found new Essential 10-pack variants that aren't currently being tracked. 
+                    Consider adding them to your monitoring list!
+                </p>
+            """
+            
+            for variant in new_variants:
+                html_content += self._format_new_variant(variant)
             
             html_content += "</div>"
         
@@ -223,27 +242,82 @@ class EmailSender:
         
         return product_html
     
-    def send_price_alert(self, price_changes: List[Dict]) -> bool:
-        """Send email notification about price changes using Resend API"""
+    def _format_new_variant(self, variant: Dict) -> str:
+        """Format new variant discovery for email"""
+        product_name = variant.get('name', 'Unknown Variant')
+        current_price = variant.get('current_price', 0)
+        original_price = variant.get('original_price', 0)
+        purchase_url = variant.get('url', '#')
+        product_id = variant.get('product_id', 'N/A')
         
-        if not price_changes:
-            logger.info("No price changes to report")
+        variant_html = f"""
+        <div class="product" style="border: 2px solid #f39c12; background-color: #fef9e7;">
+            <h3 style="margin: 0; color: #d68910;">✨ {product_name}</h3>
+            <div style="font-size: 14px; color: #7f8c8d; margin: 5px 0;">
+                Product ID: {product_id}
+            </div>
+            <div class="price">
+                Current Price: <span style="color: #d68910; font-size: 24px;">{current_price:.2f} EUR</span>
+            </div>
+        """
+        
+        # Add original price if available
+        if original_price and original_price > current_price:
+            discount_pct = int(((original_price - current_price) / original_price) * 100)
+            variant_html += f"""
+            <div style="margin: 5px 0;">
+                Original Price: <span class="old-price">{original_price:.2f} EUR</span>
+            </div>
+            <div class="discount" style="color: #27ae60;">
+                🏷️ {discount_pct}% OFF!
+            </div>
+            """
+        
+        # Purchase button with URL
+        variant_html += f"""
+            <div style="margin-top: 15px;">
+                <a href="{purchase_url}" class="purchase-btn" style="background-color: #f39c12;">🛒 View New Variant</a>
+            </div>
+            <div style="margin-top: 10px; font-size: 12px; color: #7f8c8d;">
+                <strong>Direct Link:</strong> <a href="{purchase_url}" style="color: #f39c12;">{purchase_url}</a>
+            </div>
+        </div>
+        """
+        
+        return variant_html
+    
+    def send_price_alert(self, price_changes: List[Dict], new_variants: List[Dict] = None) -> bool:
+        """Send email notification about price changes and new variants using Resend API"""
+        
+        if new_variants is None:
+            new_variants = []
+            
+        if not price_changes and not new_variants:
+            logger.info("No price changes or new variants to report")
             return True
         
         try:
-            # Determine email subject based on changes
-            drops = sum(1 for change in price_changes if change.get('current_price', 0) < change.get('previous_price', 0))
-            increases = len(price_changes) - drops
+            # Determine email subject based on changes and variants
+            subject_parts = []
             
-            if drops > 0 and increases == 0:
-                subject = f"🧦📉 Price Drop Alert! {drops} product(s) cheaper"
-            elif increases > 0 and drops == 0:
-                subject = f"🧦📈 Price Increase Alert - {increases} product(s) more expensive"
-            else:
-                subject = f"🧦 Mixed Price Changes - {len(price_changes)} update(s)"
+            if price_changes:
+                drops = sum(1 for change in price_changes if change.get('current_price', 0) < change.get('previous_price', 0))
+                increases = len(price_changes) - drops
+                
+                if drops > 0 and increases == 0:
+                    subject_parts.append(f"📉 {drops} price drop(s)")
+                elif increases > 0 and drops == 0:
+                    subject_parts.append(f"📈 {increases} price increase(s)")
+                else:
+                    subject_parts.append(f"{len(price_changes)} price change(s)")
+            
+            if new_variants:
+                subject_parts.append(f"✨ {len(new_variants)} new variant(s)")
+            
+            subject = f"🧦 {' + '.join(subject_parts)}"
             
             # Create HTML content
-            html_content = self.format_price_change_email(price_changes)
+            html_content = self.format_price_change_email(price_changes, new_variants)
             
             # Prepare the email payload for Resend API
             payload = {

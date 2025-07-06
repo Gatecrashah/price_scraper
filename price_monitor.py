@@ -191,6 +191,50 @@ class PriceMonitor:
         
         return summary
     
+    def check_for_new_variants(self, discovery_frequency_days=7) -> List[Dict]:
+        """Check for new Essential 10-pack variants with configurable frequency"""
+        
+        # Check when we last ran variant discovery
+        last_discovery_file = 'last_variant_discovery.json'
+        today = datetime.now()
+        
+        should_run_discovery = True
+        
+        if os.path.exists(last_discovery_file):
+            try:
+                with open(last_discovery_file, 'r') as f:
+                    last_discovery_data = json.load(f)
+                    last_discovery_date = datetime.fromisoformat(last_discovery_data['last_discovery_date'])
+                    
+                    days_since_last = (today - last_discovery_date).days
+                    if days_since_last < discovery_frequency_days:
+                        logger.info(f"Skipping variant discovery - only {days_since_last} days since last check (frequency: {discovery_frequency_days} days)")
+                        should_run_discovery = False
+            except Exception as e:
+                logger.warning(f"Error reading last discovery file: {e}")
+        
+        if not should_run_discovery:
+            return []
+        
+        logger.info("Running new variant discovery check...")
+        
+        try:
+            # Run variant discovery
+            new_variants = self.scraper.discover_new_variants()
+            
+            # Update last discovery timestamp
+            with open(last_discovery_file, 'w') as f:
+                json.dump({
+                    'last_discovery_date': today.isoformat(),
+                    'variants_found': len(new_variants)
+                }, f, indent=2)
+            
+            return new_variants
+            
+        except Exception as e:
+            logger.error(f"Error during variant discovery: {e}")
+            return []
+    
     def run_monitoring_cycle(self):
         """Run a complete monitoring cycle: scrape, compare, notify"""
         logger.info("Starting price monitoring cycle...")
@@ -229,16 +273,23 @@ class PriceMonitor:
             # Save updated price history
             self.save_price_history()
             
-            # Send email notifications if there are price changes
-            if price_changes:
-                logger.info(f"Sending email notification for {len(price_changes)} price changes")
-                success = self.email_sender.send_price_alert(price_changes)
+            # Check for new variants (configurable frequency - default weekly)
+            new_variants = self.check_for_new_variants()
+            
+            # Send email notifications if there are price changes or new variants
+            if price_changes or new_variants:
+                if price_changes:
+                    logger.info(f"Sending email notification for {len(price_changes)} price changes")
+                if new_variants:
+                    logger.info(f"Found {len(new_variants)} new variants to report")
+                
+                success = self.email_sender.send_price_alert(price_changes, new_variants)
                 if success:
                     logger.info("Email notification sent successfully")
                 else:
                     logger.error("Failed to send email notification")
             else:
-                logger.info("No price changes detected - no email sent")
+                logger.info("No price changes or new variants detected - no email sent")
             
             # Cleanup old history
             self.cleanup_old_history()
@@ -289,13 +340,13 @@ def main():
     # Normal monitoring run
     try:
         monitor = PriceMonitor()
-        success = monitor.run_monitoring_cycle()
+        success, current_products = monitor.run_monitoring_cycle()
         
         if success:
             print("✅ Monitoring cycle completed successfully")
             
             # Print summary - only show currently tracked products
-            summary = monitor.get_price_summary(current_products=current_products if 'current_products' in locals() else None)
+            summary = monitor.get_price_summary(current_products=current_products)
             print(f"\n📊 Price Summary ({summary['total_products']} products tracked):")
             for product in summary['products']:
                 trend_emoji = {"up": "📈", "down": "📉", "stable": "➡️"}[product['trend']]

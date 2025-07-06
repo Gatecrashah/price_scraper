@@ -250,19 +250,20 @@ class BjornBorgScraper:
         return url.split('/')[-2] if url.endswith('/') else url.split('/')[-1]
     
     def scrape_main_page(self) -> List[Dict]:
-        """Scrape the main multipack socks page"""
+        """Scrape the main multipack socks page for Essential 10-pack products"""
         try:
-            logger.info(f"Scraping main page: {self.target_url}")
+            logger.info(f"Scraping main page for Essential 10-pack variants: {self.target_url}")
             response = self.session.get(self.target_url, timeout=30)
             response.raise_for_status()
             
             soup = BeautifulSoup(response.content, 'html.parser')
             products = []
             
-            # Common product link selectors for e-commerce sites - focus on actual sock products
+            # Enhanced selectors specifically for Essential 10-pack products
             product_link_selectors = [
-                'a[href*="/fi/"][href*="sock"]',  # Finnish sock products
-                'a[href*="/fi/"][href*="-mp"]',   # Finnish multipack products
+                'a[href*="/fi/"][href*="essential"][href*="10-pack"]',  # Direct essential 10-pack matches
+                'a[href*="/fi/"][href*="sock"][href*="-mp"]',          # Finnish sock multipack products
+                'a[href*="/fi/"][href*="-mp001"]',                     # Specific multipack pattern
             ]
             
             product_links = set()
@@ -271,31 +272,30 @@ class BjornBorgScraper:
                 links = soup.select(selector)
                 for link in links:
                     href = link.get('href')
-                    if href:
-                        # Very strict filtering for Finnish sock multipack products
-                        if (('/fi/' in href) and 
-                            (any(keyword in href.lower() for keyword in ['sock', '-mp'])) and
-                            # Exclude category pages, bags, and other non-sock products
-                            not any(exclude in href.lower() for exclude in [
-                                '/bags/', '/caps', '/beanie', '/accessories/', '/shoes/', 
-                                '/underwear/', '/clothing/', 'backpack', '/socks-accessories/',
-                                '/se/', '/no/', '/can_', '/au/', '/uk/', '/us/', '/de/', '/en/'
-                            ]) and
-                            # Must be an actual product page (has product ID pattern)
-                            (re.search(r'-\d+-mp\d+', href) or 'sock' in href.lower())):
-                            product_links.add(href)
+                    if href and self._is_essential_10pack_variant(href):
+                        product_links.add(href)
             
-            logger.info(f"Found {len(product_links)} potential product links")
+            # Also search in script tags for dynamic content
+            script_tags = soup.find_all('script')
+            for script in script_tags:
+                if script.string and 'essential' in script.string.lower() and '10-pack' in script.string.lower():
+                    # Try to find Essential 10-pack URLs in JSON/JavaScript
+                    url_matches = re.findall(r'["\'](/[^"\']*essential[^"\']*10-pack[^"\']*)["\']', script.string, re.IGNORECASE)
+                    for url_match in url_matches:
+                        if self._is_essential_10pack_variant(url_match):
+                            product_links.add(url_match)
             
-            # If no product links found, try to extract from page source
-            if not product_links:
-                # Look for product data in script tags (common with SPAs)
-                script_tags = soup.find_all('script')
-                for script in script_tags:
-                    if script.string and 'product' in script.string.lower():
-                        # Try to find product URLs in JSON
-                        url_matches = re.findall(r'["\'](/[^"\']*sock[^"\']*)["\']', script.string)
-                        product_links.update(url_matches)
+            logger.info(f"Found {len(product_links)} Essential 10-pack variant links")
+            
+            # Filter for unique Essential 10-pack products only
+            essential_links = []
+            for link in product_links:
+                # Ensure it's a full URL
+                if not link.startswith('http'):
+                    link = self.base_url + link if not link.startswith('/') else self.base_url + link
+                essential_links.append(link)
+            
+            logger.info(f"Processing {len(essential_links)} Essential 10-pack URLs")
             
             # Scrape each product page (limit to Finnish products only)
             finnish_links = [link for link in list(product_links)[:20] if '/fi/' in link]
@@ -312,6 +312,91 @@ class BjornBorgScraper:
         except Exception as e:
             logger.error(f"Error scraping main page: {e}")
             return []
+    
+    def _is_essential_10pack_variant(self, href: str) -> bool:
+        """Helper method to identify Essential 10-pack variant URLs"""
+        if not href:
+            return False
+        
+        href_lower = href.lower()
+        
+        # Must be Finnish site
+        if '/fi/' not in href_lower:
+            return False
+        
+        # Must contain essential and 10-pack or mp (multipack) patterns
+        has_essential = 'essential' in href_lower
+        has_pack_indicator = any(pattern in href_lower for pattern in [
+            '10-pack', 
+            '-mp001',  # Standard multipack suffix
+            'multipack',
+            'socks'
+        ])
+        
+        # Must be a product page, not category or other pages
+        is_product_page = not any(exclude in href_lower for exclude in [
+            '/category',
+            '/search',
+            '/filter',
+            '/sort',
+            '?',
+            '#'
+        ])
+        
+        # Additional check for Essential sock patterns
+        has_sock_patterns = any(pattern in href_lower for pattern in [
+            'essential-socks',
+            'essential-sock',
+            'essentials-sock'
+        ])
+        
+        return (has_essential and has_pack_indicator and is_product_page) or has_sock_patterns
+    
+    def discover_new_variants(self) -> List[Dict]:
+        """Discover new Essential 10-pack variants not in our tracking list"""
+        logger.info("🔍 Discovering new Essential 10-pack variants...")
+        
+        # Get current tracked Essential products
+        tracked_urls = {
+            "/fi/essential-socks-10-pack-10004564-mp001/",
+            "/fi/essential-socks-10-pack-10001228-mp001/", 
+            "/fi/essential-socks-10-pack-10004085-mp001/"
+        }
+        
+        # Scrape main page for all Essential variants
+        discovered_products = self.scrape_main_page()
+        
+        # Filter out already tracked variants
+        new_variants = []
+        for product in discovered_products:
+            product_url = product.get('url', '')
+            # Extract relative URL for comparison
+            if product_url.startswith(self.base_url):
+                relative_url = product_url[len(self.base_url):]
+            else:
+                relative_url = product_url
+                
+            if relative_url not in tracked_urls:
+                new_variants.append({
+                    'name': product.get('name', 'Unknown Essential Variant'),
+                    'url': product_url,
+                    'current_price': product.get('current_price'),
+                    'original_price': product.get('original_price'),
+                    'discount_percent': product.get('discount_percent'),
+                    'product_id': product.get('product_id'),
+                    'base_product_code': product.get('base_product_code'),
+                    'discovery_date': datetime.now().isoformat()
+                })
+        
+        if new_variants:
+            logger.info(f"✨ Found {len(new_variants)} new Essential 10-pack variants!")
+            for variant in new_variants:
+                logger.info(f"   - {variant['name']}: {variant.get('current_price', 'N/A')} EUR")
+                logger.info(f"     URL: {variant['url']}")
+        else:
+            logger.info("No new Essential variants discovered")
+        
+        return new_variants
     
     def scrape_known_products(self) -> List[Dict]:
         """Scrape known products from both Björn Borg and Fitnesstukku"""
