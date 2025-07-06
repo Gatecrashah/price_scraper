@@ -12,3 +12,6 @@ wheels/
 
 # AI Assistant context (keep local only)
 CLAUDE.md
+
+# Variant discovery tracking (managed by automation)
+last_variant_discovery.json
