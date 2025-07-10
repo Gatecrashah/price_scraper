@@ -38,6 +38,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-09T09:16:51.138145"
+      },
+      "2025-07-10": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-10T09:17:02.243175"
       }
     }
   },
@@ -80,6 +86,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-09T09:16:51.138202"
+      },
+      "2025-07-10": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-10T09:17:02.243230"
       }
     }
   },
@@ -122,6 +134,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-09T09:16:51.138245"
+      },
+      "2025-07-10": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-10T09:17:02.243282"
       }
     }
   },
@@ -158,6 +176,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-09T09:16:51.138285"
+      },
+      "2025-07-10": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-10T09:17:02.243332"
       }
     }
   },
@@ -194,6 +218,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-09T09:16:51.138330"
+      },
+      "2025-07-10": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-10T09:17:02.243380"
       }
     }
   },
@@ -230,6 +260,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-09T09:16:51.138372"
+      },
+      "2025-07-10": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-10T09:17:02.243427"
       }
     }
   },
