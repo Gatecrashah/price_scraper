@@ -74,6 +74,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-15T09:23:18.581670"
+      },
+      "2025-07-16": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-16T09:19:29.777848"
       }
     }
   },
@@ -152,6 +158,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-15T09:23:18.581757"
+      },
+      "2025-07-16": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-16T09:19:29.777904"
       }
     }
   },
@@ -230,6 +242,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-15T09:23:18.581832"
+      },
+      "2025-07-16": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-16T09:19:29.777947"
       }
     }
   },
@@ -302,6 +320,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-15T09:23:18.581906"
+      },
+      "2025-07-16": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-16T09:19:29.777991"
       }
     }
   },
@@ -374,6 +398,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-15T09:23:18.581974"
+      },
+      "2025-07-16": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-16T09:19:29.778035"
       }
     }
   },
@@ -446,6 +476,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-15T09:23:18.582041"
+      },
+      "2025-07-16": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-16T09:19:29.778077"
       }
     }
   },
