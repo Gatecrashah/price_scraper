@@ -555,33 +555,73 @@ class FitnesstukuScraper:
                     product_info['brand'] = brand_elem.get_text(strip=True)
                     break
             
-            # Extract current price
-            price_selectors = [
-                '.price-sales',
-                '.price .current',
-                '.current-price',
-                '[data-automation-id="current-price"]',
-                '.price-current'
-            ]
+            # Extract current price - try multiple methods for reliability
+            current_price = None
             
-            for selector in price_selectors:
-                price_elem = soup.select_one(selector)
-                if price_elem:
-                    price_text = price_elem.get_text(strip=True)
-                    
-                    # Extract numeric price from text like "22.90 €"
-                    price_match = re.search(r'(\d+[.,]\d+)', price_text.replace(',', '.'))
+            # Method 1: Try to extract from JavaScript data (most reliable)
+            script_tags = soup.find_all('script')
+            for script in script_tags:
+                if script.string and '"price"' in script.string:
+                    # Look for price in structured data like: "price":"89.90"
+                    price_match = re.search(r'"price"\s*:\s*"(\d+\.?\d*)"', script.string)
                     if price_match:
                         try:
                             current_price = float(price_match.group(1))
-                            product_info['current_price'] = current_price
+                            logger.debug(f"Extracted price from JavaScript: {current_price}")
                             break
                         except ValueError:
                             continue
             
-            # Extract original/list price if available
+            # Method 2: Try discount-specific selectors (for sales)
+            if not current_price:
+                discount_selectors = [
+                    '.price-adjusted',  # Fitnesstukku discounted price
+                    '.price-sales',     # Fitnesstukku regular price
+                ]
+                
+                for selector in discount_selectors:
+                    price_elem = soup.select_one(selector)
+                    if price_elem:
+                        price_text = price_elem.get_text(strip=True)
+                        # Extract numeric price from text like "89.90 €"
+                        price_match = re.search(r'(\d+[.,]\d+)', price_text.replace(',', '.'))
+                        if price_match:
+                            try:
+                                current_price = float(price_match.group(1))
+                                logger.debug(f"Extracted price from {selector}: {current_price}")
+                                break
+                            except ValueError:
+                                continue
+            
+            # Method 3: Fallback to original selectors 
+            if not current_price:
+                fallback_selectors = [
+                    '.price .current',
+                    '.current-price',
+                    '[data-automation-id="current-price"]',
+                    '.price-current'
+                ]
+                
+                for selector in fallback_selectors:
+                    price_elem = soup.select_one(selector)
+                    if price_elem:
+                        price_text = price_elem.get_text(strip=True)
+                        price_match = re.search(r'(\d+[.,]\d+)', price_text.replace(',', '.'))
+                        if price_match:
+                            try:
+                                current_price = float(price_match.group(1))
+                                logger.debug(f"Extracted price from fallback {selector}: {current_price}")
+                                break
+                            except ValueError:
+                                continue
+            
+            if current_price:
+                product_info['current_price'] = current_price
+            
+            # Extract original/list price if available (for discounted products)
             original_price_selectors = [
-                '.price-ref__stmt--list .price__value',
+                '.price-non-adjusted',          # Fitnesstukku original price for discounted items
+                '.price-ref__stmt--list .price__value',  # Alternative original price selector
                 '.price-original',
                 '.list-price',
                 '.price-was',
@@ -600,6 +640,7 @@ class FitnesstukuScraper:
                             # Only set if different from current price
                             if original_price != product_info.get('current_price'):
                                 product_info['original_price'] = original_price
+                                logger.debug(f"Extracted original price from {selector}: {original_price}")
                             break
                         except ValueError:
                             continue
