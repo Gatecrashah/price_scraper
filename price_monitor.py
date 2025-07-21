@@ -121,7 +121,7 @@ class PriceMonitor:
         
         return price_changes
     
-    def cleanup_old_history(self, days_to_keep=90):
+    def cleanup_old_history(self, days_to_keep=365):
         """Remove price history older than specified days"""
         cutoff_date = (datetime.now() - timedelta(days=days_to_keep)).strftime('%Y-%m-%d')
         
