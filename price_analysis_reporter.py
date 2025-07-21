@@ -269,7 +269,7 @@ class PriceAnalysisReporter:
         return html
     
     def send_analysis_report(self, report_data: Dict) -> bool:
-        """Send the analysis report via email"""
+        """Send the analysis report via email using EmailSender"""
         
         if "error" in report_data:
             # Send error notification
@@ -290,31 +290,14 @@ class PriceAnalysisReporter:
             subject = f"📊 {period} - {total_products} Products Analyzed"
             html_content = self.format_html_report(report_data)
         
-        # Send via Resend API
+        # Use EmailSender's method instead of duplicating logic
         try:
-            payload = {
-                "from": "Price Analysis <onboarding@resend.dev>",
-                "to": [self.email_sender.email_to],
-                "subject": subject,
-                "html": html_content
-            }
-            
-            headers = {
-                "Authorization": f"Bearer {self.email_sender.api_key}",
-                "Content-Type": "application/json"
-            }
-            
-            import requests
-            response = requests.post(self.email_sender.api_url, json=payload, headers=headers)
-            
-            if response.status_code == 200:
-                result = response.json()
-                email_id = result.get('id', 'unknown')
-                print(f"✅ Analysis report sent successfully (ID: {email_id})")
-                return True
+            success = self.email_sender.send_analysis_report(subject, html_content)
+            if success:
+                print(f"✅ Analysis report sent successfully")
             else:
-                print(f"❌ Failed to send report. Status: {response.status_code}, Response: {response.text}")
-                return False
+                print(f"❌ Failed to send analysis report")
+            return success
                 
         except Exception as e:
             print(f"❌ Failed to send analysis report: {e}")

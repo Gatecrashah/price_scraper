@@ -249,6 +249,22 @@ class BjornBorgScraper:
         # Fallback: use last part of URL
         return url.split('/')[-2] if url.endswith('/') else url.split('/')[-1]
     
+    def generate_product_key(self, product: Dict) -> str:
+        """Generate a unique key for a Björn Borg product with better context than PriceMonitor"""
+        # Use base product code if available (for socks - groups variants together)
+        if 'base_product_code' in product and product['base_product_code']:
+            return f"base_{product['base_product_code']}"
+        # Use product_id for individual items (for Centre Crew variants)
+        elif 'product_id' in product and product['product_id']:
+            return f"id_{product['product_id']}"
+        # Fallback to item number
+        elif 'item_number' in product and product['item_number']:
+            return f"item_{product['item_number']}"
+        # Last resort: use URL
+        else:
+            url = product.get('url', 'unknown')
+            return f"url_{url.split('/')[-2] if url.endswith('/') else url.split('/')[-1]}"
+    
     def scrape_main_page(self) -> List[Dict]:
         """Scrape the main multipack socks page for Essential 10-pack products"""
         try:
@@ -658,6 +674,18 @@ class FitnesstukuScraper:
         except Exception as e:
             logger.error(f"Error extracting Fitnesstukku product data: {e}")
             return None
+    
+    def generate_product_key(self, product: Dict) -> str:
+        """Generate a unique key for a Fitnesstukku product with better context than PriceMonitor"""
+        # Always use product_id for Fitnesstukku products (e.g., fitnesstukku_5854R)
+        if 'product_id' in product and product['product_id']:
+            return f"id_{product['product_id']}"
+        # Fallback to URL-based key
+        else:
+            url = product.get('purchase_url', product.get('url', 'unknown'))
+            url_parts = url.split('/')
+            slug = url_parts[-1].replace('.html', '') if len(url_parts) > 1 else 'unknown'
+            return f"url_fitnesstukku_{slug}"
     
     def get_fitnesstukku_urls(self) -> List[str]:
         """Get Fitnesstukku product URLs from configuration or fallback to hardcoded"""

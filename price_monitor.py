@@ -48,16 +48,24 @@ class PriceMonitor:
             logger.error(f"Error saving price history: {e}")
     
     def get_product_key(self, product: Dict) -> str:
-        """Generate a unique key for a product"""
-        # Use base product code if available, otherwise use product_id, then item number or URL
-        if 'base_product_code' in product:
-            return f"base_{product['base_product_code']}"
-        elif 'product_id' in product and product['product_id']:
-            return f"id_{product['product_id']}"
-        elif 'item_number' in product:
-            return f"item_{product['item_number']}"
+        """Generate a unique key for a product using scraper-specific logic"""
+        # Determine which scraper to use based on the product's site
+        site = product.get('site', 'unknown')
+        
+        if site == 'bjornborg':
+            return self.bjornborg_scraper.generate_product_key(product)
+        elif site == 'fitnesstukku':
+            return self.fitnesstukku_scraper.generate_product_key(product)
         else:
-            return f"url_{product.get('url', 'unknown')}"
+            # Fallback logic for unknown sites (maintain backward compatibility)
+            if 'base_product_code' in product and product['base_product_code']:
+                return f"base_{product['base_product_code']}"
+            elif 'product_id' in product and product['product_id']:
+                return f"id_{product['product_id']}"
+            elif 'item_number' in product and product['item_number']:
+                return f"item_{product['item_number']}"
+            else:
+                return f"url_{product.get('url', 'unknown')}"
     
     def scrape_all_sites(self) -> List[Dict]:
         """Orchestrate scraping from all sites"""
@@ -152,6 +160,7 @@ class PriceMonitor:
     def cleanup_old_history(self, days_to_keep=365):
         """Remove price history older than specified days"""
         cutoff_date = (datetime.now() - timedelta(days=days_to_keep)).strftime('%Y-%m-%d')
+        total_removed = 0
         
         for product_key in self.price_history:
             price_hist = self.price_history[product_key]['price_history']
@@ -159,11 +168,12 @@ class PriceMonitor:
             
             for date in dates_to_remove:
                 del price_hist[date]
+                total_removed += 1
         
-        if dates_to_remove:
-            logger.info(f"Cleaned up price history older than {days_to_keep} days")
+        if total_removed > 0:
+            logger.info(f"Cleaned up {total_removed} price history entries older than {days_to_keep} days")
     
-    def get_price_summary(self, current_products: List[Dict] = None) -> Dict:
+    def get_price_summary(self, current_products: Optional[List[Dict]] = None) -> Dict:
         """Get a summary of current prices and trends"""
         # If current_products is provided, only show those in summary
         if current_products:
@@ -342,7 +352,7 @@ def main():
             
             # Test scraping
             print("Testing scraper...")
-            products = monitor.scraper.scrape_all_products()
+            products = monitor.scrape_all_sites()
             if products:
                 print(f"✅ Scraping test passed - found {len(products)} products")
                 for product in products:
