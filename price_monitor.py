@@ -12,7 +12,7 @@ from typing import Dict, List, Optional
 import logging
 
 # Import our modules
-from bjornborg_scraper import BjornBorgScraper
+from bjornborg_scraper import BjornBorgScraper, FitnesstukuScraper
 from email_sender import EmailSender
 
 # Configure logging
@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 class PriceMonitor:
     def __init__(self, history_file='price_history.json'):
         self.history_file = history_file
-        self.scraper = BjornBorgScraper()
+        self.bjornborg_scraper = BjornBorgScraper()
+        self.fitnesstukku_scraper = FitnesstukuScraper()
         self.email_sender = EmailSender()
         self.price_history = self.load_price_history()
     
@@ -57,6 +58,33 @@ class PriceMonitor:
             return f"item_{product['item_number']}"
         else:
             return f"url_{product.get('url', 'unknown')}"
+    
+    def scrape_all_sites(self) -> List[Dict]:
+        """Orchestrate scraping from all sites"""
+        all_products = []
+        
+        logger.info("Orchestrating multi-site scraping...")
+        
+        # Scrape Björn Borg products
+        logger.info("Scraping Björn Borg products...")
+        try:
+            bb_products = self.bjornborg_scraper.scrape_all_products()
+            all_products.extend(bb_products)
+            logger.info(f"Found {len(bb_products)} Björn Borg products")
+        except Exception as e:
+            logger.error(f"Error scraping Björn Borg: {e}")
+        
+        # Scrape Fitnesstukku products  
+        logger.info("Scraping Fitnesstukku products...")
+        try:
+            ft_products = self.fitnesstukku_scraper.scrape_all_products()
+            all_products.extend(ft_products)
+            logger.info(f"Found {len(ft_products)} Fitnesstukku products")
+        except Exception as e:
+            logger.error(f"Error scraping Fitnesstukku: {e}")
+        
+        logger.info(f"Total products scraped: {len(all_products)}")
+        return all_products
     
     def detect_price_changes(self, current_products: List[Dict]) -> List[Dict]:
         """Detect price changes compared to last scrape"""
@@ -219,8 +247,8 @@ class PriceMonitor:
         logger.info("Running new variant discovery check...")
         
         try:
-            # Run variant discovery
-            new_variants = self.scraper.discover_new_variants()
+            # Run variant discovery (Björn Borg specific)
+            new_variants = self.bjornborg_scraper.discover_new_variants()
             
             # Update last discovery timestamp
             with open(last_discovery_file, 'w') as f:
@@ -240,9 +268,9 @@ class PriceMonitor:
         logger.info("Starting price monitoring cycle...")
         
         try:
-            # Scrape current prices
-            logger.info("Scraping current prices...")
-            current_products = self.scraper.scrape_all_products()
+            # Scrape current prices from all sites
+            logger.info("Scraping current prices from all sites...")
+            current_products = self.scrape_all_sites()
             
             if not current_products:
                 logger.warning("No products found during scraping")

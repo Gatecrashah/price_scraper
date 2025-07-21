@@ -398,25 +398,32 @@ class BjornBorgScraper:
         
         return new_variants
     
+    def get_bjornborg_urls(self) -> List[str]:
+        """Get Björn Borg product URLs from configuration or fallback to hardcoded"""
+        try:
+            import yaml
+            with open('products.yaml', 'r', encoding='utf-8') as file:
+                config = yaml.safe_load(file)
+                bjornborg_products = config.get('products', {}).get('bjornborg', [])
+                return [product['url'] for product in bjornborg_products]
+        except Exception as e:
+            logger.warning(f"Failed to load from products.yaml: {e}. Using hardcoded URLs")
+            # Fallback to hardcoded URLs
+            return [
+                "/fi/essential-socks-10-pack-10004564-mp001/",  # Main variant (Multi)
+                "/fi/essential-socks-10-pack-10001228-mp001/",  # Backup variant 1
+                "/fi/essential-socks-10-pack-10004085-mp001/",  # Backup variant 2
+                "/fi/centre-crew-9999-1431-gy013/", # color 1
+                "/fi/centre-crew-9999-1431-bl183/", # color 2
+                "/fi/centre-crew-9999-1431-90741/", # centre sweatshirt color 3
+            ]
+    
     def scrape_known_products(self) -> List[Dict]:
-        """Scrape known products from both Björn Borg and Fitnesstukku"""
+        """Scrape known Björn Borg products only"""
         all_products = []
         
-        # Björn Borg Essential products
-        bjornborg_urls = [
-            "/fi/essential-socks-10-pack-10004564-mp001/",  # Main variant (Multi)
-            "/fi/essential-socks-10-pack-10001228-mp001/",  # Backup variant 1
-            "/fi/essential-socks-10-pack-10004085-mp001/",  # Backup variant 2
-            "/fi/centre-crew-9999-1431-gy013/", # color 1
-            "/fi/centre-crew-9999-1431-bl183/", # color 2
-            "/fi/centre-crew-9999-1431-90741/", # centre sweatshirt color 3
-        ]
-        
-        # Fitnesstukku products (full URLs)
-        fitnesstukku_urls = [
-            "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
-            "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html"
-        ]
+        # Get Björn Borg URLs from config or hardcoded fallback
+        bjornborg_urls = self.get_bjornborg_urls()
         
         # Scrape Björn Borg products
         logger.info(f"Attempting to scrape {len(bjornborg_urls)} Björn Borg products")
@@ -442,34 +449,21 @@ class BjornBorgScraper:
         if failed_bb_urls:
             logger.warning(f"Failed Björn Borg URLs: {failed_bb_urls}")
         
-        # Scrape Fitnesstukku products
-        logger.info(f"Attempting to scrape {len(fitnesstukku_urls)} Fitnesstukku products")
-        fitnesstukku_scraper = FitnesstukuScraper()
-        fitnesstukku_products = fitnesstukku_scraper.scrape_fitnesstukku_products(fitnesstukku_urls)
-        all_products.extend(fitnesstukku_products)
-        
-        # Overall health summary
-        total_expected = len(bjornborg_urls) + len(fitnesstukku_urls)
-        total_successful = len(successful_bb_urls) + len(fitnesstukku_products)
-        logger.info(f"🎯 Overall scraping health: {total_successful}/{total_expected} products successful")
-        logger.info(f"   - Björn Borg: {len(successful_bb_urls)}/{len(bjornborg_urls)}")
-        logger.info(f"   - Fitnesstukku: {len(fitnesstukku_products)}/{len(fitnesstukku_urls)}")
-        
         return all_products
     
     def scrape_all_products(self) -> List[Dict]:
-        """Main scraping method - handles both Björn Borg and Fitnesstukku products"""
+        """Main scraping method - handles Björn Borg products only"""
         all_products = []
         
-        # Scrape products from both sites
-        logger.info("Scraping products from Björn Borg and Fitnesstukku")
+        # Scrape Björn Borg products only
+        logger.info("Scraping Björn Borg products")
         known_products = self.scrape_known_products()
         all_products.extend(known_products)
-        logger.info(f"Found {len(known_products)} products across all sites")
+        logger.info(f"Found {len(known_products)} Björn Borg products")
         
         # Scraper health check
         if not known_products:
-            logger.error("🚨 SCRAPER HEALTH ALERT: No products found from any site!")
+            logger.error("🚨 SCRAPER HEALTH ALERT: No Björn Borg products found!")
             logger.error("This could indicate:")
             logger.error("- Product URLs have changed")
             logger.error("- Website structures changed") 
@@ -664,6 +658,27 @@ class FitnesstukuScraper:
         except Exception as e:
             logger.error(f"Error extracting Fitnesstukku product data: {e}")
             return None
+    
+    def get_fitnesstukku_urls(self) -> List[str]:
+        """Get Fitnesstukku product URLs from configuration or fallback to hardcoded"""
+        try:
+            import yaml
+            with open('products.yaml', 'r', encoding='utf-8') as file:
+                config = yaml.safe_load(file)
+                fitnesstukku_products = config.get('products', {}).get('fitnesstukku', [])
+                return [product['url'] for product in fitnesstukku_products]
+        except Exception as e:
+            logger.warning(f"Failed to load from products.yaml: {e}. Using hardcoded URLs")
+            # Fallback to hardcoded URLs
+            return [
+                "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+                "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html"
+            ]
+    
+    def scrape_all_products(self) -> List[Dict]:
+        """Scrape all Fitnesstukku products using configuration"""
+        urls = self.get_fitnesstukku_urls()
+        return self.scrape_fitnesstukku_products(urls)
     
     def scrape_fitnesstukku_products(self, urls: List[str]) -> List[Dict]:
         """Scrape multiple Fitnesstukku product URLs"""
