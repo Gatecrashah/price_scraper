@@ -29,16 +29,32 @@ def manage_product_from_comment():
         # Extract the JSON data block embedded in the issue body.
         try:
             # Find the start and end of the JSON block
-            json_start = issue_body.find('```json') + len('```json\n')
+            json_start = issue_body.find('```json') + len('```json')
+            if json_start == len('```json') - 1:  # find returned -1
+                raise ValueError("Could not find '```json' marker in issue body")
+            
+            # Skip any whitespace/newlines after ```json
+            while json_start < len(issue_body) and issue_body[json_start] in ['\n', '\r', ' ', '\t']:
+                json_start += 1
+                
             json_end = issue_body.find('```', json_start)
-            json_str = issue_body[json_start:json_end]
+            if json_end == -1:
+                raise ValueError("Could not find closing '```' marker in issue body")
+                
+            json_str = issue_body[json_start:json_end].strip()
+            print(f"DEBUG: Extracted JSON string: {repr(json_str)}")
+            
             product_data = json.loads(json_str)
             
             product_url = product_data.get('url')
             product_name = product_data.get('name')
             product_site = product_data.get('site')
-        except (IndexError, json.JSONDecodeError, AttributeError) as e:
+            
+            print(f"DEBUG: Parsed product data - site: {product_site}, name: {product_name}, url: {product_url}")
+            
+        except (IndexError, json.JSONDecodeError, AttributeError, ValueError) as e:
             print(f"Error: Could not find or parse the JSON data block in the issue body. Details: {e}")
+            print(f"DEBUG: Issue body content: {repr(issue_body)}")
             sys.exit(1)
 
         # Load the current YAML config
@@ -56,6 +72,20 @@ def manage_product_from_comment():
             p for p in config['products'].get(product_site, []) if p.get('url') != product_url
         ]
 
+        # Extract product_id from URL if possible
+        product_id = None
+        if product_site == "bjornborg":
+            # Extract from URL like /fi/essential-socks-10-pack-10004564-mp001/
+            import re
+            id_match = re.search(r'-(\d+)-mp\d+', product_url)
+            if id_match:
+                product_id = id_match.group(1)
+        elif product_site == "fitnesstukku":
+            # Extract from URL like /whey-80-heraproteiini-4-kg/5854R.html
+            url_parts = product_url.rstrip('.html').split('/')
+            if len(url_parts) > 1:
+                product_id = f"fitnesstukku_{url_parts[-1]}"
+        
         # Add the new product with the specified status
         new_product = {
             "name": product_name,
@@ -63,6 +93,26 @@ def manage_product_from_comment():
             "site": product_site,
             "status": action
         }
+        
+        # Add product_id if we found one
+        if product_id:
+            new_product["product_id"] = product_id
+            
+        # Add category based on product name/site
+        if product_site == "bjornborg":
+            if "sock" in product_name.lower():
+                new_product["category"] = "socks"
+            elif "crew" in product_name.lower() or "sweater" in product_name.lower():
+                new_product["category"] = "apparel"
+            else:
+                new_product["category"] = "unknown"
+        elif product_site == "fitnesstukku":
+            if "whey" in product_name.lower() or "protein" in product_name.lower():
+                new_product["category"] = "protein"
+            elif "creatine" in product_name.lower():
+                new_product["category"] = "supplements"
+            else:
+                new_product["category"] = "nutrition"
         config['products'][product_site].append(new_product)
 
         # Save the updated config
