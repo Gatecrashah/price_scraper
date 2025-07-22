@@ -166,60 +166,13 @@ class EmailTemplates:
         
         return product_html
     
-    @classmethod
-    def format_new_variant(cls, variant: Dict) -> str:
-        """Format new variant discovery for email"""
-        product_name = variant.get('name', 'Unknown Variant')
-        current_price = variant.get('current_price', 0)
-        original_price = variant.get('original_price', 0)
-        purchase_url = variant.get('url', '#')
-        product_id = variant.get('product_id', 'N/A')
-        
-        variant_html = f"""
-        <div class="product" style="border: 2px solid #f39c12; background-color: #fef9e7;">
-            <h3 style="margin: 0; color: #d68910;">✨ {product_name}</h3>
-            <div style="font-size: 14px; color: #7f8c8d; margin: 5px 0;">
-                Product ID: {product_id}
-            </div>
-            <div class="price">
-                Current Price: <span style="color: #d68910; font-size: 24px;">{current_price:.2f} EUR</span>
-            </div>
-        """
-        
-        # Add original price if available
-        if original_price and original_price > current_price:
-            discount_pct = int(((original_price - current_price) / original_price) * 100)
-            variant_html += f"""
-            <div style="margin: 5px 0;">
-                Original Price: <span class="old-price">{original_price:.2f} EUR</span>
-            </div>
-            <div class="discount" style="color: #27ae60;">
-                🏷️ {discount_pct}% OFF!
-            </div>
-            """
-        
-        # Purchase button with URL
-        variant_html += f"""
-            <div style="margin-top: 15px;">
-                <a href="{purchase_url}" class="purchase-btn" style="background-color: #f39c12;">🛒 View New Variant</a>
-            </div>
-            <div style="margin-top: 10px; font-size: 12px; color: #7f8c8d;">
-                <strong>Direct Link:</strong> <a href="{purchase_url}" style="color: #f39c12;">{purchase_url}</a>
-            </div>
-        </div>
-        """
-        
-        return variant_html
     
     @classmethod
-    def create_price_alert_email(cls, price_changes: List[Dict], new_variants: List[Dict] = None) -> str:
+    def create_price_alert_email(cls, price_changes: List[Dict]) -> str:
         """Create complete price alert email HTML"""
         
-        if new_variants is None:
-            new_variants = []
-            
-        if not price_changes and not new_variants:
-            return "No price changes or new variants detected."
+        if not price_changes:
+            return "No price changes detected."
         
         # Group price changes by site
         bjornborg_changes = [p for p in price_changes if p.get('site') == 'bjornborg']
@@ -284,21 +237,6 @@ class EmailTemplates:
             
             html_content += "</div>"
         
-        # Add new variants section if any
-        if new_variants:
-            html_content += f"""
-            <div class="site-section">
-                <div class="site-header">✨ New Essential 10-pack Variants Discovered ({len(new_variants)} products)</div>
-                <p style="margin-bottom: 15px; color: #2c3e50;">
-                    <strong>Great news!</strong> We've found new Essential 10-pack variants that aren't currently being tracked. 
-                    Consider adding them to your monitoring list!
-                </p>
-            """
-            
-            for variant in new_variants:
-                html_content += cls.format_new_variant(variant)
-            
-            html_content += "</div>"
         
         html_content += """
             <div class="footer">

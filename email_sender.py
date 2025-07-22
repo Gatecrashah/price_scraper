@@ -24,43 +24,32 @@ class EmailSender:
         if not self.email_to:
             raise ValueError("EMAIL_TO environment variable is required")
     
-    def format_price_change_email(self, price_changes: List[Dict], new_variants: List[Dict] = None) -> str:
-        """Format price changes and new variants into HTML email content"""
-        return EmailTemplates.create_price_alert_email(price_changes, new_variants)
+    def format_price_change_email(self, price_changes: List[Dict]) -> str:
+        """Format price changes into HTML email content"""
+        return EmailTemplates.create_price_alert_email(price_changes)
     
     
-    def send_price_alert(self, price_changes: List[Dict], new_variants: List[Dict] = None) -> bool:
-        """Send email notification about price changes and new variants using Resend API"""
+    def send_price_alert(self, price_changes: List[Dict]) -> bool:
+        """Send email notification about price changes using Resend API"""
         
-        if new_variants is None:
-            new_variants = []
-            
-        if not price_changes and not new_variants:
-            logger.info("No price changes or new variants to report")
+        if not price_changes:
+            logger.info("No price changes to report")
             return True
         
         try:
-            # Determine email subject based on changes and variants
-            subject_parts = []
+            # Determine email subject based on price changes
+            drops = sum(1 for change in price_changes if change.get('current_price', 0) < change.get('previous_price', 0))
+            increases = len(price_changes) - drops
             
-            if price_changes:
-                drops = sum(1 for change in price_changes if change.get('current_price', 0) < change.get('previous_price', 0))
-                increases = len(price_changes) - drops
-                
-                if drops > 0 and increases == 0:
-                    subject_parts.append(f"📉 {drops} price drop(s)")
-                elif increases > 0 and drops == 0:
-                    subject_parts.append(f"📈 {increases} price increase(s)")
-                else:
-                    subject_parts.append(f"{len(price_changes)} price change(s)")
-            
-            if new_variants:
-                subject_parts.append(f"✨ {len(new_variants)} new variant(s)")
-            
-            subject = f"🧦 {' + '.join(subject_parts)}"
+            if drops > 0 and increases == 0:
+                subject = f"🧦 📉 {drops} price drop(s)"
+            elif increases > 0 and drops == 0:
+                subject = f"🧦 📈 {increases} price increase(s)"
+            else:
+                subject = f"🧦 {len(price_changes)} price change(s)"
             
             # Create HTML content
-            html_content = self.format_price_change_email(price_changes, new_variants)
+            html_content = self.format_price_change_email(price_changes)
             
             # Prepare the email payload for Resend API
             payload = {
