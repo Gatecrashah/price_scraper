@@ -369,15 +369,54 @@ class BjornBorgScraper:
         return (has_essential and has_pack_indicator and is_product_page) or has_sock_patterns
     
     def discover_new_variants(self) -> List[Dict]:
-        """Discover new Essential 10-pack variants not in our tracking list"""
+        """Discover new Essential 10-pack variants not in our tracking list
+        
+        Raises:
+            FileNotFoundError: If products.yaml cannot be found
+            yaml.YAMLError: If products.yaml cannot be parsed
+            KeyError: If required configuration structure is missing
+        """
         logger.info("🔍 Discovering new Essential 10-pack variants...")
         
-        # Get current tracked Essential products
-        tracked_urls = {
-            "/fi/essential-socks-10-pack-10004564-mp001/",
-            "/fi/essential-socks-10-pack-10001228-mp001/", 
-            "/fi/essential-socks-10-pack-10004085-mp001/"
-        }
+        # Get current tracked products from products.yaml
+        try:
+            import yaml
+            with open('products.yaml', 'r', encoding='utf-8') as file:
+                config = yaml.safe_load(file)
+                
+            if not config:
+                raise ValueError("products.yaml is empty or invalid")
+                
+            products = config.get('products', {})
+            if not products:
+                raise KeyError("'products' section missing from products.yaml")
+                
+            bjornborg_products = products.get('bjornborg', [])
+            if not bjornborg_products:
+                raise KeyError("No Björn Borg products found in products.yaml")
+                
+            # Extract tracked URLs from config
+            tracked_urls = set()
+            for product in bjornborg_products:
+                url = product.get('url', '')
+                # Ensure consistent URL format (relative path)
+                if url.startswith('https://www.bjornborg.com'):
+                    relative_url = url[len('https://www.bjornborg.com'):]
+                elif url.startswith(self.base_url):
+                    relative_url = url[len(self.base_url):]
+                else:
+                    relative_url = url
+                tracked_urls.add(relative_url)
+                
+        except FileNotFoundError:
+            raise FileNotFoundError(
+                "products.yaml configuration file not found. "
+                "This file is required for variant discovery to know which products are already tracked."
+            )
+        except yaml.YAMLError as e:
+            raise yaml.YAMLError(f"Failed to parse products.yaml: {e}")
+        except Exception as e:
+            raise RuntimeError(f"Failed to load tracked products from products.yaml: {e}")
         
         # Scrape main page for all Essential variants
         discovered_products = self.scrape_main_page()
@@ -401,7 +440,8 @@ class BjornBorgScraper:
                     'discount_percent': product.get('discount_percent'),
                     'product_id': product.get('product_id'),
                     'base_product_code': product.get('base_product_code'),
-                    'discovery_date': datetime.now().isoformat()
+                    'discovery_date': datetime.now().isoformat(),
+                    'site': 'bjornborg'
                 })
         
         if new_variants:
@@ -415,24 +455,49 @@ class BjornBorgScraper:
         return new_variants
     
     def get_bjornborg_urls(self) -> List[str]:
-        """Get Björn Borg product URLs from configuration or fallback to hardcoded"""
+        """Get Björn Borg product URLs from products.yaml configuration.
+        
+        Raises:
+            FileNotFoundError: If products.yaml cannot be found
+            yaml.YAMLError: If products.yaml cannot be parsed
+            KeyError: If required configuration structure is missing
+        """
         try:
             import yaml
             with open('products.yaml', 'r', encoding='utf-8') as file:
                 config = yaml.safe_load(file)
-                bjornborg_products = config.get('products', {}).get('bjornborg', [])
-                return [product['url'] for product in bjornborg_products]
+                
+            if not config:
+                raise ValueError("products.yaml is empty or invalid")
+                
+            products = config.get('products', {})
+            if not products:
+                raise KeyError("'products' section missing from products.yaml")
+                
+            bjornborg_products = products.get('bjornborg', [])
+            if not bjornborg_products:
+                raise KeyError("No Björn Borg products found in products.yaml")
+                
+            # Only return URLs for products with status 'track'
+            tracked_urls = []
+            for product in bjornborg_products:
+                if product.get('status') == 'track':
+                    tracked_urls.append(product['url'])
+                    
+            if not tracked_urls:
+                raise ValueError("No Björn Borg products are marked for tracking in products.yaml")
+                
+            return tracked_urls
+            
+        except FileNotFoundError:
+            raise FileNotFoundError(
+                "products.yaml configuration file not found. "
+                "This file is required for the scraper to know which products to monitor."
+            )
+        except yaml.YAMLError as e:
+            raise yaml.YAMLError(f"Failed to parse products.yaml: {e}")
         except Exception as e:
-            logger.warning(f"Failed to load from products.yaml: {e}. Using hardcoded URLs")
-            # Fallback to hardcoded URLs
-            return [
-                "/fi/essential-socks-10-pack-10004564-mp001/",  # Main variant (Multi)
-                "/fi/essential-socks-10-pack-10001228-mp001/",  # Backup variant 1
-                "/fi/essential-socks-10-pack-10004085-mp001/",  # Backup variant 2
-                "/fi/centre-crew-9999-1431-gy013/", # color 1
-                "/fi/centre-crew-9999-1431-bl183/", # color 2
-                "/fi/centre-crew-9999-1431-90741/", # centre sweatshirt color 3
-            ]
+            raise RuntimeError(f"Failed to load Björn Borg URLs from products.yaml: {e}")
     
     def scrape_known_products(self) -> List[Dict]:
         """Scrape known Björn Borg products only"""
@@ -688,20 +753,49 @@ class FitnesstukuScraper:
             return f"url_fitnesstukku_{slug}"
     
     def get_fitnesstukku_urls(self) -> List[str]:
-        """Get Fitnesstukku product URLs from configuration or fallback to hardcoded"""
+        """Get Fitnesstukku product URLs from products.yaml configuration.
+        
+        Raises:
+            FileNotFoundError: If products.yaml cannot be found
+            yaml.YAMLError: If products.yaml cannot be parsed
+            KeyError: If required configuration structure is missing
+        """
         try:
             import yaml
             with open('products.yaml', 'r', encoding='utf-8') as file:
                 config = yaml.safe_load(file)
-                fitnesstukku_products = config.get('products', {}).get('fitnesstukku', [])
-                return [product['url'] for product in fitnesstukku_products]
+                
+            if not config:
+                raise ValueError("products.yaml is empty or invalid")
+                
+            products = config.get('products', {})
+            if not products:
+                raise KeyError("'products' section missing from products.yaml")
+                
+            fitnesstukku_products = products.get('fitnesstukku', [])
+            if not fitnesstukku_products:
+                raise KeyError("No Fitnesstukku products found in products.yaml")
+                
+            # Only return URLs for products with status 'track'
+            tracked_urls = []
+            for product in fitnesstukku_products:
+                if product.get('status') == 'track':
+                    tracked_urls.append(product['url'])
+                    
+            if not tracked_urls:
+                raise ValueError("No Fitnesstukku products are marked for tracking in products.yaml")
+                
+            return tracked_urls
+            
+        except FileNotFoundError:
+            raise FileNotFoundError(
+                "products.yaml configuration file not found. "
+                "This file is required for the scraper to know which products to monitor."
+            )
+        except yaml.YAMLError as e:
+            raise yaml.YAMLError(f"Failed to parse products.yaml: {e}")
         except Exception as e:
-            logger.warning(f"Failed to load from products.yaml: {e}. Using hardcoded URLs")
-            # Fallback to hardcoded URLs
-            return [
-                "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
-                "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html"
-            ]
+            raise RuntimeError(f"Failed to load Fitnesstukku URLs from products.yaml: {e}")
     
     def scrape_all_products(self) -> List[Dict]:
         """Scrape all Fitnesstukku products using configuration"""
