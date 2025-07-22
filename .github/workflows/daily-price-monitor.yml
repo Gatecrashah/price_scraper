@@ -12,6 +12,7 @@ jobs:
     
     permissions:
       contents: write  # Allow writing to repository
+      issues: write    # Allow creating GitHub issues
     
     steps:
     - name: Checkout repository
@@ -33,6 +34,8 @@ jobs:
       env:
         RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
         echo "🧦 Starting Björn Borg sock price monitoring..."
         python price_monitor.py

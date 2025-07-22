@@ -5,36 +5,42 @@ products:
       product_id: "10004564"
       site: "bjornborg"
       category: "socks"
+      status: "track"
       
     - name: "Essential Socks 10-pack (Variant 1)"
       url: "/fi/essential-socks-10-pack-10001228-mp001/"
       product_id: "10001228"
       site: "bjornborg"
       category: "socks"
+      status: "track"
       
     - name: "Essential Socks 10-pack (Variant 2)"
       url: "/fi/essential-socks-10-pack-10004085-mp001/"
       product_id: "10004085"
       site: "bjornborg"
       category: "socks"
+      status: "track"
       
     - name: "Centre Crew Sweatshirt (Grey)"
       url: "/fi/centre-crew-9999-1431-gy013/"
       product_id: "centre-crew-9999-1431-gy013"
       site: "bjornborg"
       category: "apparel"
+      status: "track"
       
     - name: "Centre Crew Sweatshirt (Blue)"
       url: "/fi/centre-crew-9999-1431-bl183/"
       product_id: "centre-crew-9999-1431-bl183"
       site: "bjornborg"
       category: "apparel"
+      status: "track"
       
     - name: "Centre Crew Sweatshirt (Black)"
       url: "/fi/centre-crew-9999-1431-90741/"
       product_id: "centre-crew-9999-1431-90741"
       site: "bjornborg"
       category: "apparel"
+      status: "track"
 
   fitnesstukku:
     - name: "Whey-80 Protein 4kg"
@@ -42,12 +48,14 @@ products:
       product_id: "5854R"
       site: "fitnesstukku"
       category: "supplements"
+      status: "track"
       
     - name: "Creatine Monohydrate 500g"
       url: "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html"
       product_id: "609"
       site: "fitnesstukku"
       category: "supplements"
+      status: "track"
 
 sites:
   bjornborg:

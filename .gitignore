@@ -14,6 +14,7 @@ wheels/
 CLAUDE.md
 
 plan.md
+improvements.md
 
 # Variant discovery tracking (managed by automation)
 last_variant_discovery.json

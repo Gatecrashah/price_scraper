@@ -1,0 +1,54 @@
+name: Process Product Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  process-comment:
+    # Security: Only run if the issue has the 'new-product' label AND the commenter is the repository owner.
+    if: contains(github.event.issue.labels.*.name, 'new-product') && github.event.comment.author_association == 'OWNER'
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write # Permission to commit changes
+      issues: write   # Permission to close the issue
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: pip install pyyaml
+
+    - name: Run Product Manager Script
+      env:
+        ISSUE_BODY: ${{ github.event.issue.body }}
+        COMMENT_BODY: ${{ github.event.comment.body }}
+      run: python product_manager.py
+
+    - name: Commit updated product config
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action Bot"
+        git add products.yaml
+        # Only commit if there are actual changes
+        if git diff --staged --quiet; then
+          echo "No changes to commit."
+        else
+          git commit -m "🤖 Auto-update products via Issue #${{ github.event.issue.number }}"
+          git push
+        fi
+        
+    - name: Close Issue with a comment
+      uses: peter-evans/close-issue@v3
+      with:
+        issue-number: ${{ github.event.issue.number }}
+        comment: "Action complete. This product has been processed based on the command `${{ github.event.comment.body }}`. This issue is now closed."

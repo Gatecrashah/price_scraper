@@ -10,6 +10,8 @@ import sys
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 import logging
+import yaml
+import requests
 
 # Import our modules
 from bjornborg_scraper import BjornBorgScraper, FitnesstukuScraper
@@ -20,12 +22,16 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 logger = logging.getLogger(__name__)
 
 class PriceMonitor:
-    def __init__(self, history_file='price_history.json'):
+    def __init__(self, history_file='price_history.json', config_file='products.yaml'):
         self.history_file = history_file
+        self.config_file = config_file
         self.bjornborg_scraper = BjornBorgScraper()
         self.fitnesstukku_scraper = FitnesstukuScraper()
         self.email_sender = EmailSender()
         self.price_history = self.load_price_history()
+        self.product_config = self.load_product_config()
+        self.github_token = os.getenv('GITHUB_TOKEN')
+        self.github_repo = os.getenv('GITHUB_REPOSITORY')
     
     def load_price_history(self) -> Dict:
         """Load price history from JSON file"""
@@ -37,6 +43,17 @@ class PriceMonitor:
                 logger.error(f"Error loading price history: {e}")
                 return {}
         return {}
+    
+    def load_product_config(self) -> Dict:
+        """Load product config from YAML file."""
+        if not os.path.exists(self.config_file):
+            return {'products': {}}
+        try:
+            with open(self.config_file, 'r', encoding='utf-8') as f:
+                return yaml.safe_load(f)
+        except Exception as e:
+            logger.error(f"Error loading {self.config_file}: {e}")
+            return {'products': {}}
     
     def save_price_history(self):
         """Save price history to JSON file"""
@@ -229,8 +246,79 @@ class PriceMonitor:
         
         return summary
     
-    def check_for_new_variants(self, discovery_frequency_days=7) -> List[Dict]:
-        """Check for new Essential 10-pack variants with configurable frequency"""
+    def _get_open_discovery_issues(self) -> List[str]:
+        """Gets the bodies of all open issues with the 'new-product' label to prevent duplicates."""
+        if not self.github_token or not self.github_repo:
+            logger.warning("GITHUB_TOKEN or GITHUB_REPOSITORY not set. Cannot check for open issues.")
+            return []
+
+        url = f"https://api.github.com/repos/{self.github_repo}/issues?state=open&labels=new-product"
+        headers = {'Authorization': f'token {self.github_token}', 'Accept': 'application/vnd.github.v3+json'}
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            return [issue['body'] for issue in response.json()]
+        except Exception as e:
+            logger.error(f"Failed to get open GitHub issues: {e}")
+            return []
+
+    def _create_github_issue(self, product: Dict):
+        """Creates a new GitHub issue for a discovered product."""
+        if not self.github_token or not self.github_repo:
+            logger.warning("GITHUB_TOKEN or GITHUB_REPOSITORY not set. Cannot create issue.")
+            return
+
+        name = product.get('name', 'Unknown Product')
+        title = f"New Product Discovery: {name}"
+        
+        # Embed product data in a JSON block for the action to parse
+        product_data_for_issue = {
+            "site": product.get("site", "bjornborg"),
+            "url": product.get("url", "").replace("https://www.bjornborg.com", ""),
+            "name": name,
+            "current_price": product.get("current_price")
+        }
+
+        body = f"""
+A new product variant has been discovered. Please reply to this issue's notification email with a single word command.
+
+- **To track this item:** Reply with `track`
+- **To ignore this item:** Reply with `ignore`
+
+### Product Details
+- **Name**: {name}
+- **Price**: {product.get('current_price')} EUR
+- **URL**: {product.get('url')}
+
+---
+**For Automation (do not edit):**
+```json
+{json.dumps(product_data_for_issue, indent=2)}
+```
+"""
+        
+        issue_payload = {"title": title, "body": body, "labels": ["new-product"]}
+        url = f"https://api.github.com/repos/{self.github_repo}/issues"
+        headers = {'Authorization': f'token {self.github_token}', 'Accept': 'application/vnd.github.v3+json'}
+        try:
+            response = requests.post(url, json=issue_payload, headers=headers)
+            response.raise_for_status()
+            logger.info(f"Successfully created issue for {name}")
+        except Exception as e:
+            logger.error(f"Failed to create GitHub issue for {name}: {e}")
+    
+    def get_tracked_products(self) -> List[Dict]:
+        """Get list of products that should be tracked based on YAML config."""
+        tracked_products = []
+        for site_products in self.product_config.get('products', {}).values():
+            for prod in site_products:
+                if prod.get('status') == 'track':
+                    tracked_products.append(prod)
+        return tracked_products
+    
+    def check_for_new_variants(self, discovery_frequency_days=7):
+        """Discover new variants and create GitHub issues for them."""
+        logger.info("🔍 Discovering new product variants...")
         
         # Check when we last ran variant discovery
         last_discovery_file = 'last_variant_discovery.json'
@@ -252,26 +340,49 @@ class PriceMonitor:
                 logger.warning(f"Error reading last discovery file: {e}")
         
         if not should_run_discovery:
-            return []
+            return
         
-        logger.info("Running new variant discovery check...")
+        # 1. Get all known product URLs from the config
+        all_known_urls = set()
+        for site_products in self.product_config.get('products', {}).values():
+            for prod in site_products:
+                all_known_urls.add(prod['url'])
+
+        # 2. Get currently open discovery issues to avoid duplicates
+        open_issue_bodies = self._get_open_discovery_issues()
+
+        # 3. Scrape for products (Björn Borg specific for now)
+        discovered_products = self.bjornborg_scraper.discover_new_variants()
+
+        issues_created = 0
+        for product in discovered_products:
+            relative_url = product.get('url', '').replace(self.bjornborg_scraper.base_url, '')
+            product['relative_url'] = relative_url
+
+            # 4. Check if this product is truly new
+            if relative_url in all_known_urls:
+                continue # Already in products.yaml
+
+            if any(relative_url in body for body in open_issue_bodies):
+                logger.info(f"Skipping issue creation for {relative_url}, an open issue already exists.")
+                continue # Already has an open issue
+
+            # 5. If truly new, create an issue
+            logger.info(f"✨ Found new potential variant: {product.get('name')}")
+            self._create_github_issue(product)
+            issues_created += 1
         
-        try:
-            # Run variant discovery (Björn Borg specific)
-            new_variants = self.bjornborg_scraper.discover_new_variants()
-            
-            # Update last discovery timestamp
-            with open(last_discovery_file, 'w') as f:
-                json.dump({
-                    'last_discovery_date': today.isoformat(),
-                    'variants_found': len(new_variants)
-                }, f, indent=2)
-            
-            return new_variants
-            
-        except Exception as e:
-            logger.error(f"Error during variant discovery: {e}")
-            return []
+        # Update last discovery timestamp
+        with open(last_discovery_file, 'w') as f:
+            json.dump({
+                'last_discovery_date': today.isoformat(),
+                'issues_created': issues_created
+            }, f, indent=2)
+        
+        if issues_created > 0:
+            logger.info(f"Created {issues_created} GitHub issues for new variants")
+        else:
+            logger.info("No new variants discovered")
     
     def run_monitoring_cycle(self):
         """Run a complete monitoring cycle: scrape, compare, notify"""
@@ -311,23 +422,19 @@ class PriceMonitor:
             # Save updated price history
             self.save_price_history()
             
-            # Check for new variants (configurable frequency - default weekly)
-            new_variants = self.check_for_new_variants()
+            # Check for new variants and create GitHub issues (configurable frequency - default weekly)
+            self.check_for_new_variants()
             
-            # Send email notifications if there are price changes or new variants
-            if price_changes or new_variants:
-                if price_changes:
-                    logger.info(f"Sending email notification for {len(price_changes)} price changes")
-                if new_variants:
-                    logger.info(f"Found {len(new_variants)} new variants to report")
-                
-                success = self.email_sender.send_price_alert(price_changes, new_variants)
+            # Send email notifications only for price changes
+            if price_changes:
+                logger.info(f"Sending email notification for {len(price_changes)} price changes")
+                success = self.email_sender.send_price_alert(price_changes)
                 if success:
                     logger.info("Email notification sent successfully")
                 else:
                     logger.error("Failed to send email notification")
             else:
-                logger.info("No price changes or new variants detected - no email sent")
+                logger.info("No price changes detected - no email sent")
             
             # Cleanup old history
             self.cleanup_old_history()
