@@ -116,6 +116,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-22T09:19:25.127995"
+      },
+      "2025-07-23": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-23T09:20:30.996292"
       }
     }
   },
@@ -236,6 +242,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-22T09:19:25.128058"
+      },
+      "2025-07-23": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-23T09:20:30.996355"
       }
     }
   },
@@ -356,6 +368,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-22T09:19:25.128105"
+      },
+      "2025-07-23": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-07-23T09:20:30.996408"
       }
     }
   },
@@ -470,6 +488,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-22T09:19:25.128149"
+      },
+      "2025-07-23": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-23T09:20:30.996458"
       }
     }
   },
@@ -584,6 +608,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-22T09:19:25.128192"
+      },
+      "2025-07-23": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-23T09:20:30.996505"
       }
     }
   },
@@ -698,6 +728,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-22T09:19:25.128234"
+      },
+      "2025-07-23": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-23T09:20:30.996548"
       }
     }
   },
@@ -728,6 +764,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-07-22T09:19:25.128276"
+      },
+      "2025-07-23": {
+        "current_price": 86.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-23T09:20:30.996721"
       }
     }
   },
@@ -758,6 +800,48 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-07-22T09:19:25.128323"
+      },
+      "2025-07-23": {
+        "current_price": 22.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-23T09:20:30.996763"
+      }
+    }
+  },
+  "base_10005071": {
+    "name": "Essential Socks 10-pack",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
+    "price_history": {
+      "2025-07-23": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-23T09:20:30.996591"
+      }
+    }
+  },
+  "base_10003420": {
+    "name": "Essential Socks 10-pack",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10003420-mp001/",
+    "price_history": {
+      "2025-07-23": {
+        "current_price": 26.97,
+        "original_price": 44.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-23T09:20:30.996636"
+      }
+    }
+  },
+  "base_10002940": {
+    "name": "Essential Socks 10-pack",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-ankle-sock-10-pack-10002940-mp001/",
+    "price_history": {
+      "2025-07-23": {
+        "current_price": 26.97,
+        "original_price": 44.95,
+        "discount_percent": 40,
+        "scraped_at": "2025-07-23T09:20:30.996677"
       }
     }
   }
