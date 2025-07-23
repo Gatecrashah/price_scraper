@@ -25,31 +25,82 @@ class FitnesstukuScraper(BaseScraper):
         super().__init__("https://www.fitnesstukku.fi")
     
     def extract_structured_data(self, soup, url: str) -> Optional[Dict]:
-        """Extract product information from dataLayer and structured data."""
+        """Extract product information from window.dataTrackingView structured data."""
         try:
-            # First try to extract from Google Analytics dataLayer
-            datalayer_data = self.extract_dataLayer(soup)
+            # Extract from window.dataTrackingView - the primary structured data source
+            tracking_data = self._extract_data_tracking_view(soup)
             
+            if tracking_data:
+                product_info = {
+                    'url': url,
+                    'purchase_url': url,
+                    'site': 'fitnesstukku'
+                }
+                
+                # Extract basic information
+                product_info['name'] = tracking_data.get('name', '').strip()
+                product_info['brand'] = tracking_data.get('brand', '').strip()
+                product_info['category'] = tracking_data.get('category', '').strip()
+                
+                # Extract pricing
+                price = tracking_data.get('price')
+                if price:
+                    try:
+                        product_info['current_price'] = float(price)
+                    except (ValueError, TypeError):
+                        pass
+                
+                # Extract availability and stock status
+                availability = tracking_data.get('availability', '').upper()
+                product_info['in_stock'] = 'IN STOCK' in availability
+                
+                # Extract product ID (the true identifier)
+                product_id = tracking_data.get('id')
+                if product_id:
+                    product_info['product_id'] = f"fitnesstukku_{product_id}"
+                    product_info['sku'] = product_id  # Store original SKU too
+                
+                # Extract variant information (flavor, size, etc.)
+                variant = tracking_data.get('variant')
+                if variant:
+                    product_info['variant'] = variant
+                
+                # Check if it's on sale
+                is_on_sale = tracking_data.get('isOnSale', 'false').lower() == 'true'
+                if is_on_sale:
+                    product_info['on_sale'] = True
+                
+                # Extract bundle status
+                is_bundle = tracking_data.get('isPartOfBundle', 'false').lower() == 'true'
+                if is_bundle:
+                    product_info['is_bundle'] = True
+                
+                # Set currency
+                product_info['currency'] = 'EUR'
+                
+                # Only return if we have essential information
+                if product_info.get('name') and product_info.get('current_price'):
+                    logger.debug(f"Successfully extracted dataTrackingView data for: {product_info['name']}")
+                    return product_info
+            
+            # Fallback: Try generic dataLayer extraction
+            datalayer_data = self.extract_dataLayer(soup)
             if datalayer_data and datalayer_data.get('event') == 'productDetail':
                 ecommerce = datalayer_data.get('ecommerce', {})
                 detail = ecommerce.get('detail', {})
                 products = detail.get('products', [])
                 
                 if products:
-                    product_data = products[0]  # Take first product
-                    
+                    product_data = products[0]
                     product_info = {
                         'url': url,
                         'purchase_url': url,
-                        'site': 'fitnesstukku'
+                        'site': 'fitnesstukku',
+                        'name': product_data.get('name', '').strip(),
+                        'brand': product_data.get('brand', '').strip(),
+                        'category': product_data.get('category', '').strip(),
                     }
                     
-                    # Extract basic information
-                    product_info['name'] = product_data.get('name', '').strip()
-                    product_info['brand'] = product_data.get('brand', '').strip()
-                    product_info['category'] = product_data.get('category', '').strip()
-                    
-                    # Extract pricing
                     price = product_data.get('price')
                     if price:
                         try:
@@ -57,54 +108,96 @@ class FitnesstukuScraper(BaseScraper):
                         except (ValueError, TypeError):
                             pass
                     
-                    # Extract availability
-                    availability = product_data.get('availability', '').upper()
-                    product_info['in_stock'] = 'IN STOCK' in availability
-                    
-                    # Extract product ID
-                    product_id = product_data.get('id')
-                    if product_id:
-                        product_info['product_id'] = f"fitnesstukku_{product_id}"
-                    
-                    # Extract variant information
-                    variant = product_data.get('variant')
-                    if variant:
-                        product_info['variant'] = variant
-                    
-                    # Check if it's on sale
-                    is_on_sale = product_data.get('isOnSale', 'false').lower() == 'true'
-                    if is_on_sale:
-                        product_info['on_sale'] = True
-                    
-                    # Extract currency
-                    currency = ecommerce.get('currencyCode', 'EUR')
-                    product_info['currency'] = currency
-                    
-                    # Only return if we have essential information
                     if product_info.get('name') and product_info.get('current_price'):
-                        logger.debug(f"Successfully extracted dataLayer data for: {product_info['name']}")
+                        logger.debug(f"Successfully extracted generic dataLayer data for: {product_info['name']}")
                         return product_info
-            
-            # Try alternative structured data from script tags
-            script_data = self._extract_product_metadata(soup)
-            if script_data:
-                product_info = {
-                    'url': url,
-                    'purchase_url': url,
-                    'site': 'fitnesstukku'
-                }
-                
-                product_info.update(script_data)
-                
-                if product_info.get('name') and product_info.get('current_price'):
-                    logger.debug(f"Successfully extracted script metadata for: {product_info['name']}")
-                    return product_info
             
             logger.debug("No structured data found or missing essential fields")
             return None
             
         except Exception as e:
             logger.debug(f"Error extracting structured data: {e}")
+            return None
+    
+    def _extract_data_tracking_view(self, soup) -> Optional[Dict]:
+        """Extract product data from window.dataTrackingView - Fitnesstukku's primary structured data."""
+        try:
+            script_tags = soup.find_all('script')
+            
+            # Look specifically for productDetail events in any script tag
+            for script in script_tags:
+                if not script.string:
+                    continue
+                
+                # Check if this script contains productDetail event
+                if 'productDetail' in script.string and 'var view = [' in script.string:
+                    # Extract the JSON array from the JavaScript variable declaration
+                    lines = script.string.split('\n')
+                    for line in lines:
+                        line = line.strip()
+                        if line.startswith('var view = [') and 'productDetail' in line:
+                            # Extract just the JSON part - handle potential long lines
+                            if line.endswith('];'):
+                                json_str = line[len('var view = '):-1]  # Remove 'var view = ' and final ';'
+                            else:
+                                # Handle multiline case
+                                json_str = line[len('var view = '):]
+                                
+                            try:
+                                view_data = json.loads(json_str)
+                                
+                                # Find the productDetail event in the view array
+                                for item in view_data:
+                                    if isinstance(item, dict) and item.get('event') == 'productDetail':
+                                        ecommerce = item.get('ecommerce', {})
+                                        detail = ecommerce.get('detail', {})
+                                        products = detail.get('products', [])
+                                        
+                                        if products and len(products) > 0:
+                                            product_data = products[0]
+                                            logger.debug(f"Found dataTrackingView product: {product_data.get('name', 'Unknown')}")
+                                            return product_data
+                                            
+                            except json.JSONDecodeError as e:
+                                logger.debug(f"Failed to parse dataTrackingView JSON: {e}")
+                                # Try to extract just the productDetail part
+                                try:
+                                    # Look for the productDetail object within the line
+                                    start_idx = line.find('{"event":"productDetail"')
+                                    if start_idx != -1:
+                                        # Find the matching closing brace
+                                        brace_count = 0
+                                        end_idx = start_idx
+                                        for i, char in enumerate(line[start_idx:]):
+                                            if char == '{':
+                                                brace_count += 1
+                                            elif char == '}':
+                                                brace_count -= 1
+                                                if brace_count == 0:
+                                                    end_idx = start_idx + i + 1
+                                                    break
+                                        
+                                        product_detail_str = line[start_idx:end_idx]
+                                        product_detail = json.loads(product_detail_str)
+                                        
+                                        if product_detail.get('event') == 'productDetail':
+                                            ecommerce = product_detail.get('ecommerce', {})
+                                            detail = ecommerce.get('detail', {})
+                                            products = detail.get('products', [])
+                                            
+                                            if products and len(products) > 0:
+                                                product_data = products[0]
+                                                logger.debug(f"Found productDetail via fallback parsing: {product_data.get('name', 'Unknown')}")
+                                                return product_data
+                                                
+                                except json.JSONDecodeError:
+                                    continue
+            
+            logger.debug("No productDetail data found in script tags")
+            return None
+            
+        except Exception as e:
+            logger.debug(f"Error extracting dataTrackingView: {e}")
             return None
     
     def _extract_product_metadata(self, soup) -> Optional[Dict]:
