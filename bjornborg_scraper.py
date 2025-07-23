@@ -843,6 +843,7 @@ class FitnesstukuScraper:
 
 def main():
     """Main function to run the multi-site scraper"""
+    from scrapers import BjornBorgScraper, FitnesstukuScraper
     scraper = BjornBorgScraper()
     
     print("Starting multi-site price scraper (Björn Borg + Fitnesstukku)...")

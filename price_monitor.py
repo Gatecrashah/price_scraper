@@ -14,7 +14,7 @@ import yaml
 import requests
 
 # Import our modules
-from bjornborg_scraper import BjornBorgScraper, FitnesstukuScraper
+from scrapers import BjornBorgScraper, FitnesstukuScraper
 from email_sender import EmailSender
 
 # Configure logging
