@@ -91,6 +91,14 @@ class BjornBorgScraper(BaseScraper):
             if 'product_id' not in product_info:
                 product_info['product_id'] = self.extract_product_id_from_url(url)
             
+            # Calculate discount percentage if we have both prices
+            if product_info.get('original_price') and product_info.get('current_price'):
+                original = product_info['original_price']
+                current = product_info['current_price']
+                if original > current:
+                    discount_percent = round(((original - current) / original) * 100)
+                    product_info['discount_percent'] = discount_percent
+            
             # Only return if we have essential information
             if product_info.get('name') and product_info.get('current_price'):
                 logger.debug(f"Successfully extracted structured data for: {product_info['name']}")
@@ -186,6 +194,14 @@ class BjornBorgScraper(BaseScraper):
             base_code = self._extract_base_product_code(url)
             if base_code:
                 product_info['base_product_code'] = base_code
+            
+            # Calculate discount percentage if we have both prices
+            if product_info.get('original_price') and product_info.get('current_price'):
+                original = product_info['original_price']
+                current = product_info['current_price']
+                if original > current:
+                    discount_percent = round(((original - current) / original) * 100)
+                    product_info['discount_percent'] = discount_percent
             
             # Only return if we have essential information
             if product_info.get('name') and product_info.get('current_price'):
