@@ -122,6 +122,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-23T09:20:30.996292"
+      },
+      "2025-07-24": {
+        "current_price": 35.96,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.363632"
       }
     }
   },
@@ -248,6 +254,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-23T09:20:30.996355"
+      },
+      "2025-07-24": {
+        "current_price": 35.96,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.363710"
       }
     }
   },
@@ -374,6 +386,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2025-07-23T09:20:30.996408"
+      },
+      "2025-07-24": {
+        "current_price": 35.96,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.363764"
       }
     }
   },
@@ -494,6 +512,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-23T09:20:30.996458"
+      },
+      "2025-07-24": {
+        "current_price": 41.97,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.363814"
       }
     }
   },
@@ -614,6 +638,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-23T09:20:30.996505"
+      },
+      "2025-07-24": {
+        "current_price": 41.97,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.363865"
       }
     }
   },
@@ -734,6 +764,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-23T09:20:30.996548"
+      },
+      "2025-07-24": {
+        "current_price": 41.97,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.363917"
       }
     }
   },
@@ -774,7 +810,7 @@
     }
   },
   "id_fitnesstukku_609": {
-    "name": "Kreatiinimonohydraatti 500 g",
+    "name": "Creatine Monohydrate, 500 g",
     "purchase_url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
     "price_history": {
       "2025-07-05": {
@@ -806,6 +842,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-07-23T09:20:30.996763"
+      },
+      "2025-07-24": {
+        "current_price": 22.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.364127"
       }
     }
   },
@@ -818,6 +860,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-07-23T09:20:30.996591"
+      },
+      "2025-07-24": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.363960"
       }
     }
   },
@@ -830,6 +878,12 @@
         "original_price": 44.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-23T09:20:30.996636"
+      },
+      "2025-07-24": {
+        "current_price": 26.97,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.364007"
       }
     }
   },
@@ -842,6 +896,24 @@
         "original_price": 44.95,
         "discount_percent": 40,
         "scraped_at": "2025-07-23T09:20:30.996677"
+      },
+      "2025-07-24": {
+        "current_price": 26.97,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.364050"
+      }
+    }
+  },
+  "id_fitnesstukku_590-1": {
+    "name": "Whey-80, 4 kg, Double Rich Chocolate",
+    "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+    "price_history": {
+      "2025-07-24": {
+        "current_price": 86.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-07-24T09:19:09.364090"
       }
     }
   }
