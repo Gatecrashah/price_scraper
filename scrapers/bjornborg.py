@@ -91,6 +91,24 @@ class BjornBorgScraper(BaseScraper):
             if 'product_id' not in product_info:
                 product_info['product_id'] = self.extract_product_id_from_url(url)
             
+            # Try to extract original price from HTML selectors if not in structured data
+            if 'original_price' not in product_info:
+                original_price_selectors = [
+                    '[data-testid="original-price"]',
+                    '.price-original',
+                    '.original-price',
+                    '.price .original',
+                ]
+                
+                for selector in original_price_selectors:
+                    orig_elem = soup.select_one(selector)
+                    if orig_elem:
+                        orig_price_text = orig_elem.get_text(strip=True)
+                        orig_price = self.extract_price(orig_price_text)
+                        if orig_price and orig_price != product_info.get('current_price'):
+                            product_info['original_price'] = orig_price
+                            break
+            
             # Calculate discount percentage if we have both prices
             if product_info.get('original_price') and product_info.get('current_price'):
                 original = product_info['original_price']
