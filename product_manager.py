@@ -35,11 +35,16 @@ def manage_product_from_comment():
         action = comment_body
 
         # Extract the JSON data block embedded in the issue body.
+        print("DEBUG: Starting JSON extraction from issue body")
         try:
             # Find the start and end of the JSON block
+            print(f"DEBUG: Looking for ```json marker in issue body")
             json_start = issue_body.find('```json') + len('```json')
             if json_start == len('```json') - 1:  # find returned -1
+                print("DEBUG: Could not find ```json marker")
                 raise ValueError("Could not find '```json' marker in issue body")
+            
+            print(f"DEBUG: Found ```json at position {json_start - len('```json')}")
             
             # Skip any whitespace/newlines after ```json
             while json_start < len(issue_body) and issue_body[json_start] in ['\n', '\r', ' ', '\t']:
@@ -47,18 +52,22 @@ def manage_product_from_comment():
                 
             json_end = issue_body.find('```', json_start)
             if json_end == -1:
+                print("DEBUG: Could not find closing ``` marker")
                 raise ValueError("Could not find closing '```' marker in issue body")
                 
+            print(f"DEBUG: Found closing ``` at position {json_end}")
             json_str = issue_body[json_start:json_end].strip()
             print(f"DEBUG: Extracted JSON string: {repr(json_str)}")
             
             product_data = json.loads(json_str)
+            print(f"DEBUG: Successfully parsed JSON: {product_data}")
             
             product_url = product_data.get('url')
             product_name = product_data.get('name')
             product_site = product_data.get('site')
             
             print(f"DEBUG: Parsed product data - site: {product_site}, name: {product_name}, url: {product_url}")
+            print("DEBUG: Starting YAML file processing")
             
         except (IndexError, json.JSONDecodeError, AttributeError, ValueError) as e:
             print(f"Error: Could not find or parse the JSON data block in the issue body. Details: {e}")
@@ -66,8 +75,10 @@ def manage_product_from_comment():
             sys.exit(1)
 
         # Load the current YAML config
+        print(f"DEBUG: Loading YAML config from {config_file}")
         with open(config_file, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
+        print(f"DEBUG: Successfully loaded YAML config")
 
         # Ensure the site list exists in the config
         if 'products' not in config: 
@@ -124,8 +135,10 @@ def manage_product_from_comment():
         config['products'][product_site].append(new_product)
 
         # Save the updated config
+        print(f"DEBUG: Saving updated config to {config_file}")
         with open(config_file, 'w', encoding='utf-8') as f:
             yaml.dump(config, f, indent=2, sort_keys=False, allow_unicode=True)
+        print(f"DEBUG: Successfully saved YAML config")
 
         print(f"Successfully processed command '{action}' for product '{product_name}'.")
         print(f"Updated {config_file}.")
