@@ -32,13 +32,23 @@ jobs:
       env:
         ISSUE_BODY: ${{ github.event.issue.body }}
         COMMENT_BODY: ${{ github.event.comment.body }}
-      run: python product_manager.py
+      run: |
+        echo "DEBUG: Running product manager with:"
+        echo "COMMENT_BODY: $COMMENT_BODY"
+        echo "ISSUE_BODY (first 200 chars): ${ISSUE_BODY:0:200}..."
+        python product_manager.py
 
     - name: Commit updated product config
       run: |
+        echo "DEBUG: Contents of products.yaml before git operations:"
+        tail -10 products.yaml
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action Bot"
         git add products.yaml
+        echo "DEBUG: Git status after add:"
+        git status
+        echo "DEBUG: Git diff staged:"
+        git diff --staged
         # Only commit if there are actual changes
         if git diff --staged --quiet; then
           echo "No changes to commit."
