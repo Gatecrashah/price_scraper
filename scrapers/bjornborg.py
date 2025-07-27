@@ -93,24 +93,46 @@ class BjornBorgScraper(BaseScraper):
             
             # Try to extract original price from HTML selectors if not in structured data
             if 'original_price' not in product_info:
-                original_price_selectors = [
-                    '[data-testid="original-price"]',
-                    '.price-original',
-                    '.original-price',
-                    '.price .original',
-                ]
+                # Look for price elements that contain both current and original prices
+                price_elements = soup.select('.product-price')
                 
-                for selector in original_price_selectors:
-                    orig_elem = soup.select_one(selector)
-                    if orig_elem:
-                        orig_price_text = orig_elem.get_text(strip=True)
-                        orig_price = self.extract_price(orig_price_text)
-                        if orig_price and orig_price != product_info.get('current_price'):
-                            product_info['original_price'] = orig_price
-                            break
+                for price_elem in price_elements:
+                    price_text = price_elem.get_text(strip=True)
+                    logger.debug(f"Found price element text: '{price_text}'")
+                    
+                    # Look for pattern like "35.96 EUR44.95 EUR-20%" or "35.96 EUR44.95 EUR"
+                    # Pattern to match current price, original price, and optional discount
+                    price_pattern = r'(\d+[.,]\d+)\s*EUR(\d+[.,]\d+)\s*EUR(?:-(\d+)%)?'
+                    match = re.search(price_pattern, price_text)
+                    
+                    if match:
+                        current_price_text = match.group(1).replace(',', '.')
+                        original_price_text = match.group(2).replace(',', '.')
+                        discount_text = match.group(3)
+                        
+                        try:
+                            current_price = float(current_price_text)
+                            original_price = float(original_price_text)
+                            
+                            # Only set if original price is higher than current (indicating discount)
+                            if original_price > current_price:
+                                product_info['original_price'] = original_price
+                                # Update current price to match what we found
+                                product_info['current_price'] = current_price
+                                
+                                # Extract discount percentage if present
+                                if discount_text:
+                                    product_info['discount_percent'] = int(discount_text)
+                                
+                                logger.debug(f"Extracted prices: current={current_price}, original={original_price}, discount={discount_text}%")
+                                break
+                        except (ValueError, TypeError) as e:
+                            logger.debug(f"Error parsing prices from '{price_text}': {e}")
+                            continue
             
-            # Calculate discount percentage if we have both prices
-            if product_info.get('original_price') and product_info.get('current_price'):
+            # Calculate discount percentage if we have both prices but no explicit discount
+            if (product_info.get('original_price') and product_info.get('current_price') 
+                and 'discount_percent' not in product_info):
                 original = product_info['original_price']
                 current = product_info['current_price']
                 if original > current:
