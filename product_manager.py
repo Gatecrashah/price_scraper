@@ -14,15 +14,23 @@ def manage_product_from_comment():
     Reads issue and comment details from environment variables,
     updates products.yaml, and saves it.
     """
+    print("DEBUG: Starting product_manager.py execution")
     try:
         issue_body = os.getenv('ISSUE_BODY')
         comment_body = os.getenv('COMMENT_BODY', '').strip().lower()
         config_file = 'products.yaml'
+        
+        print(f"DEBUG: comment_body='{comment_body}'")
+        print(f"DEBUG: issue_body length={len(issue_body) if issue_body else 0}")
+        print(f"DEBUG: config_file='{config_file}'")
 
         # The action is the comment itself. Exit gracefully if not a valid command.
         if comment_body not in ['track', 'ignore']:
-            print(f"Ignoring comment: '{comment_body}'. Not a valid command.")
+            print(f"DEBUG: Ignoring comment: '{comment_body}'. Not a valid command.")
+            print(f"DEBUG: Exiting gracefully")
             sys.exit(0)
+        
+        print(f"DEBUG: Valid command received: '{comment_body}'")
         
         action = comment_body
 
