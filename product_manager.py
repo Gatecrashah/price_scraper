@@ -35,45 +35,16 @@ def manage_product_from_comment():
         action = comment_body
 
         # Extract the JSON data block embedded in the issue body.
-        print("DEBUG: Starting JSON extraction from issue body")
         try:
             # Find the start and end of the JSON block
-            print(f"DEBUG: Looking for ```json marker in issue body")
-            print(f"DEBUG: Issue body contains '```json': {'```json' in issue_body}")
-            
-            json_marker_pos = issue_body.find('```json')
-            print(f"DEBUG: json_marker_pos = {json_marker_pos}")
-            
-            if json_marker_pos == -1:
-                print("DEBUG: Could not find ```json marker")
-                print(f"DEBUG: Full issue body: {repr(issue_body)}")
-                raise ValueError("Could not find '```json' marker in issue body")
-                
-            json_start = json_marker_pos + len('```json')
-            print(f"DEBUG: Found ```json at position {json_marker_pos}, content starts at {json_start}")
-            
-            # Skip any whitespace/newlines after ```json
-            while json_start < len(issue_body) and issue_body[json_start] in ['\n', '\r', ' ', '\t']:
-                json_start += 1
-                
+            json_start = issue_body.find('```json') + len('```json\n')
             json_end = issue_body.find('```', json_start)
-            if json_end == -1:
-                print("DEBUG: Could not find closing ``` marker")
-                raise ValueError("Could not find closing '```' marker in issue body")
-                
-            print(f"DEBUG: Found closing ``` at position {json_end}")
-            json_str = issue_body[json_start:json_end].strip()
-            print(f"DEBUG: Extracted JSON string: {repr(json_str)}")
-            
+            json_str = issue_body[json_start:json_end]
             product_data = json.loads(json_str)
-            print(f"DEBUG: Successfully parsed JSON: {product_data}")
             
             product_url = product_data.get('url')
             product_name = product_data.get('name')
             product_site = product_data.get('site')
-            
-            print(f"DEBUG: Parsed product data - site: {product_site}, name: {product_name}, url: {product_url}")
-            print("DEBUG: Starting YAML file processing")
             
         except (IndexError, json.JSONDecodeError, AttributeError, ValueError) as e:
             print(f"Error: Could not find or parse the JSON data block in the issue body. Details: {e}")
