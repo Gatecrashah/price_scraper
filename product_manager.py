@@ -20,6 +20,27 @@ def manage_product_from_comment():
         comment_body = os.getenv('COMMENT_BODY', '').strip().lower()
         config_file = 'products.yaml'
         
+        # Fallback: if issue_body is null, fetch via GitHub API
+        if not issue_body or issue_body == 'null':
+            print("DEBUG: ISSUE_BODY is null, fetching via GitHub API...")
+            github_token = os.getenv('GITHUB_TOKEN')
+            issue_number = os.getenv('ISSUE_NUMBER')
+            repo = os.getenv('REPO')
+            
+            if github_token and issue_number and repo:
+                import requests
+                headers = {'Authorization': f'token {github_token}'}
+                url = f'https://api.github.com/repos/{repo}/issues/{issue_number}'
+                response = requests.get(url, headers=headers)
+                if response.status_code == 200:
+                    issue_data = response.json()
+                    issue_body = issue_data.get('body', '')
+                    print(f"DEBUG: Fetched issue body via API (length: {len(issue_body)})")
+                else:
+                    print(f"DEBUG: API request failed with status {response.status_code}")
+            else:
+                print("DEBUG: Missing API credentials for fallback")
+        
         print(f"DEBUG: comment_body='{comment_body}'")
         print(f"DEBUG: issue_body length={len(issue_body) if issue_body else 0}")
         print(f"DEBUG: config_file='{config_file}'")

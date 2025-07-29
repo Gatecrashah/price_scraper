@@ -28,10 +28,22 @@ jobs:
     - name: Install Dependencies
       run: pip install pyyaml
 
+    - name: Fetch Issue Details
+      run: |
+        echo "DEBUG: Fetching issue details via API..."
+        ISSUE_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}")
+        echo "Issue response: $ISSUE_RESPONSE" | jq '.'
+        echo "Issue body from API: $(echo "$ISSUE_RESPONSE" | jq -r '.body')"
+
     - name: Run Product Manager Script
       env:
         ISSUE_BODY: ${{ github.event.issue.body }}
         COMMENT_BODY: ${{ github.event.comment.body }}
+        # Fallback: fetch issue body via API if needed
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ISSUE_NUMBER: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
       run: |
         echo "DEBUG: Running product manager with:"
         echo "COMMENT_BODY: $COMMENT_BODY"
