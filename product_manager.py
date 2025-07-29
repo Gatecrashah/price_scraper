@@ -37,9 +37,21 @@ def manage_product_from_comment():
         # Extract the JSON data block embedded in the issue body.
         try:
             # Find the start and end of the JSON block
-            json_start = issue_body.find('```json') + len('```json\n')
+            json_marker_pos = issue_body.find('```json')
+            if json_marker_pos == -1:
+                raise ValueError("Could not find '```json' marker in issue body")
+                
+            json_start = json_marker_pos + len('```json')
+            # Skip any whitespace/newlines after ```json
+            while json_start < len(issue_body) and issue_body[json_start] in ['\n', '\r', ' ', '\t']:
+                json_start += 1
+                
             json_end = issue_body.find('```', json_start)
-            json_str = issue_body[json_start:json_end]
+            if json_end == -1:
+                raise ValueError("Could not find closing '```' marker in issue body")
+                
+            json_str = issue_body[json_start:json_end].strip()
+            print(f"DEBUG: Extracted JSON string: {repr(json_str)}")
             product_data = json.loads(json_str)
             
             product_url = product_data.get('url')
