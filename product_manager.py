@@ -113,9 +113,23 @@ def manage_product_from_comment():
 
         # Save the updated config
         print(f"DEBUG: Saving updated config to {config_file}")
+        print(f"DEBUG: Product being added: {new_product}")
+        print(f"DEBUG: Total products in {product_site}: {len(config['products'][product_site])}")
+        
         with open(config_file, 'w', encoding='utf-8') as f:
             yaml.dump(config, f, indent=2, sort_keys=False, allow_unicode=True)
         print(f"DEBUG: Successfully saved YAML config")
+        
+        # Verify the file was actually written by checking its content
+        with open(config_file, 'r', encoding='utf-8') as f:
+            verification_config = yaml.safe_load(f)
+            matching_products = [
+                p for p in verification_config['products'].get(product_site, []) 
+                if p.get('url') == product_url
+            ]
+            print(f"DEBUG: Verification - Found {len(matching_products)} matching products in saved file")
+            if matching_products:
+                print(f"DEBUG: Matching product status: {matching_products[0].get('status')}")
 
         print(f"Successfully processed command '{action}' for product '{product_name}'.")
         print(f"Updated {config_file}.")

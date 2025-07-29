@@ -49,10 +49,18 @@ jobs:
         git status
         echo "DEBUG: Git diff staged:"
         git diff --staged
+        echo "DEBUG: Git diff staged --quiet exit code:"
+        git diff --staged --quiet
+        echo $?
         # Only commit if there are actual changes
         if git diff --staged --quiet; then
-          echo "No changes to commit."
+          echo "DEBUG: No staged changes detected - this might be the bug!"
+          echo "DEBUG: Let's check if the file was actually modified:"
+          git diff HEAD products.yaml || echo "No diff from HEAD"
+          echo "DEBUG: File modification time:"
+          ls -la products.yaml
         else
+          echo "DEBUG: Changes detected, committing..."
           git commit -m "🤖 Auto-update products via Issue #${{ github.event.issue.number }}"
           git push
         fi
