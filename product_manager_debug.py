@@ -14,6 +14,7 @@ def manage_product_from_comment():
     Reads issue and comment details from environment variables,
     updates products.yaml, and saves it.
     """
+    print("DEBUG: Starting product_manager.py execution")
     try:
         issue_body = os.getenv('ISSUE_BODY')
         comment_body = os.getenv('COMMENT_BODY', '').strip().lower()
@@ -21,6 +22,7 @@ def manage_product_from_comment():
         
         # Fallback: if issue_body is null, fetch via GitHub API
         if not issue_body or issue_body == 'null':
+            print("DEBUG: ISSUE_BODY is null, fetching via GitHub API...")
             github_token = os.getenv('GITHUB_TOKEN')
             issue_number = os.getenv('ISSUE_NUMBER')
             repo = os.getenv('REPO')
@@ -33,23 +35,52 @@ def manage_product_from_comment():
                 if response.status_code == 200:
                     issue_data = response.json()
                     issue_body = issue_data.get('body', '')
+                    print(f"DEBUG: Fetched issue body via API (length: {len(issue_body)})")
+                else:
+                    print(f"DEBUG: API request failed with status {response.status_code}")
+            else:
+                print("DEBUG: Missing API credentials for fallback")
+        
+        print(f"DEBUG: comment_body='{comment_body}'")
+        print(f"DEBUG: issue_body length={len(issue_body) if issue_body else 0}")
+        print(f"DEBUG: config_file='{config_file}'")
 
-        # Extract action from comment (handle both direct comments and email replies)
+        # Extract action from comment (handles both direct comments and email replies)
+        action = None
         if comment_body in ['track', 'ignore']:
+            # Direct comment case
             action = comment_body
         elif comment_body.startswith('ignore'):
+            # Email reply case - starts with "ignore"
             action = 'ignore'
         elif comment_body.startswith('track'):
+            # Email reply case - starts with "track"
             action = 'track'
-        else:
-            print(f"Ignoring comment: '{comment_body}'. Not a valid command.")
+        
+        if action is None:
+            print(f"DEBUG: No valid command found in comment: '{comment_body[:100]}...'")
+            print(f"DEBUG: Exiting gracefully")
             sys.exit(0)
+        
+        print(f"DEBUG: Valid command extracted: '{action}'")
 
         # Extract the JSON data block embedded in the issue body.
         try:
+            # Debug: Print the issue body to understand its structure
+            print(f"DEBUG: Full issue body:")
+            print(f"DEBUG: {repr(issue_body)}")
+            print(f"DEBUG: Looking for '```json' marker...")
+            
             # Find the start and end of the JSON block
             json_marker_pos = issue_body.find('```json')
+            print(f"DEBUG: json_marker_pos = {json_marker_pos}")
             if json_marker_pos == -1:
+                print("DEBUG: Could not find '```json' marker, checking for alternatives...")
+                # Try variations
+                alt_markers = ['```json\n', '```json ', '``` json', '```JSON']
+                for marker in alt_markers:
+                    pos = issue_body.find(marker)
+                    print(f"DEBUG: Checking '{marker}': position {pos}")
                 raise ValueError("Could not find '```json' marker in issue body")
                 
             json_start = json_marker_pos + len('```json')
@@ -62,6 +93,7 @@ def manage_product_from_comment():
                 raise ValueError("Could not find closing '```' marker in issue body")
                 
             json_str = issue_body[json_start:json_end].strip()
+            print(f"DEBUG: Extracted JSON string: {repr(json_str)}")
             product_data = json.loads(json_str)
             
             product_url = product_data.get('url')
@@ -70,11 +102,14 @@ def manage_product_from_comment():
             
         except (IndexError, json.JSONDecodeError, AttributeError, ValueError) as e:
             print(f"Error: Could not find or parse the JSON data block in the issue body. Details: {e}")
+            print(f"DEBUG: Issue body content: {repr(issue_body)}")
             sys.exit(1)
 
         # Load the current YAML config
+        print(f"DEBUG: Loading YAML config from {config_file}")
         with open(config_file, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
+        print(f"DEBUG: Successfully loaded YAML config")
 
         # Ensure the site list exists in the config
         if 'products' not in config: 
@@ -128,12 +163,27 @@ def manage_product_from_comment():
                 new_product["category"] = "supplements"
             else:
                 new_product["category"] = "nutrition"
-                
         config['products'][product_site].append(new_product)
 
         # Save the updated config
+        print(f"DEBUG: Saving updated config to {config_file}")
+        print(f"DEBUG: Product being added: {new_product}")
+        print(f"DEBUG: Total products in {product_site}: {len(config['products'][product_site])}")
+        
         with open(config_file, 'w', encoding='utf-8') as f:
             yaml.dump(config, f, indent=2, sort_keys=False, allow_unicode=True)
+        print(f"DEBUG: Successfully saved YAML config")
+        
+        # Verify the file was actually written by checking its content
+        with open(config_file, 'r', encoding='utf-8') as f:
+            verification_config = yaml.safe_load(f)
+            matching_products = [
+                p for p in verification_config['products'].get(product_site, []) 
+                if p.get('url') == product_url
+            ]
+            print(f"DEBUG: Verification - Found {len(matching_products)} matching products in saved file")
+            if matching_products:
+                print(f"DEBUG: Matching product status: {matching_products[0].get('status')}")
 
         print(f"Successfully processed command '{action}' for product '{product_name}'.")
         print(f"Updated {config_file}.")
