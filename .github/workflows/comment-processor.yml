@@ -51,4 +51,9 @@ jobs:
       uses: peter-evans/close-issue@v3
       with:
         issue-number: ${{ github.event.issue.number }}
-        comment: "Action complete. This product has been processed based on the command `${{ github.event.comment.body }}`. This issue is now closed."
+        comment: |
+          ✅ **Action Complete!**
+          
+          This product has been processed and the `products.yaml` configuration has been updated automatically.
+          
+          This issue is now closed. 🤖
