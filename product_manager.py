@@ -24,29 +24,15 @@ def manage_product_from_comment():
         print(f"DEBUG: issue_body length={len(issue_body) if issue_body else 0}")
         print(f"DEBUG: config_file='{config_file}'")
 
-        # Extract the action from the comment (look for 'track' or 'ignore' as the first word)
-        action = None
-        # Split comment into lines and look at the first non-empty line
-        lines = [line.strip() for line in comment_body.strip().split('\n') if line.strip()]
-        if lines:
-            first_line = lines[0].lower()
-            if first_line == 'track':
-                action = 'track'
-            elif first_line == 'ignore':
-                action = 'ignore'
-            # Fallback: look for the words anywhere in the first line
-            elif 'track' in first_line and 'ignore' not in first_line:
-                action = 'track'
-            elif 'ignore' in first_line and 'track' not in first_line:
-                action = 'ignore'
-        
-        if action is None:
-            print(f"DEBUG: No valid command found in comment: '{comment_body[:100]}...'")
-            print(f"DEBUG: Looking for 'track' or 'ignore' keywords")
+        # The action is the comment itself. Exit gracefully if not a valid command.
+        if comment_body not in ['track', 'ignore']:
+            print(f"DEBUG: Ignoring comment: '{comment_body}'. Not a valid command.")
             print(f"DEBUG: Exiting gracefully")
             sys.exit(0)
         
-        print(f"DEBUG: Valid command extracted: '{action}' from comment")
+        print(f"DEBUG: Valid command received: '{comment_body}'")
+        
+        action = comment_body
 
         # Extract the JSON data block embedded in the issue body.
         try:
