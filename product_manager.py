@@ -24,15 +24,24 @@ def manage_product_from_comment():
         print(f"DEBUG: issue_body length={len(issue_body) if issue_body else 0}")
         print(f"DEBUG: config_file='{config_file}'")
 
-        # The action is the comment itself. Exit gracefully if not a valid command.
-        if comment_body not in ['track', 'ignore']:
-            print(f"DEBUG: Ignoring comment: '{comment_body}'. Not a valid command.")
+        # Extract action from comment (handles both direct comments and email replies)
+        action = None
+        if comment_body in ['track', 'ignore']:
+            # Direct comment case
+            action = comment_body
+        elif comment_body.startswith('ignore'):
+            # Email reply case - starts with "ignore"
+            action = 'ignore'
+        elif comment_body.startswith('track'):
+            # Email reply case - starts with "track"
+            action = 'track'
+        
+        if action is None:
+            print(f"DEBUG: No valid command found in comment: '{comment_body[:100]}...'")
             print(f"DEBUG: Exiting gracefully")
             sys.exit(0)
         
-        print(f"DEBUG: Valid command received: '{comment_body}'")
-        
-        action = comment_body
+        print(f"DEBUG: Valid command extracted: '{action}'")
 
         # Extract the JSON data block embedded in the issue body.
         try:
