@@ -45,9 +45,21 @@ def manage_product_from_comment():
 
         # Extract the JSON data block embedded in the issue body.
         try:
+            # Debug: Print the issue body to understand its structure
+            print(f"DEBUG: Full issue body:")
+            print(f"DEBUG: {repr(issue_body)}")
+            print(f"DEBUG: Looking for '```json' marker...")
+            
             # Find the start and end of the JSON block
             json_marker_pos = issue_body.find('```json')
+            print(f"DEBUG: json_marker_pos = {json_marker_pos}")
             if json_marker_pos == -1:
+                print("DEBUG: Could not find '```json' marker, checking for alternatives...")
+                # Try variations
+                alt_markers = ['```json\n', '```json ', '``` json', '```JSON']
+                for marker in alt_markers:
+                    pos = issue_body.find(marker)
+                    print(f"DEBUG: Checking '{marker}': position {pos}")
                 raise ValueError("Could not find '```json' marker in issue body")
                 
             json_start = json_marker_pos + len('```json')
