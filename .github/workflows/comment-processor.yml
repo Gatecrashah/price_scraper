@@ -28,51 +28,21 @@ jobs:
     - name: Install Dependencies
       run: pip install pyyaml
 
-    - name: Fetch Issue Details
-      run: |
-        echo "DEBUG: Fetching issue details via API..."
-        ISSUE_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}")
-        echo "Issue response: $ISSUE_RESPONSE" | jq '.'
-        echo "Issue body from API: $(echo "$ISSUE_RESPONSE" | jq -r '.body')"
-
     - name: Run Product Manager Script
       env:
         ISSUE_BODY: ${{ github.event.issue.body }}
         COMMENT_BODY: ${{ github.event.comment.body }}
-        # Fallback: fetch issue body via API if needed
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        ISSUE_NUMBER: ${{ github.event.issue.number }}
-        REPO: ${{ github.repository }}
-      run: |
-        echo "DEBUG: Running product manager with:"
-        echo "COMMENT_BODY: $COMMENT_BODY"
-        echo "ISSUE_BODY (first 200 chars): ${ISSUE_BODY:0:200}..."
-        python product_manager.py
+      run: python product_manager.py
 
     - name: Commit updated product config
       run: |
-        echo "DEBUG: Contents of products.yaml before git operations:"
-        tail -10 products.yaml
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action Bot"
         git add products.yaml
-        echo "DEBUG: Git status after add:"
-        git status
-        echo "DEBUG: Git diff staged:"
-        git diff --staged
-        echo "DEBUG: Git diff staged --quiet exit code:"
-        git diff --staged --quiet
-        echo $?
         # Only commit if there are actual changes
         if git diff --staged --quiet; then
-          echo "DEBUG: No staged changes detected - this might be the bug!"
-          echo "DEBUG: Let's check if the file was actually modified:"
-          git diff HEAD products.yaml || echo "No diff from HEAD"
-          echo "DEBUG: File modification time:"
-          ls -la products.yaml
+          echo "No changes to commit."
         else
-          echo "DEBUG: Changes detected, committing..."
           git commit -m "🤖 Auto-update products via Issue #${{ github.event.issue.number }}"
           git push
         fi
@@ -81,11 +51,4 @@ jobs:
       uses: peter-evans/close-issue@v3
       with:
         issue-number: ${{ github.event.issue.number }}
-        comment: |
-          ✅ **Action Complete!** 
-          
-          This product has been processed based on your comment: **${{ github.event.comment.body }}**
-          
-          The `products.yaml` configuration has been updated automatically.
-          
-          This issue is now closed. 🤖
+        comment: "Action complete. This product has been processed based on the command `${{ github.event.comment.body }}`. This issue is now closed."
