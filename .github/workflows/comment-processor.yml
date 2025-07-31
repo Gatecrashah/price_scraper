@@ -54,6 +54,6 @@ jobs:
         comment: |
           ✅ **Action Complete!**
           
-          This product has been processed and the `products.yaml` configuration has been updated automatically.
+          This product has been processed and the products.yaml configuration has been updated automatically.
           
           This issue is now closed. 🤖
