@@ -302,6 +302,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-08-22T09:14:34.849704"
+      },
+      "2025-08-23": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-08-23T09:12:44.332848"
       }
     }
   },
@@ -608,6 +614,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-08-22T09:14:34.849759"
+      },
+      "2025-08-23": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-08-23T09:12:44.332908"
       }
     }
   },
@@ -914,6 +926,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-08-22T09:14:34.849800"
+      },
+      "2025-08-23": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-08-23T09:12:44.332952"
       }
     }
   },
@@ -1214,6 +1232,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-08-22T09:14:34.849839"
+      },
+      "2025-08-23": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-08-23T09:12:44.332991"
       }
     }
   },
@@ -1514,6 +1538,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-08-22T09:14:34.849877"
+      },
+      "2025-08-23": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-08-23T09:12:44.333032"
       }
     }
   },
@@ -1814,6 +1844,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-08-22T09:14:34.849914"
+      },
+      "2025-08-23": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-08-23T09:12:44.333070"
       }
     }
   },
@@ -2066,6 +2102,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-08-22T09:14:34.850129"
+      },
+      "2025-08-23": {
+        "current_price": 19.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-08-23T09:12:44.333273"
       }
     }
   },
@@ -2258,6 +2300,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-08-22T09:14:34.849951"
+      },
+      "2025-08-23": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-08-23T09:12:44.333107"
       }
     }
   },
@@ -2450,6 +2498,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-08-22T09:14:34.850002"
+      },
+      "2025-08-23": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-08-23T09:12:44.333151"
       }
     }
   },
@@ -2642,6 +2696,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-08-22T09:14:34.850052"
+      },
+      "2025-08-23": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-08-23T09:12:44.333190"
       }
     }
   },
@@ -2828,6 +2888,18 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-08-22T09:14:34.850094"
+      }
+    }
+  },
+  "id_fitnesstukku_590": {
+    "name": "Whey-80, 4 kg, Suklaa",
+    "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+    "price_history": {
+      "2025-08-23": {
+        "current_price": 79.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-08-23T09:12:44.333231"
       }
     }
   }
