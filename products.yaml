@@ -102,6 +102,12 @@ products:
     status: ignore
     product_id: '10005937'
     category: socks
+  - name: Essential Crew Socks 5-pack
+    url: /fi/essential-crew-socks-5-pack-10005937-mp002/
+    site: bjornborg
+    status: ignore
+    product_id: '10005937'
+    category: socks
   fitnesstukku:
   - name: Whey-80 Protein 4kg
     url: https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html
