@@ -602,6 +602,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-10-11T09:12:09.128222"
+      },
+      "2025-10-12": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-10-12T09:12:16.891916"
       }
     }
   },
@@ -1208,6 +1214,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-11T09:12:09.128289"
+      },
+      "2025-10-12": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-12T09:12:16.891983"
       }
     }
   },
@@ -1814,6 +1826,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-10-11T09:12:09.128340"
+      },
+      "2025-10-12": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-10-12T09:12:16.892047"
       }
     }
   },
@@ -2414,6 +2432,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-10-11T09:12:09.128383"
+      },
+      "2025-10-12": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-10-12T09:12:16.892098"
       }
     }
   },
@@ -3014,6 +3038,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-10-11T09:12:09.128423"
+      },
+      "2025-10-12": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-10-12T09:12:16.892150"
       }
     }
   },
@@ -3614,6 +3644,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-10-11T09:12:09.128463"
+      },
+      "2025-10-12": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-10-12T09:12:16.892203"
       }
     }
   },
@@ -4166,6 +4202,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-11T09:12:09.128672"
+      },
+      "2025-10-12": {
+        "current_price": 16.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-12T09:12:16.892469"
       }
     }
   },
@@ -4658,6 +4700,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-11T09:12:09.128506"
+      },
+      "2025-10-12": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-12T09:12:16.892269"
       }
     }
   },
@@ -5150,6 +5198,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-10-11T09:12:09.128553"
+      },
+      "2025-10-12": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-10-12T09:12:16.892320"
       }
     }
   },
@@ -5642,6 +5696,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-10-11T09:12:09.128593"
+      },
+      "2025-10-12": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-10-12T09:12:16.892361"
       }
     }
   },
@@ -6056,6 +6116,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-11T09:12:09.128633"
+      },
+      "2025-10-12": {
+        "current_price": 89.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-12T09:12:16.892432"
       }
     }
   },
@@ -6140,6 +6206,18 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-08-31T09:11:53.776698"
+      }
+    }
+  },
+  "base_10005412": {
+    "name": "Essential Socks 10-pack",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
+    "price_history": {
+      "2025-10-12": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-12T09:12:16.892395"
       }
     }
   }
