@@ -662,6 +662,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-10-21T09:20:22.257328"
+      },
+      "2025-10-22": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-10-22T09:16:20.334080"
       }
     }
   },
@@ -1328,6 +1334,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-21T09:20:22.257394"
+      },
+      "2025-10-22": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-22T09:16:20.334166"
       }
     }
   },
@@ -1994,6 +2006,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-10-21T09:20:22.257444"
+      },
+      "2025-10-22": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-10-22T09:16:20.334218"
       }
     }
   },
@@ -2654,6 +2672,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-10-21T09:20:22.257491"
+      },
+      "2025-10-22": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-10-22T09:16:20.334262"
       }
     }
   },
@@ -3314,6 +3338,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-10-21T09:20:22.257570"
+      },
+      "2025-10-22": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-10-22T09:16:20.334312"
       }
     }
   },
@@ -3974,6 +4004,12 @@
         "original_price": 69.95,
         "discount_percent": 20,
         "scraped_at": "2025-10-21T09:20:22.257620"
+      },
+      "2025-10-22": {
+        "current_price": 55.96,
+        "original_price": 69.95,
+        "discount_percent": 20,
+        "scraped_at": "2025-10-22T09:16:20.334352"
       }
     }
   },
@@ -4586,6 +4622,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-21T09:20:22.257905"
+      },
+      "2025-10-22": {
+        "current_price": 16.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-22T09:16:20.334631"
       }
     }
   },
@@ -5138,6 +5180,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-21T09:20:22.257667"
+      },
+      "2025-10-22": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-22T09:16:20.334400"
       }
     }
   },
@@ -5690,6 +5738,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-10-21T09:20:22.257721"
+      },
+      "2025-10-22": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-10-22T09:16:20.334446"
       }
     }
   },
@@ -6242,6 +6296,12 @@
         "original_price": 44.95,
         "discount_percent": 15,
         "scraped_at": "2025-10-21T09:20:22.257769"
+      },
+      "2025-10-22": {
+        "current_price": 38.21,
+        "original_price": 44.95,
+        "discount_percent": 15,
+        "scraped_at": "2025-10-22T09:16:20.334504"
       }
     }
   },
@@ -6716,6 +6776,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-21T09:20:22.257860"
+      },
+      "2025-10-22": {
+        "current_price": 89.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-22T09:16:20.334584"
       }
     }
   },
@@ -6866,6 +6932,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2025-10-21T09:20:22.257812"
+      },
+      "2025-10-22": {
+        "current_price": 44.95,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2025-10-22T09:16:20.334544"
       }
     }
   }
