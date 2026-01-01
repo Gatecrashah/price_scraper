@@ -155,10 +155,28 @@ class PriceMonitor:
             self.price_history[product_key]['name'] = product.get('name', self.price_history[product_key]['name'])
             self.price_history[product_key]['purchase_url'] = product.get('purchase_url', product.get('url', ''))
             
+            # Calculate historical lowest price
+            lowest_price = None
+            lowest_price_date = None
+            if price_hist:
+                for date, data in price_hist.items():
+                    price = data.get('current_price')
+                    if price and (lowest_price is None or price < lowest_price):
+                        lowest_price = price
+                        lowest_price_date = date
+
+            # Format the lowest price date for display
+            lowest_price_date_formatted = None
+            if lowest_price_date:
+                try:
+                    lowest_price_date_formatted = datetime.strptime(lowest_price_date, '%Y-%m-%d').strftime('%b %d, %Y')
+                except ValueError:
+                    lowest_price_date_formatted = lowest_price_date
+
             # Check for price changes
             if previous_price is not None and abs(current_price - previous_price) > 0.01:  # Ignore tiny rounding differences
                 logger.info(f"Price change detected for {product.get('name')}: {previous_price:.2f} → {current_price:.2f} EUR")
-                
+
                 price_changes.append({
                     'name': product.get('name', 'Unknown Product'),
                     'current_price': current_price,
@@ -167,7 +185,9 @@ class PriceMonitor:
                     'discount_percent': product.get('discount_percent'),
                     'purchase_url': product.get('purchase_url', product.get('url', '')),
                     'change_date': today,
-                    'product_key': product_key
+                    'product_key': product_key,
+                    'lowest_price': lowest_price,
+                    'lowest_price_date': lowest_price_date_formatted
                 })
             else:
                 logger.info(f"No price change for {product.get('name')}: {current_price:.2f} EUR")
