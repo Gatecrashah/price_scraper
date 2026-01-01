@@ -54,11 +54,17 @@ class FitnesstukuScraper(BaseScraper):
                 availability = tracking_data.get('availability', '').upper()
                 product_info['in_stock'] = 'IN STOCK' in availability
                 
-                # Extract product ID (the true identifier)
-                product_id = tracking_data.get('id')
-                if product_id:
-                    product_info['product_id'] = f"fitnesstukku_{product_id}"
-                    product_info['sku'] = product_id  # Store original SKU too
+                # Extract product ID from URL (stable identifier)
+                # The URL contains the base product ID (e.g., 5854R from /5854R.html)
+                # This is more stable than the variant ID from tracking data
+                url_product_id = self._extract_product_id_from_url(url)
+                if url_product_id:
+                    product_info['product_id'] = f"fitnesstukku_{url_product_id}"
+
+                # Store variant ID from tracking data as metadata (for reference)
+                variant_id = tracking_data.get('id')
+                if variant_id:
+                    product_info['variant_sku'] = variant_id  # e.g., "590-1" for specific flavor
                 
                 # Extract variant information (flavor, size, etc.)
                 variant = tracking_data.get('variant')
@@ -119,6 +125,20 @@ class FitnesstukuScraper(BaseScraper):
             logger.debug(f"Error extracting structured data: {e}")
             return None
     
+    def _extract_product_id_from_url(self, url: str) -> Optional[str]:
+        """Extract the base product ID from a Fitnesstukku URL.
+
+        Example: https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html -> 5854R
+        """
+        try:
+            # Match the product ID before .html (e.g., 5854R, 609)
+            match = re.search(r'/([A-Za-z0-9-]+)\.html$', url)
+            if match:
+                return match.group(1)
+            return None
+        except Exception:
+            return None
+
     def _extract_data_tracking_view(self, soup) -> Optional[Dict]:
         """Extract product data from window.dataTrackingView - Fitnesstukku's primary structured data."""
         try:
