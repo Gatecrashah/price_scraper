@@ -1094,6 +1094,12 @@
         "original_price": 44.95,
         "discount_percent": 30,
         "scraped_at": "2026-01-01T09:18:34.429908"
+      },
+      "2026-01-02": {
+        "current_price": 31.47,
+        "original_price": 44.95,
+        "discount_percent": 30,
+        "scraped_at": "2026-01-02T09:18:41.886859"
       }
     }
   },
@@ -2192,6 +2198,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2026-01-01T09:18:34.429977"
+      },
+      "2026-01-02": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2026-01-02T09:18:41.899312"
       }
     }
   },
@@ -3290,6 +3302,12 @@
         "original_price": 44.95,
         "discount_percent": 30,
         "scraped_at": "2026-01-01T09:18:34.430032"
+      },
+      "2026-01-02": {
+        "current_price": 31.47,
+        "original_price": 44.95,
+        "discount_percent": 30,
+        "scraped_at": "2026-01-02T09:18:41.899426"
       }
     }
   },
@@ -4382,6 +4400,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-01T09:18:34.430084"
+      },
+      "2026-01-02": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-02T09:18:41.899528"
       }
     }
   },
@@ -5474,6 +5498,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-01T09:18:34.430134"
+      },
+      "2026-01-02": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-02T09:18:41.899638"
       }
     }
   },
@@ -6566,11 +6596,17 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-01T09:18:34.430182"
+      },
+      "2026-01-02": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-02T09:18:41.899738"
       }
     }
   },
   "id_fitnesstukku_5854R": {
-    "name": "Whey-80 Heraproteiini 4 kg",
+    "name": "Whey-80, 4 kg, Double Rich Chocolate",
     "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
     "price_history": {
       "2025-07-05": {
@@ -7502,6 +7538,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2026-01-01T09:18:34.430453"
+      },
+      "2026-01-02": {
+        "current_price": 89.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2026-01-02T09:18:41.900240"
       }
     }
   },
@@ -8510,6 +8552,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2026-01-01T09:18:34.430508"
+      },
+      "2026-01-02": {
+        "current_price": 19.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2026-01-02T09:18:41.900329"
       }
     }
   },
@@ -9494,6 +9542,12 @@
         "original_price": 44.95,
         "discount_percent": 30,
         "scraped_at": "2026-01-01T09:18:34.430246"
+      },
+      "2026-01-02": {
+        "current_price": 31.47,
+        "original_price": 44.95,
+        "discount_percent": 30,
+        "scraped_at": "2026-01-02T09:18:41.899842"
       }
     }
   },
@@ -10478,6 +10532,12 @@
         "original_price": 44.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-01T09:18:34.430306"
+      },
+      "2026-01-02": {
+        "current_price": 26.97,
+        "original_price": 44.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-02T09:18:41.899945"
       }
     }
   },
@@ -11462,6 +11522,12 @@
         "original_price": 44.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-01T09:18:34.430358"
+      },
+      "2026-01-02": {
+        "current_price": 26.97,
+        "original_price": 44.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-02T09:18:41.900057"
       }
     }
   },
@@ -12044,6 +12110,12 @@
         "original_price": 44.95,
         "discount_percent": 30,
         "scraped_at": "2026-01-01T09:18:34.430405"
+      },
+      "2026-01-02": {
+        "current_price": 31.47,
+        "original_price": 44.95,
+        "discount_percent": 30,
+        "scraped_at": "2026-01-02T09:18:41.900154"
       }
     }
   }
