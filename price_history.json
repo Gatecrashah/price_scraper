@@ -1106,6 +1106,12 @@
         "original_price": 44.95,
         "discount_percent": 30,
         "scraped_at": "2026-01-03T09:14:30.229222"
+      },
+      "2026-01-04": {
+        "current_price": 31.47,
+        "original_price": 44.95,
+        "discount_percent": 30,
+        "scraped_at": "2026-01-04T09:14:07.949394"
       }
     }
   },
@@ -2216,6 +2222,12 @@
         "original_price": 44.95,
         "discount_percent": 20,
         "scraped_at": "2026-01-03T09:14:30.243287"
+      },
+      "2026-01-04": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2026-01-04T09:14:07.966395"
       }
     }
   },
@@ -3326,6 +3338,12 @@
         "original_price": 44.95,
         "discount_percent": 30,
         "scraped_at": "2026-01-03T09:14:30.243416"
+      },
+      "2026-01-04": {
+        "current_price": 31.47,
+        "original_price": 44.95,
+        "discount_percent": 30,
+        "scraped_at": "2026-01-04T09:14:07.966525"
       }
     }
   },
@@ -4430,6 +4448,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-03T09:14:30.243520"
+      },
+      "2026-01-04": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-04T09:14:07.966634"
       }
     }
   },
@@ -5534,6 +5558,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-03T09:14:30.243621"
+      },
+      "2026-01-04": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-04T09:14:07.966734"
       }
     }
   },
@@ -6638,6 +6668,12 @@
         "original_price": 69.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-03T09:14:30.243716"
+      },
+      "2026-01-04": {
+        "current_price": 41.97,
+        "original_price": 69.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-04T09:14:07.966828"
       }
     }
   },
@@ -7586,6 +7622,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2026-01-03T09:14:30.244194"
+      },
+      "2026-01-04": {
+        "current_price": 89.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2026-01-04T09:14:07.967378"
       }
     }
   },
@@ -8606,6 +8648,12 @@
         "original_price": null,
         "discount_percent": null,
         "scraped_at": "2026-01-03T09:14:30.244275"
+      },
+      "2026-01-04": {
+        "current_price": 19.9,
+        "original_price": null,
+        "discount_percent": null,
+        "scraped_at": "2026-01-04T09:14:07.967464"
       }
     }
   },
@@ -9602,6 +9650,12 @@
         "original_price": 44.95,
         "discount_percent": 30,
         "scraped_at": "2026-01-03T09:14:30.243820"
+      },
+      "2026-01-04": {
+        "current_price": 31.47,
+        "original_price": 44.95,
+        "discount_percent": 30,
+        "scraped_at": "2026-01-04T09:14:07.966939"
       }
     }
   },
@@ -10598,6 +10652,12 @@
         "original_price": 44.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-03T09:14:30.243917"
+      },
+      "2026-01-04": {
+        "current_price": 26.97,
+        "original_price": 44.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-04T09:14:07.967053"
       }
     }
   },
@@ -11594,6 +11654,12 @@
         "original_price": 44.95,
         "discount_percent": 40,
         "scraped_at": "2026-01-03T09:14:30.244020"
+      },
+      "2026-01-04": {
+        "current_price": 26.97,
+        "original_price": 44.95,
+        "discount_percent": 40,
+        "scraped_at": "2026-01-04T09:14:07.967146"
       }
     }
   },
@@ -12188,6 +12254,24 @@
         "original_price": 44.95,
         "discount_percent": 30,
         "scraped_at": "2026-01-03T09:14:30.244112"
+      },
+      "2026-01-04": {
+        "current_price": 31.47,
+        "original_price": 44.95,
+        "discount_percent": 30,
+        "scraped_at": "2026-01-04T09:14:07.967227"
+      }
+    }
+  },
+  "base_10001760": {
+    "name": "Essential Socks 10-pack",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001760-mp001/",
+    "price_history": {
+      "2026-01-04": {
+        "current_price": 35.96,
+        "original_price": 44.95,
+        "discount_percent": 20,
+        "scraped_at": "2026-01-04T09:14:07.967309"
       }
     }
   }
