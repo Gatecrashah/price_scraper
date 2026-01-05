@@ -59,22 +59,37 @@ class TestCategoryAssignment:
         if product_site == "bjornborg":
             if "sock" in product_name.lower():
                 category = "socks"
-            elif "crew" in product_name.lower():
+            elif "crew" in product_name.lower() or "sweater" in product_name.lower():
                 category = "apparel"
             else:
                 category = "unknown"
 
         assert category == "socks"
 
-    def test_bjornborg_apparel_category(self):
-        """Test category assignment for Björn Borg apparel."""
+    def test_bjornborg_apparel_category_crew(self):
+        """Test category assignment for Björn Borg apparel (crew)."""
         product_name = "Centre Crew Sweatshirt"
         product_site = "bjornborg"
 
         if product_site == "bjornborg":
             if "sock" in product_name.lower():
                 category = "socks"
-            elif "crew" in product_name.lower():
+            elif "crew" in product_name.lower() or "sweater" in product_name.lower():
+                category = "apparel"
+            else:
+                category = "unknown"
+
+        assert category == "apparel"
+
+    def test_bjornborg_apparel_category_sweater(self):
+        """Test category assignment for Björn Borg apparel (sweater)."""
+        product_name = "Winter Sweater"
+        product_site = "bjornborg"
+
+        if product_site == "bjornborg":
+            if "sock" in product_name.lower():
+                category = "socks"
+            elif "crew" in product_name.lower() or "sweater" in product_name.lower():
                 category = "apparel"
             else:
                 category = "unknown"
