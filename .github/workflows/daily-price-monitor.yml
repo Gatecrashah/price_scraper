@@ -1,4 +1,4 @@
-name: Daily Björn Borg Sock Price Monitor
+name: Daily Price Monitor
 
 on:
   schedule:
@@ -37,7 +37,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
-        echo "🧦 Starting Björn Borg sock price monitoring..."
+        echo "📊 Starting multi-site price monitoring..."
         python price_monitor.py
         echo "✅ Price monitoring completed!"
     

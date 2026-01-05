@@ -18,3 +18,17 @@ improvements.md
 
 # Variant discovery tracking (managed by automation)
 last_variant_discovery.json
+
+# Test artifacts
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

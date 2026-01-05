@@ -5,91 +5,93 @@ Combines scraping with email notifications and price history tracking
 """
 
 import json
+import logging
 import os
 import sys
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
-import logging
-import yaml
-import requests
 
-# Import our modules
-from scrapers import BjornBorgScraper, FitnesstukuScraper
+import requests
+import yaml
+
 from email_sender import EmailSender
 
+# Import our modules
+from scrapers import BjornBorgScraper, FitnesstukkuScraper
+
 # Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
+
 class PriceMonitor:
-    def __init__(self, history_file='price_history.json', config_file='products.yaml'):
+    def __init__(self, history_file="price_history.json", config_file="products.yaml"):
         self.history_file = history_file
         self.config_file = config_file
         self.bjornborg_scraper = BjornBorgScraper()
-        self.fitnesstukku_scraper = FitnesstukuScraper()
+        self.fitnesstukku_scraper = FitnesstukkuScraper()
         self.email_sender = EmailSender()
         self.price_history = self.load_price_history()
         self.product_config = self.load_product_config()
-        self.github_token = os.getenv('GITHUB_TOKEN')
-        self.github_repo = os.getenv('GITHUB_REPOSITORY')
-    
-    def load_price_history(self) -> Dict:
+        self.github_token = os.getenv("GITHUB_TOKEN")
+        self.github_repo = os.getenv("GITHUB_REPOSITORY")
+
+    def load_price_history(self) -> dict:
         """Load price history from JSON file"""
         if os.path.exists(self.history_file):
             try:
-                with open(self.history_file, 'r', encoding='utf-8') as f:
+                with open(self.history_file, encoding="utf-8") as f:
                     return json.load(f)
             except Exception as e:
                 logger.error(f"Error loading price history: {e}")
                 return {}
         return {}
-    
-    def load_product_config(self) -> Dict:
+
+    def load_product_config(self) -> dict:
         """Load product config from YAML file."""
         if not os.path.exists(self.config_file):
-            return {'products': {}}
+            return {"products": {}}
         try:
-            with open(self.config_file, 'r', encoding='utf-8') as f:
+            with open(self.config_file, encoding="utf-8") as f:
                 return yaml.safe_load(f)
         except Exception as e:
             logger.error(f"Error loading {self.config_file}: {e}")
-            return {'products': {}}
-    
+            return {"products": {}}
+
     def save_price_history(self):
         """Save price history to JSON file"""
         try:
-            with open(self.history_file, 'w', encoding='utf-8') as f:
+            with open(self.history_file, "w", encoding="utf-8") as f:
                 json.dump(self.price_history, f, indent=2, ensure_ascii=False)
             logger.info("Price history saved successfully")
         except Exception as e:
             logger.error(f"Error saving price history: {e}")
-    
-    def get_product_key(self, product: Dict) -> str:
+
+    def get_product_key(self, product: dict) -> str:
         """Generate a unique key for a product using scraper-specific logic"""
         # Determine which scraper to use based on the product's site
-        site = product.get('site', 'unknown')
-        
-        if site == 'bjornborg':
+        site = product.get("site", "unknown")
+
+        if site == "bjornborg":
             return self.bjornborg_scraper.generate_product_key(product)
-        elif site == 'fitnesstukku':
+        elif site == "fitnesstukku":
             return self.fitnesstukku_scraper.generate_product_key(product)
         else:
             # Fallback logic for unknown sites (maintain backward compatibility)
-            if 'base_product_code' in product and product['base_product_code']:
+            if "base_product_code" in product and product["base_product_code"]:
                 return f"base_{product['base_product_code']}"
-            elif 'product_id' in product and product['product_id']:
+            elif "product_id" in product and product["product_id"]:
                 return f"id_{product['product_id']}"
-            elif 'item_number' in product and product['item_number']:
+            elif "item_number" in product and product["item_number"]:
                 return f"item_{product['item_number']}"
             else:
                 return f"url_{product.get('url', 'unknown')}"
-    
-    def scrape_all_sites(self) -> List[Dict]:
+
+    def scrape_all_sites(self) -> list[dict]:
         """Orchestrate scraping from all sites"""
         all_products = []
-        
+
         logger.info("Orchestrating multi-site scraping...")
-        
+
         # Scrape Björn Borg products
         logger.info("Scraping Björn Borg products...")
         try:
@@ -98,8 +100,8 @@ class PriceMonitor:
             logger.info(f"Found {len(bb_products)} Björn Borg products")
         except Exception as e:
             logger.error(f"Error scraping Björn Borg: {e}")
-        
-        # Scrape Fitnesstukku products  
+
+        # Scrape Fitnesstukku products
         logger.info("Scraping Fitnesstukku products...")
         try:
             ft_products = self.fitnesstukku_scraper.scrape_all_products()
@@ -107,60 +109,64 @@ class PriceMonitor:
             logger.info(f"Found {len(ft_products)} Fitnesstukku products")
         except Exception as e:
             logger.error(f"Error scraping Fitnesstukku: {e}")
-        
+
         logger.info(f"Total products scraped: {len(all_products)}")
         return all_products
-    
-    def detect_price_changes(self, current_products: List[Dict]) -> List[Dict]:
+
+    def detect_price_changes(self, current_products: list[dict]) -> list[dict]:
         """Detect price changes compared to last scrape"""
         price_changes = []
-        today = datetime.now().strftime('%Y-%m-%d')
-        
+        today = datetime.now().strftime("%Y-%m-%d")
+
         for product in current_products:
             product_key = self.get_product_key(product)
-            current_price = product.get('current_price')
-            
+            current_price = product.get("current_price")
+
             if not current_price:
                 continue
-            
+
             # Initialize product history if it doesn't exist
             if product_key not in self.price_history:
                 self.price_history[product_key] = {
-                    'name': product.get('name', 'Unknown'),
-                    'purchase_url': product.get('purchase_url', product.get('url', '')),
-                    'price_history': {}
+                    "name": product.get("name", "Unknown"),
+                    "purchase_url": product.get("purchase_url", product.get("url", "")),
+                    "price_history": {},
                 }
-            
+
             # Get previous price (most recent entry)
-            price_hist = self.price_history[product_key]['price_history']
+            price_hist = self.price_history[product_key]["price_history"]
             previous_price = None
-            
+
             if price_hist:
                 # Get the most recent price (excluding today)
                 sorted_dates = sorted(price_hist.keys(), reverse=True)
                 for date in sorted_dates:
                     if date != today:
-                        previous_price = price_hist[date].get('current_price')
+                        previous_price = price_hist[date].get("current_price")
                         break
-            
+
             # Record today's price
-            self.price_history[product_key]['price_history'][today] = {
-                'current_price': current_price,
-                'original_price': product.get('original_price'),
-                'discount_percent': product.get('discount_percent'),
-                'scraped_at': datetime.now().isoformat()
+            self.price_history[product_key]["price_history"][today] = {
+                "current_price": current_price,
+                "original_price": product.get("original_price"),
+                "discount_percent": product.get("discount_percent"),
+                "scraped_at": datetime.now().isoformat(),
             }
-            
+
             # Update product info
-            self.price_history[product_key]['name'] = product.get('name', self.price_history[product_key]['name'])
-            self.price_history[product_key]['purchase_url'] = product.get('purchase_url', product.get('url', ''))
-            
+            self.price_history[product_key]["name"] = product.get(
+                "name", self.price_history[product_key]["name"]
+            )
+            self.price_history[product_key]["purchase_url"] = product.get(
+                "purchase_url", product.get("url", "")
+            )
+
             # Calculate historical lowest price
             lowest_price = None
             lowest_price_date = None
             if price_hist:
                 for date, data in price_hist.items():
-                    price = data.get('current_price')
+                    price = data.get("current_price")
                     if price and (lowest_price is None or price < lowest_price):
                         lowest_price = price
                         lowest_price_date = date
@@ -169,134 +175,150 @@ class PriceMonitor:
             lowest_price_date_formatted = None
             if lowest_price_date:
                 try:
-                    lowest_price_date_formatted = datetime.strptime(lowest_price_date, '%Y-%m-%d').strftime('%b %d, %Y')
+                    lowest_price_date_formatted = datetime.strptime(
+                        lowest_price_date, "%Y-%m-%d"
+                    ).strftime("%b %d, %Y")
                 except ValueError:
                     lowest_price_date_formatted = lowest_price_date
 
             # Check for price changes
-            if previous_price is not None and abs(current_price - previous_price) > 0.01:  # Ignore tiny rounding differences
-                logger.info(f"Price change detected for {product.get('name')}: {previous_price:.2f} → {current_price:.2f} EUR")
+            if (
+                previous_price is not None and abs(current_price - previous_price) > 0.01
+            ):  # Ignore tiny rounding differences
+                logger.info(
+                    f"Price change detected for {product.get('name')}: {previous_price:.2f} → {current_price:.2f} EUR"
+                )
 
-                price_changes.append({
-                    'name': product.get('name', 'Unknown Product'),
-                    'current_price': current_price,
-                    'previous_price': previous_price,
-                    'original_price': product.get('original_price'),
-                    'discount_percent': product.get('discount_percent'),
-                    'purchase_url': product.get('purchase_url', product.get('url', '')),
-                    'change_date': today,
-                    'product_key': product_key,
-                    'lowest_price': lowest_price,
-                    'lowest_price_date': lowest_price_date_formatted
-                })
+                price_changes.append(
+                    {
+                        "name": product.get("name", "Unknown Product"),
+                        "current_price": current_price,
+                        "previous_price": previous_price,
+                        "original_price": product.get("original_price"),
+                        "discount_percent": product.get("discount_percent"),
+                        "purchase_url": product.get("purchase_url", product.get("url", "")),
+                        "change_date": today,
+                        "product_key": product_key,
+                        "lowest_price": lowest_price,
+                        "lowest_price_date": lowest_price_date_formatted,
+                    }
+                )
             else:
                 logger.info(f"No price change for {product.get('name')}: {current_price:.2f} EUR")
-        
+
         return price_changes
-    
+
     def cleanup_old_history(self, days_to_keep=365):
         """Remove price history older than specified days"""
-        cutoff_date = (datetime.now() - timedelta(days=days_to_keep)).strftime('%Y-%m-%d')
+        cutoff_date = (datetime.now() - timedelta(days=days_to_keep)).strftime("%Y-%m-%d")
         total_removed = 0
-        
+
         for product_key in self.price_history:
-            price_hist = self.price_history[product_key]['price_history']
+            price_hist = self.price_history[product_key]["price_history"]
             dates_to_remove = [date for date in price_hist.keys() if date < cutoff_date]
-            
+
             for date in dates_to_remove:
                 del price_hist[date]
                 total_removed += 1
-        
+
         if total_removed > 0:
-            logger.info(f"Cleaned up {total_removed} price history entries older than {days_to_keep} days")
-    
-    def get_price_summary(self, current_products: Optional[List[Dict]] = None) -> Dict:
+            logger.info(
+                f"Cleaned up {total_removed} price history entries older than {days_to_keep} days"
+            )
+
+    def get_price_summary(self, current_products: list[dict] | None = None) -> dict:
         """Get a summary of current prices and trends"""
         # If current_products is provided, only show those in summary
         if current_products:
             current_product_keys = {self.get_product_key(p) for p in current_products}
         else:
             current_product_keys = None
-        
-        summary = {
-            'total_products': len(self.price_history),
-            'products': []
-        }
-        
+
+        summary = {"total_products": len(self.price_history), "products": []}
+
         for product_key, product_data in self.price_history.items():
             # Skip products not in current run if we're filtering
             if current_product_keys and product_key not in current_product_keys:
                 continue
-                
-            price_hist = product_data['price_history']
+
+            price_hist = product_data["price_history"]
             if not price_hist:
                 continue
-            
+
             # Get latest price
             latest_date = max(price_hist.keys())
             latest_data = price_hist[latest_date]
-            
+
             # Calculate trend (compare with 7 days ago)
-            week_ago = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
+            week_ago = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
             trend = "stable"
             trend_change = 0
-            
+
             if week_ago in price_hist:
-                old_price = price_hist[week_ago]['current_price']
-                current_price = latest_data['current_price']
+                old_price = price_hist[week_ago]["current_price"]
+                current_price = latest_data["current_price"]
                 trend_change = current_price - old_price
-                
+
                 if abs(trend_change) > 0.01:
                     trend = "down" if trend_change < 0 else "up"
-            
-            summary['products'].append({
-                'name': product_data['name'],
-                'current_price': latest_data['current_price'],
-                'original_price': latest_data.get('original_price'),
-                'discount_percent': latest_data.get('discount_percent'),
-                'purchase_url': product_data['purchase_url'],
-                'trend': trend,
-                'trend_change': trend_change,
-                'last_updated': latest_date
-            })
-        
+
+            summary["products"].append(
+                {
+                    "name": product_data["name"],
+                    "current_price": latest_data["current_price"],
+                    "original_price": latest_data.get("original_price"),
+                    "discount_percent": latest_data.get("discount_percent"),
+                    "purchase_url": product_data["purchase_url"],
+                    "trend": trend,
+                    "trend_change": trend_change,
+                    "last_updated": latest_date,
+                }
+            )
+
         # Update total count if we filtered
         if current_product_keys:
-            summary['total_products'] = len(summary['products'])
-        
+            summary["total_products"] = len(summary["products"])
+
         return summary
-    
-    def _get_open_discovery_issues(self) -> List[str]:
+
+    def _get_open_discovery_issues(self) -> list[str]:
         """Gets the bodies of all open issues with the 'new-product' label to prevent duplicates."""
         if not self.github_token or not self.github_repo:
-            logger.warning("GITHUB_TOKEN or GITHUB_REPOSITORY not set. Cannot check for open issues.")
+            logger.warning(
+                "GITHUB_TOKEN or GITHUB_REPOSITORY not set. Cannot check for open issues."
+            )
             return []
 
-        url = f"https://api.github.com/repos/{self.github_repo}/issues?state=open&labels=new-product"
-        headers = {'Authorization': f'token {self.github_token}', 'Accept': 'application/vnd.github.v3+json'}
+        url = (
+            f"https://api.github.com/repos/{self.github_repo}/issues?state=open&labels=new-product"
+        )
+        headers = {
+            "Authorization": f"token {self.github_token}",
+            "Accept": "application/vnd.github.v3+json",
+        }
         try:
             response = requests.get(url, headers=headers)
             response.raise_for_status()
-            return [issue['body'] for issue in response.json()]
+            return [issue["body"] for issue in response.json()]
         except Exception as e:
             logger.error(f"Failed to get open GitHub issues: {e}")
             return []
 
-    def _create_github_issue(self, product: Dict):
+    def _create_github_issue(self, product: dict):
         """Creates a new GitHub issue for a discovered product."""
         if not self.github_token or not self.github_repo:
             logger.warning("GITHUB_TOKEN or GITHUB_REPOSITORY not set. Cannot create issue.")
             return
 
-        name = product.get('name', 'Unknown Product')
+        name = product.get("name", "Unknown Product")
         title = f"New Product Discovery: {name}"
-        
+
         # Embed product data in a JSON block for the action to parse
         product_data_for_issue = {
             "site": product.get("site", "bjornborg"),
             "url": product.get("url", "").replace("https://www.bjornborg.com", ""),
             "name": name,
-            "current_price": product.get("current_price")
+            "current_price": product.get("current_price"),
         }
 
         body = f"""
@@ -307,8 +329,8 @@ A new product variant has been discovered. Please reply to this issue's notifica
 
 ### Product Details
 - **Name**: {name}
-- **Price**: {product.get('current_price')} EUR
-- **URL**: {product.get('url')}
+- **Price**: {product.get("current_price")} EUR
+- **URL**: {product.get("url")}
 
 ---
 **For Automation (do not edit):**
@@ -316,57 +338,38 @@ A new product variant has been discovered. Please reply to this issue's notifica
 {json.dumps(product_data_for_issue, indent=2)}
 ```
 """
-        
+
         issue_payload = {"title": title, "body": body, "labels": ["new-product"]}
         url = f"https://api.github.com/repos/{self.github_repo}/issues"
-        headers = {'Authorization': f'token {self.github_token}', 'Accept': 'application/vnd.github.v3+json'}
+        headers = {
+            "Authorization": f"token {self.github_token}",
+            "Accept": "application/vnd.github.v3+json",
+        }
         try:
             response = requests.post(url, json=issue_payload, headers=headers)
             response.raise_for_status()
             logger.info(f"Successfully created issue for {name}")
         except Exception as e:
             logger.error(f"Failed to create GitHub issue for {name}: {e}")
-    
-    def get_tracked_products(self) -> List[Dict]:
+
+    def get_tracked_products(self) -> list[dict]:
         """Get list of products that should be tracked based on YAML config."""
         tracked_products = []
-        for site_products in self.product_config.get('products', {}).values():
+        for site_products in self.product_config.get("products", {}).values():
             for prod in site_products:
-                if prod.get('status') == 'track':
+                if prod.get("status") == "track":
                     tracked_products.append(prod)
         return tracked_products
-    
-    def check_for_new_variants(self, discovery_frequency_days=7):
+
+    def check_for_new_variants(self):
         """Discover new variants and create GitHub issues for them."""
         logger.info("🔍 Discovering new product variants...")
-        
-        # Check when we last ran variant discovery
-        last_discovery_file = 'last_variant_discovery.json'
-        today = datetime.now()
-        
-        should_run_discovery = True
-        
-        if os.path.exists(last_discovery_file):
-            try:
-                with open(last_discovery_file, 'r') as f:
-                    last_discovery_data = json.load(f)
-                    last_discovery_date = datetime.fromisoformat(last_discovery_data['last_discovery_date'])
-                    
-                    days_since_last = (today - last_discovery_date).days
-                    if days_since_last < discovery_frequency_days:
-                        logger.info(f"Skipping variant discovery - only {days_since_last} days since last check (frequency: {discovery_frequency_days} days)")
-                        should_run_discovery = False
-            except Exception as e:
-                logger.warning(f"Error reading last discovery file: {e}")
-        
-        if not should_run_discovery:
-            return
-        
+
         # 1. Get all known product URLs from the config
         all_known_urls = set()
-        for site_products in self.product_config.get('products', {}).values():
+        for site_products in self.product_config.get("products", {}).values():
             for prod in site_products:
-                all_known_urls.add(prod['url'])
+                all_known_urls.add(prod["url"])
 
         # 2. Get currently open discovery issues to avoid duplicates
         open_issue_bodies = self._get_open_discovery_issues()
@@ -376,75 +379,72 @@ A new product variant has been discovered. Please reply to this issue's notifica
 
         issues_created = 0
         for product in discovered_products:
-            relative_url = product.get('url', '').replace(self.bjornborg_scraper.base_url, '')
-            product['relative_url'] = relative_url
+            relative_url = product.get("url", "").replace(self.bjornborg_scraper.base_url, "")
+            product["relative_url"] = relative_url
 
             # 4. Check if this product is truly new
             if relative_url in all_known_urls:
-                continue # Already in products.yaml
+                continue  # Already in products.yaml
 
             if any(relative_url in body for body in open_issue_bodies):
-                logger.info(f"Skipping issue creation for {relative_url}, an open issue already exists.")
-                continue # Already has an open issue
+                logger.info(
+                    f"Skipping issue creation for {relative_url}, an open issue already exists."
+                )
+                continue  # Already has an open issue
 
             # 5. If truly new, create an issue
             logger.info(f"✨ Found new potential variant: {product.get('name')}")
             self._create_github_issue(product)
             issues_created += 1
-        
-        # Update last discovery timestamp
-        with open(last_discovery_file, 'w') as f:
-            json.dump({
-                'last_discovery_date': today.isoformat(),
-                'issues_created': issues_created
-            }, f, indent=2)
-        
+
         if issues_created > 0:
             logger.info(f"Created {issues_created} GitHub issues for new variants")
         else:
             logger.info("No new variants discovered")
-    
+
     def run_monitoring_cycle(self):
         """Run a complete monitoring cycle: scrape, compare, notify"""
         logger.info("Starting price monitoring cycle...")
-        
+
         try:
             # Scrape current prices from all sites
             logger.info("Scraping current prices from all sites...")
             current_products = self.scrape_all_sites()
-            
+
             if not current_products:
                 logger.warning("No products found during scraping")
-                
+
                 # Send failure alert email
                 error_details = "No Essential 10-pack products were found during scraping.\n\n"
                 error_details += "This likely means:\n"
                 error_details += "- Product URLs have changed or are no longer valid\n"
-                error_details += "- Website structure has been updated\n" 
+                error_details += "- Website structure has been updated\n"
                 error_details += "- Products are out of stock or discontinued\n"
                 error_details += "- Anti-bot measures are blocking access\n\n"
-                error_details += "Please check the product pages manually and update the scraper if needed."
-                
+                error_details += (
+                    "Please check the product pages manually and update the scraper if needed."
+                )
+
                 logger.info("Sending scraper failure alert email...")
                 alert_sent = self.email_sender.send_scraper_failure_alert(error_details)
                 if alert_sent:
                     logger.info("Failure alert email sent successfully")
                 else:
                     logger.error("Failed to send failure alert email")
-                
+
                 return False, []
-            
+
             logger.info(f"Successfully scraped {len(current_products)} products")
-            
+
             # Detect price changes
             price_changes = self.detect_price_changes(current_products)
-            
+
             # Save updated price history
             self.save_price_history()
-            
+
             # Check for new variants and create GitHub issues (configurable frequency - default weekly)
             self.check_for_new_variants()
-            
+
             # Send email notifications only for price changes
             if price_changes:
                 logger.info(f"Sending email notification for {len(price_changes)} price changes")
@@ -455,77 +455,85 @@ A new product variant has been discovered. Please reply to this issue's notifica
                     logger.error("Failed to send email notification")
             else:
                 logger.info("No price changes detected - no email sent")
-            
+
             # Cleanup old history
             self.cleanup_old_history()
-            
+
             logger.info("Monitoring cycle completed successfully")
             return True, current_products
-            
+
         except Exception as e:
             logger.error(f"Error during monitoring cycle: {e}")
             return False, []
 
+
 def main():
     """Main function"""
     logger.info("Björn Borg Sock Price Monitor starting...")
-    
+
     # Check if this is a test run
-    if len(sys.argv) > 1 and sys.argv[1] == '--test':
+    if len(sys.argv) > 1 and sys.argv[1] == "--test":
         logger.info("Running in test mode...")
-        
+
         try:
             monitor = PriceMonitor()
-            
+
             # Test scraping
             print("Testing scraper...")
             products = monitor.scrape_all_sites()
             if products:
                 print(f"✅ Scraping test passed - found {len(products)} products")
                 for product in products:
-                    print(f"  - {product.get('name', 'Unknown')}: {product.get('current_price', 0):.2f} EUR")
+                    print(
+                        f"  - {product.get('name', 'Unknown')}: {product.get('current_price', 0):.2f} EUR"
+                    )
                     print(f"    URL: {product.get('purchase_url', product.get('url', 'N/A'))}")
             else:
                 print("❌ Scraping test failed - no products found")
                 return
-            
+
             # Test email
             print("\nTesting email notifications...")
-            test_email = EmailSender()  
+            test_email = EmailSender()
             if test_email.send_test_email():
                 print("✅ Email test passed")
             else:
                 print("❌ Email test failed")
-                
+
         except Exception as e:
             print(f"❌ Test failed: {e}")
-        
+
         return
-    
+
     # Normal monitoring run
     try:
         monitor = PriceMonitor()
         success, current_products = monitor.run_monitoring_cycle()
-        
+
         if success:
             print("✅ Monitoring cycle completed successfully")
-            
+
             # Print summary - only show currently tracked products
             summary = monitor.get_price_summary(current_products=current_products)
             print(f"\n📊 Price Summary ({summary['total_products']} products tracked):")
-            for product in summary['products']:
-                trend_emoji = {"up": "📈", "down": "📉", "stable": "➡️"}[product['trend']]
+            for product in summary["products"]:
+                trend_emoji = {"up": "📈", "down": "📉", "stable": "➡️"}[product["trend"]]
                 print(f"  {trend_emoji} {product['name']}: {product['current_price']:.2f} EUR")
-                if product.get('original_price'):
-                    discount = ((product['original_price'] - product['current_price']) / product['original_price'] * 100)
+                if product.get("original_price"):
+                    discount = (
+                        (product["original_price"] - product["current_price"])
+                        / product["original_price"]
+                        * 100
+                    )
                     print(f"      (was {product['original_price']:.2f} EUR, -{discount:.0f}% off)")
         else:
             print("❌ Monitoring cycle failed")
             exit(1)
-            
+
     except Exception as e:
         logger.error(f"Fatal error: {e}")
         exit(1)
+
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 [project]
-name = "scraper"
-version = "0.1.0"
+name = "price-monitor"
+version = "1.0.0"
 description = "Multi-site price monitoring system for Björn Borg and Fitnesstukku products"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -11,4 +11,48 @@ dev = [
     "lxml>=4.9.0",
     "pyyaml>=6.0",
     "requests>=2.31.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.4.0",
+    "responses>=0.25.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # Pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",   # Line too long (handled by formatter)
+    "B007",   # Loop control variable not used (legacy code)
+    "B008",   # Do not perform function calls in argument defaults
+    "B904",   # Within except clause, raise with from (stylistic)
+    "B905",   # zip() without strict (backward compat)
+    "SIM102", # Nested if statements (can be clearer)
+    "SIM105", # contextlib.suppress (stylistic preference)
+    "SIM118", # Use key in dict instead of dict.keys()
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["scrapers"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
 ]

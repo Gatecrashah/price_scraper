@@ -6,6 +6,6 @@ designed for robustness and maintainability.
 """
 
 from .bjornborg import BjornBorgScraper
-from .fitnesstukku import FitnesstukuScraper
+from .fitnesstukku import FitnesstukkuScraper
 
-__all__ = ['BjornBorgScraper', 'FitnesstukuScraper']
+__all__ = ["BjornBorgScraper", "FitnesstukkuScraper"]
