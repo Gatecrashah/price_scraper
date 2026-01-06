@@ -12,10 +12,10 @@ class TestEmailTemplatesColors:
 
         assert "text_primary" in colors
         assert "text_secondary" in colors
-        assert "bg_cream" in colors
+        assert "bg_main" in colors
         assert "bg_white" in colors
-        assert "price_drop" in colors
-        assert "price_increase" in colors
+        assert "accent_drop" in colors
+        assert "accent_rise" in colors
         assert "bjornborg" in colors
         assert "fitnesstukku" in colors
 
@@ -27,33 +27,33 @@ class TestEmailTemplatesColors:
             assert len(color) in [4, 7], f"Color {name} has invalid length"
 
 
-class TestFormatPriceBadge:
-    """Tests for _format_price_badge method."""
+class TestFormatPrice:
+    """Tests for _format_price method."""
 
     def test_format_current_price(self):
-        """Test formatting current price badge."""
-        result = EmailTemplates._format_price_badge(35.96, is_current=True)
+        """Test formatting current price."""
+        result = EmailTemplates._format_price(35.96, is_current=True)
 
         assert "35.96" in result
-        assert "EUR" in result
+        assert "€" in result
         assert "line-through" not in result
 
     def test_format_previous_price(self):
-        """Test formatting previous (crossed out) price badge."""
-        result = EmailTemplates._format_price_badge(44.95, is_current=False)
+        """Test formatting previous (crossed out) price."""
+        result = EmailTemplates._format_price(44.95, is_current=False)
 
         assert "44.95" in result
         assert "line-through" in result
 
     def test_format_large_price(self):
         """Test formatting with large size."""
-        result = EmailTemplates._format_price_badge(99.99, is_current=True, size="large")
+        result = EmailTemplates._format_price(99.99, is_current=True, size="large")
 
-        assert "32px" in result
+        assert "36px" in result
 
     def test_format_small_price(self):
         """Test formatting with small size."""
-        result = EmailTemplates._format_price_badge(99.99, is_current=True, size="small")
+        result = EmailTemplates._format_price(99.99, is_current=True, size="small")
 
         assert "18px" in result
 
@@ -75,8 +75,8 @@ class TestFormatProductChange:
         assert "Test Product" in result
         assert "35.96" in result
         assert "44.95" in result
-        assert "Save" in result
-        assert "▼" in result
+        assert "You save" in result
+        assert "↓" in result
 
     def test_format_price_increase(self):
         """Test formatting a price increase."""
@@ -89,8 +89,8 @@ class TestFormatProductChange:
 
         result = EmailTemplates.format_product_change(change)
 
-        assert "Up" in result
-        assert "▲" in result
+        assert "+" in result  # Shows +X.XX€ for increases
+        assert "↑" in result
 
     def test_format_with_brand(self):
         """Test formatting with brand information."""
@@ -106,21 +106,19 @@ class TestFormatProductChange:
 
         assert "BJÖRN BORG" in result
 
-    def test_format_with_original_price(self):
-        """Test formatting with original price (RRP discount)."""
+    def test_format_with_purchase_url(self):
+        """Test formatting includes purchase URL in link."""
         change = {
             "name": "Test Product",
             "current_price": 35.96,
             "previous_price": 40.00,
-            "original_price": 49.95,
             "purchase_url": "https://example.com/product",
         }
 
         result = EmailTemplates.format_product_change(change)
 
-        assert "off RRP" in result
-        assert "Originally" in result
-        assert "49.95" in result
+        assert "https://example.com/product" in result
+        assert "View deal" in result
 
     def test_format_with_lowest_price_ever(self):
         """Test formatting when current price is lowest ever."""
@@ -150,7 +148,7 @@ class TestFormatProductChange:
 
         result = EmailTemplates.format_product_change(change)
 
-        assert "Historical Low" in result
+        assert "Historical low" in result
         assert "30.00" in result
 
     def test_format_includes_cta_button(self):
@@ -164,7 +162,7 @@ class TestFormatProductChange:
 
         result = EmailTemplates.format_product_change(change)
 
-        assert "View Deal" in result
+        assert "View deal" in result
         assert "https://example.com/product" in result
 
 
@@ -253,7 +251,7 @@ class TestCreateFailureAlertEmail:
         result = EmailTemplates.create_failure_alert_email("Connection timeout")
 
         assert "<!DOCTYPE html>" in result
-        assert "Monitoring Interrupted" in result
+        assert "Monitoring Failed" in result
 
     def test_includes_error_details(self):
         """Test that error details are included."""
@@ -267,17 +265,16 @@ class TestCreateFailureAlertEmail:
         """Test that possible causes are listed."""
         result = EmailTemplates.create_failure_alert_email("Test error")
 
-        assert "Possible Causes" in result
-        assert "Product URLs have changed" in result
+        assert "Possible causes" in result
+        assert "Product URLs changed" in result
         assert "Website structure" in result
         assert "Anti-bot" in result
 
-    def test_includes_recommended_actions(self):
-        """Test that recommended actions are listed."""
+    def test_includes_github_actions_reference(self):
+        """Test that GitHub Actions reference is included."""
         result = EmailTemplates.create_failure_alert_email("Test error")
 
-        assert "Recommended Actions" in result
-        assert "GitHub Actions logs" in result
+        assert "GitHub Actions" in result
 
 
 class TestCreateTestEmail:
@@ -294,7 +291,7 @@ class TestCreateTestEmail:
         """Test that success indicator is present."""
         result = EmailTemplates.create_test_email()
 
-        assert "Email Configuration Successful" in result
+        assert "configured and ready" in result
         assert "Operational" in result
 
     def test_includes_provider_info(self):
@@ -319,7 +316,6 @@ class TestCreateAnalysisReportEmail:
         result = EmailTemplates.create_analysis_report_email(report_data)
 
         assert "<!DOCTYPE html>" in result
-        assert "Price Analysis" in result
         assert "Monthly Report" in result
 
     def test_includes_summary_stats(self):
@@ -336,9 +332,9 @@ class TestCreateAnalysisReportEmail:
 
         result = EmailTemplates.create_analysis_report_email(report_data)
 
-        assert "Products Tracked" in result
-        assert "Avg. Discount" in result
-        assert "Price Changes" in result
+        assert "Products" in result
+        assert "Avg Discount" in result
+        assert "Changes" in result
 
     def test_includes_best_deal_section(self):
         """Test that best deal is highlighted when present."""
@@ -359,7 +355,7 @@ class TestCreateAnalysisReportEmail:
 
         result = EmailTemplates.create_analysis_report_email(report_data)
 
-        assert "Best Deal This Period" in result
+        assert "Best Deal" in result
         assert "Best Deal Product" in result
         assert "29.99" in result
 
@@ -385,10 +381,10 @@ class TestCreateAnalysisReportEmail:
 
         assert "Product Overview" in result
         assert "Test Product" in result
-        assert "Current" in result
-        assert "Lowest" in result
-        assert "Highest" in result
-        assert "Average" in result
+        assert "Now" in result
+        assert "Low" in result
+        assert "High" in result
+        assert "Avg" in result
 
     def test_trend_indicators(self):
         """Test that trend indicators are shown correctly."""
@@ -427,8 +423,8 @@ class TestCreateAnalysisReportEmail:
         result = EmailTemplates.create_analysis_report_email(report_data)
 
         # Should contain trend symbols
-        assert "▼" in result  # Down trend
-        assert "▲" in result  # Up trend
+        assert "↓" in result  # Down trend
+        assert "↑" in result  # Up trend
         assert "→" in result  # Stable trend
 
 
@@ -461,14 +457,14 @@ class TestEmailWrapper:
 
         assert "Test preheader" in result
 
-    def test_wrapper_uses_cream_background(self):
-        """Test that wrapper uses cream background color."""
+    def test_wrapper_uses_main_background(self):
+        """Test that wrapper uses main background color."""
         result = EmailTemplates._email_wrapper("<tr><td>Test</td></tr>")
 
-        assert EmailTemplates.COLORS["bg_cream"] in result
+        assert EmailTemplates.COLORS["bg_main"] in result
 
     def test_wrapper_sets_max_width(self):
         """Test that wrapper sets max width for email."""
         result = EmailTemplates._email_wrapper("<tr><td>Test</td></tr>")
 
-        assert "max-width: 600px" in result
+        assert "max-width: 480px" in result

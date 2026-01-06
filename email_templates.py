@@ -1,36 +1,34 @@
 #!/usr/bin/env python3
 """
 Email template system for price monitoring notifications
-Redesigned with editorial/magazine aesthetic and email-safe inline styles
+Modern minimal design with strong typography and mobile-first layout
 """
 
 from datetime import datetime
 
 
 class EmailTemplates:
-    """Centralized email template manager with premium editorial design"""
+    """Centralized email template manager with modern minimal design"""
 
-    # Color palette - refined, sophisticated
+    # Color palette - warm, modern, clean
     COLORS = {
-        "text_primary": "#1a1a2e",
-        "text_secondary": "#4a5568",
-        "text_muted": "#718096",
-        "bg_cream": "#faf8f5",
+        "text_primary": "#1c1917",  # Warm black
+        "text_secondary": "#57534e",  # Stone gray
+        "text_muted": "#a8a29e",  # Light stone
+        "bg_main": "#fafaf9",  # Warm off-white
         "bg_white": "#ffffff",
-        "bg_light": "#f7f5f2",
-        "accent_teal": "#0d7377",
-        "accent_gold": "#b8860b",
-        "price_drop": "#0d7377",  # Teal for savings
-        "price_increase": "#9f1239",  # Deep rose for increases
-        "border": "#e2ddd5",
-        "border_dark": "#1a1a2e",
-        "bjornborg": "#1a1a2e",  # Sophisticated black
-        "fitnesstukku": "#0d7377",  # Teal
+        "bg_card": "#f5f5f4",  # Subtle card bg
+        "accent_drop": "#059669",  # Emerald green for drops
+        "accent_rise": "#dc2626",  # Red for increases
+        "accent_highlight": "#fef3c7",  # Warm yellow highlight
+        "border": "#e7e5e4",  # Light border
+        "bjornborg": "#1c1917",  # Brand black
+        "fitnesstukku": "#059669",  # Brand green
     }
 
     @classmethod
     def _email_wrapper(cls, content: str, preheader: str = "") -> str:
-        """Wrap content in email-safe HTML structure"""
+        """Wrap content in email-safe HTML structure with modern minimal design"""
         return f"""<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -41,11 +39,11 @@ class EmailTemplates:
     <title>Price Alert</title>
     <!--[if mso]>
     <style type="text/css">
-        table, td, th {{font-family: Georgia, serif !important;}}
+        table, td, th {{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;}}
     </style>
     <![endif]-->
 </head>
-<body style="margin: 0; padding: 0; background-color: {cls.COLORS["bg_cream"]}; font-family: Georgia, 'Times New Roman', serif; -webkit-font-smoothing: antialiased;">
+<body style="margin: 0; padding: 0; background-color: {cls.COLORS["bg_main"]}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;">
     <!-- Preheader text (hidden) -->
     <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;">
         {preheader}
@@ -53,11 +51,11 @@ class EmailTemplates:
     </div>
 
     <!-- Email container -->
-    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_cream"]};">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_main"]};">
         <tr>
-            <td align="center" style="padding: 40px 20px;">
-                <!-- Main content card -->
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px; background-color: {cls.COLORS["bg_white"]}; border: 1px solid {cls.COLORS["border"]};">
+            <td align="center" style="padding: 24px 16px;">
+                <!-- Main content area -->
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 480px;">
                     {content}
                 </table>
             </td>
@@ -67,21 +65,29 @@ class EmailTemplates:
 </html>"""
 
     @classmethod
-    def _format_price_badge(cls, price: float, is_current: bool = True, size: str = "large") -> str:
-        """Format a price as a styled badge"""
-        font_size = "32px" if size == "large" else "18px"
+    def _format_price(cls, price: float, is_current: bool = True, size: str = "large") -> str:
+        """Format a price with clean typography"""
+        if size == "large":
+            font_size = "36px"
+            currency_size = "18px"
+        elif size == "medium":
+            font_size = "24px"
+            currency_size = "14px"
+        else:
+            font_size = "18px"
+            currency_size = "12px"
+
         color = cls.COLORS["text_primary"] if is_current else cls.COLORS["text_muted"]
         decoration = "none" if is_current else "line-through"
 
-        return f"""<span style="font-family: 'Courier New', monospace; font-size: {font_size}; font-weight: bold; color: {color}; text-decoration: {decoration}; letter-spacing: -1px;">{price:.2f}</span><span style="font-family: Georgia, serif; font-size: 14px; color: {cls.COLORS["text_muted"]}; margin-left: 4px;">EUR</span>"""
+        return f"""<span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', 'Roboto Mono', monospace; font-size: {font_size}; font-weight: 600; color: {color}; text-decoration: {decoration}; letter-spacing: -1px;">{price:.2f}</span><span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: {currency_size}; font-weight: 500; color: {cls.COLORS["text_muted"]}; margin-left: 4px;">€</span>"""
 
     @classmethod
     def format_product_change(cls, change: dict) -> str:
-        """Format individual product change with editorial styling"""
+        """Format individual product change with clean mobile-first layout"""
         product_name = change.get("name", "Unknown Product")
         current_price = change.get("current_price", 0)
         previous_price = change.get("previous_price", 0)
-        original_price = change.get("original_price")
         purchase_url = change.get("purchase_url", "#")
         brand = change.get("brand", "")
 
@@ -95,39 +101,15 @@ class EmailTemplates:
         )
 
         is_drop = change_amount < 0
-        indicator_color = cls.COLORS["price_drop"] if is_drop else cls.COLORS["price_increase"]
-        indicator_bg = "#e6f3f3" if is_drop else "#fdf2f4"
-        change_symbol = "▼" if is_drop else "▲"
+        indicator_color = cls.COLORS["accent_drop"] if is_drop else cls.COLORS["accent_rise"]
+        indicator_bg = "#ecfdf5" if is_drop else "#fef2f2"
+        change_symbol = "↓" if is_drop else "↑"
         savings_text = (
-            f"Save {abs(change_amount):.2f} EUR" if is_drop else f"Up {abs(change_amount):.2f} EUR"
+            f"You save {abs(change_amount):.2f}€" if is_drop else f"+{abs(change_amount):.2f}€"
         )
 
         # Check if current price matches or beats lowest price
         is_lowest = lowest_price and current_price <= lowest_price
-
-        # Calculate total discount if original price available
-        total_discount_html = ""
-        if original_price and original_price > current_price:
-            total_discount = (original_price - current_price) / original_price * 100
-            total_discount_html = f"""
-                                <tr>
-                                    <td style="padding-top: 16px;">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                                            <tr>
-                                                <td style="background-color: {cls.COLORS["accent_gold"]}; padding: 6px 12px; border-radius: 2px;">
-                                                    <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["bg_white"]}; text-transform: uppercase; letter-spacing: 1px;">
-                                                        {total_discount:.0f}% off RRP
-                                                    </span>
-                                                </td>
-                                                <td style="padding-left: 10px;">
-                                                    <span style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_muted"]};">
-                                                        Originally {original_price:.2f} EUR
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>"""
 
         # Historical lowest price section
         lowest_price_html = ""
@@ -135,12 +117,12 @@ class EmailTemplates:
             if is_lowest:
                 lowest_price_html = f"""
                                 <tr>
-                                    <td style="padding-top: 16px;">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #e6f3f3; border-radius: 4px;">
+                                    <td style="padding-top: 12px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["accent_highlight"]}; border-radius: 8px;">
                                             <tr>
-                                                <td style="padding: 12px 16px;">
-                                                    <span style="font-family: Georgia, serif; font-size: 14px; color: {cls.COLORS["price_drop"]}; font-weight: bold;">
-                                                        ★ Lowest price ever!
+                                                <td style="padding: 10px 14px;">
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; font-weight: 600; color: #92400e;">
+                                                        Lowest price ever recorded
                                                     </span>
                                                 </td>
                                             </tr>
@@ -150,53 +132,31 @@ class EmailTemplates:
             else:
                 lowest_price_html = f"""
                                 <tr>
-                                    <td style="padding-top: 16px;">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_light"]}; border-radius: 4px;">
-                                            <tr>
-                                                <td style="padding: 12px 16px;">
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                                        <tr>
-                                                            <td>
-                                                                <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 1px;">Historical Low</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="padding-top: 4px;">
-                                                                <span style="font-family: 'Courier New', monospace; font-size: 18px; font-weight: bold; color: {cls.COLORS["text_secondary"]};">{lowest_price:.2f}</span>
-                                                                <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]};"> EUR on {lowest_price_date}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td style="padding-top: 12px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]};">
+                                            Historical low: <strong style="color: {cls.COLORS["text_secondary"]};">{lowest_price:.2f}€</strong> on {lowest_price_date}
+                                        </span>
                                     </td>
                                 </tr>"""
 
         brand_html = (
-            f"""<span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 1.5px;">{brand}</span><br>"""
+            f"""<span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; font-weight: 600; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 0.5px;">{brand}</span><br>"""
             if brand
             else ""
         )
 
         return f'''
                                     <tr>
-                                        <td style="padding: 24px 40px; border-bottom: 1px solid {cls.COLORS["border"]};">
-                                            <!-- Product header -->
+                                        <td style="padding: 20px; background-color: {cls.COLORS["bg_white"]}; border-radius: 12px; margin-bottom: 12px;">
+                                            <!-- Percentage badge - prominent at top -->
                                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                 <tr>
                                                     <td>
-                                                        {brand_html}
-                                                        <span style="font-family: Georgia, serif; font-size: 18px; color: {cls.COLORS["text_primary"]}; line-height: 1.3;">
-                                                            {product_name}
-                                                        </span>
-                                                    </td>
-                                                    <td align="right" valign="top">
                                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                                                             <tr>
-                                                                <td style="background-color: {indicator_bg}; padding: 8px 14px; border-radius: 2px;">
-                                                                    <span style="font-family: Georgia, serif; font-size: 13px; color: {indicator_color}; font-weight: bold;">
-                                                                        {change_symbol} {abs(change_percent):.1f}%
+                                                                <td style="background-color: {indicator_bg}; padding: 6px 12px; border-radius: 20px;">
+                                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 700; color: {indicator_color};">
+                                                                        {change_symbol} {abs(change_percent):.0f}%
                                                                     </span>
                                                                 </td>
                                                             </tr>
@@ -205,53 +165,58 @@ class EmailTemplates:
                                                 </tr>
                                             </table>
 
-                                            <!-- Price display -->
+                                            <!-- Product name -->
+                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 14px;">
+                                                <tr>
+                                                    <td>
+                                                        {brand_html}
+                                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 18px; font-weight: 500; color: {cls.COLORS["text_primary"]}; line-height: 1.4;">
+                                                            {product_name}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                            <!-- Price display - stacked for mobile -->
                                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 16px;">
                                                 <tr>
                                                     <td>
-                                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                                                            <tr>
-                                                                <td style="padding-right: 20px; border-right: 1px solid {cls.COLORS["border"]};">
-                                                                    <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Now</span>
-                                                                    {cls._format_price_badge(current_price, True)}
-                                                                </td>
-                                                                <td style="padding-left: 20px;">
-                                                                    <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Was</span>
-                                                                    {cls._format_price_badge(previous_price, False)}
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                        {cls._format_price(current_price, True, "large")}
                                                     </td>
-                                                    <td align="right" valign="bottom">
-                                                        <span style="font-family: Georgia, serif; font-size: 14px; color: {indicator_color}; font-style: italic;">
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top: 6px;">
+                                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17px; color: {cls.COLORS["text_muted"]}; text-decoration: line-through;">{previous_price:.2f}€</span>
+                                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; font-weight: 600; color: {indicator_color}; margin-left: 10px;">
                                                             {savings_text}
                                                         </span>
                                                     </td>
                                                 </tr>
                                             </table>
 
-                                            <!-- Additional info rows -->
+                                            <!-- Historical low info -->
                                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                                {total_discount_html}
                                                 {lowest_price_html}
                                             </table>
 
                                             <!-- CTA Button -->
-                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top: 20px;">
+                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 16px;">
                                                 <tr>
-                                                    <td style="background-color: {cls.COLORS["text_primary"]}; border-radius: 2px;">
-                                                        <a href="{purchase_url}" target="_blank" style="display: inline-block; padding: 12px 24px; font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["bg_white"]}; text-decoration: none; text-transform: uppercase; letter-spacing: 1.5px;">
-                                                            View Deal &rarr;
+                                                    <td>
+                                                        <a href="{purchase_url}" target="_blank" style="display: inline-block; padding: 12px 20px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; font-weight: 600; color: {cls.COLORS["bg_white"]}; background-color: {cls.COLORS["text_primary"]}; text-decoration: none; border-radius: 8px;">
+                                                            View deal →
                                                         </a>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </td>
-                                    </tr>'''
+                                    </tr>
+                                    <!-- Spacer between products -->
+                                    <tr><td style="height: 12px;"></td></tr>'''
 
     @classmethod
     def create_price_alert_email(cls, price_changes: list[dict]) -> str:
-        """Create complete price alert email with editorial design"""
+        """Create complete price alert email with modern minimal design"""
 
         if not price_changes:
             return "No price changes detected."
@@ -275,7 +240,7 @@ class EmailTemplates:
         )
         increases = len(price_changes) - drops
 
-        today = datetime.now().strftime("%B %d, %Y")
+        today = datetime.now().strftime("%b %d, %Y")
 
         # Build preheader
         preheader = (
@@ -284,40 +249,39 @@ class EmailTemplates:
             else f"{increases} price change{'s' if increases != 1 else ''}"
         )
 
-        # Header section
-        content = f"""
-                    <!-- Masthead -->
-                    <tr>
-                        <td style="background-color: {cls.COLORS["text_primary"]}; padding: 32px 40px; text-align: center;">
-                            <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 3px;">
-                                Price Monitor
-                            </span>
-                            <h1 style="margin: 12px 0 0 0; font-family: Georgia, serif; font-size: 28px; font-weight: normal; color: {cls.COLORS["bg_white"]}; letter-spacing: -0.5px;">
-                                Price Alert
-                            </h1>
-                        </td>
-                    </tr>
+        # Summary text
+        if drops > 0 and increases == 0:
+            summary_text = f"{drops} price drop{'s' if drops != 1 else ''}"
+            accent_color = cls.COLORS["accent_drop"]
+        elif increases > 0 and drops == 0:
+            summary_text = f"{increases} price increase{'s' if increases != 1 else ''}"
+            accent_color = cls.COLORS["accent_rise"]
+        else:
+            summary_text = f"{drops} ↓ · {increases} ↑"
+            accent_color = cls.COLORS["text_primary"]
 
-                    <!-- Date & Summary bar -->
+        # Header section - clean and simple
+        content = f"""
+                    <!-- Header -->
                     <tr>
-                        <td style="padding: 20px 40px; background-color: {cls.COLORS["bg_light"]}; border-bottom: 1px solid {cls.COLORS["border"]};">
+                        <td style="padding: 0 0 28px 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td>
-                                        <span style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_secondary"]};">
-                                            {today}
-                                        </span>
+                                    <td style="padding-bottom: 16px;">
+                                        <div style="width: 40px; height: 4px; background-color: {accent_color}; border-radius: 2px;"></div>
                                     </td>
-                                    <td align="right">
-                                        <span style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_primary"]};">
-                                            <strong>{len(price_changes)}</strong> update{"s" if len(price_changes) != 1 else ""}
-                                        </span>
-                                        <span style="color: {cls.COLORS["border"]}; margin: 0 8px;">|</span>
-                                        <span style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["price_drop"]};">
-                                            <strong>{drops}</strong> ▼
-                                        </span>
-                                        <span style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["price_increase"]}; margin-left: 8px;">
-                                            <strong>{increases}</strong> ▲
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h1 style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 28px; font-weight: 700; color: {cls.COLORS["text_primary"]}; letter-spacing: -0.5px;">
+                                            Price Alert
+                                        </h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top: 8px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; color: {cls.COLORS["text_muted"]};">
+                                            {today} · {summary_text}
                                         </span>
                                     </td>
                                 </tr>
@@ -330,27 +294,16 @@ class EmailTemplates:
             content += f"""
                     <!-- Björn Borg Section -->
                     <tr>
-                        <td style="padding: 0;">
+                        <td style="padding: 0 0 8px 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td style="padding: 24px 40px 16px 40px; border-bottom: 2px solid {cls.COLORS["bjornborg"]};">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                            <tr>
-                                                <td>
-                                                    <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 2px;">
-                                                        Fashion & Apparel
-                                                    </span>
-                                                    <h2 style="margin: 4px 0 0 0; font-family: Georgia, serif; font-size: 20px; font-weight: normal; color: {cls.COLORS["bjornborg"]};">
-                                                        Björn Borg
-                                                    </h2>
-                                                </td>
-                                                <td align="right" valign="bottom">
-                                                    <span style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_muted"]};">
-                                                        {len(bjornborg_changes)} item{"s" if len(bjornborg_changes) != 1 else ""}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td style="padding-bottom: 12px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 600; color: {cls.COLORS["text_secondary"]}; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Björn Borg
+                                        </span>
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; margin-left: 8px;">
+                                            {len(bjornborg_changes)} item{"s" if len(bjornborg_changes) != 1 else ""}
+                                        </span>
                                     </td>
                                 </tr>"""
 
@@ -367,27 +320,16 @@ class EmailTemplates:
             content += f"""
                     <!-- Fitnesstukku Section -->
                     <tr>
-                        <td style="padding: 0;">
+                        <td style="padding: 8px 0 0 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td style="padding: 24px 40px 16px 40px; border-bottom: 2px solid {cls.COLORS["fitnesstukku"]};">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                            <tr>
-                                                <td>
-                                                    <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 2px;">
-                                                        Sports Nutrition
-                                                    </span>
-                                                    <h2 style="margin: 4px 0 0 0; font-family: Georgia, serif; font-size: 20px; font-weight: normal; color: {cls.COLORS["fitnesstukku"]};">
-                                                        Fitnesstukku
-                                                    </h2>
-                                                </td>
-                                                <td align="right" valign="bottom">
-                                                    <span style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_muted"]};">
-                                                        {len(fitnesstukku_changes)} item{"s" if len(fitnesstukku_changes) != 1 else ""}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td style="padding-bottom: 12px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 600; color: {cls.COLORS["text_secondary"]}; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Fitnesstukku
+                                        </span>
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; margin-left: 8px;">
+                                            {len(fitnesstukku_changes)} item{"s" if len(fitnesstukku_changes) != 1 else ""}
+                                        </span>
                                     </td>
                                 </tr>"""
 
@@ -399,16 +341,16 @@ class EmailTemplates:
                         </td>
                     </tr>"""
 
-        # Footer
+        # Footer - minimal
         content += f"""
                     <!-- Footer -->
                     <tr>
-                        <td style="padding: 28px 40px; background-color: {cls.COLORS["bg_light"]}; border-top: 1px solid {cls.COLORS["border"]};">
+                        <td style="padding: 24px 0 0 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td align="center">
-                                        <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; font-style: italic;">
-                                            Automated price monitoring &middot; Updated daily at 9:00 UTC
+                                    <td style="border-top: 1px solid {cls.COLORS["border"]}; padding-top: 16px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]};">
+                                            Automated monitoring · Updates daily at 9:00 UTC
                                         </span>
                                     </td>
                                 </tr>
@@ -420,101 +362,85 @@ class EmailTemplates:
 
     @classmethod
     def create_failure_alert_email(cls, error_details: str) -> str:
-        """Create scraper failure alert with refined warning design"""
+        """Create scraper failure alert with clean modern design"""
 
-        today = datetime.now().strftime("%B %d, %Y at %H:%M UTC")
+        today = datetime.now().strftime("%b %d, %Y at %H:%M UTC")
 
         content = f"""
-                    <!-- Alert Header -->
+                    <!-- Header -->
                     <tr>
-                        <td style="background-color: {cls.COLORS["price_increase"]}; padding: 32px 40px; text-align: center;">
-                            <span style="font-family: Georgia, serif; font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 3px;">
-                                System Alert
-                            </span>
-                            <h1 style="margin: 12px 0 0 0; font-family: Georgia, serif; font-size: 28px; font-weight: normal; color: {cls.COLORS["bg_white"]}; letter-spacing: -0.5px;">
-                                Monitoring Interrupted
-                            </h1>
-                        </td>
-                    </tr>
-
-                    <!-- Timestamp -->
-                    <tr>
-                        <td style="padding: 20px 40px; background-color: {cls.COLORS["bg_light"]}; border-bottom: 1px solid {cls.COLORS["border"]};">
-                            <span style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_secondary"]};">
-                                {today}
-                            </span>
-                        </td>
-                    </tr>
-
-                    <!-- Alert content -->
-                    <tr>
-                        <td style="padding: 32px 40px;">
-                            <p style="font-family: Georgia, serif; font-size: 16px; color: {cls.COLORS["text_primary"]}; line-height: 1.6; margin: 0 0 24px 0;">
-                                Your price monitoring system encountered an issue and was unable to complete the scheduled check. Manual intervention may be required.
-                            </p>
-
-                            <!-- Error details box -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 28px;">
-                                <tr>
-                                    <td style="background-color: #fdf8f8; border-left: 3px solid {cls.COLORS["price_increase"]}; padding: 20px;">
-                                        <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 12px;">
-                                            Error Details
-                                        </span>
-                                        <pre style="font-family: 'Courier New', monospace; font-size: 13px; color: {cls.COLORS["text_primary"]}; margin: 0; white-space: pre-wrap; word-wrap: break-word;">{error_details}</pre>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <!-- Possible causes -->
-                            <h3 style="font-family: Georgia, serif; font-size: 14px; color: {cls.COLORS["text_primary"]}; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 16px 0; border-bottom: 1px solid {cls.COLORS["border"]}; padding-bottom: 8px;">
-                                Possible Causes
-                            </h3>
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 28px;">
-                                <tr>
-                                    <td style="padding: 8px 0; font-family: Georgia, serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
-                                        <span style="color: {cls.COLORS["text_muted"]}; margin-right: 12px;">01</span> Product URLs have changed or are invalid
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 8px 0; font-family: Georgia, serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
-                                        <span style="color: {cls.COLORS["text_muted"]}; margin-right: 12px;">02</span> Website structure has been updated
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 8px 0; font-family: Georgia, serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
-                                        <span style="color: {cls.COLORS["text_muted"]}; margin-right: 12px;">03</span> Anti-bot measures blocking access
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 8px 0; font-family: Georgia, serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
-                                        <span style="color: {cls.COLORS["text_muted"]}; margin-right: 12px;">04</span> Products discontinued or out of stock
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 8px 0; font-family: Georgia, serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
-                                        <span style="color: {cls.COLORS["text_muted"]}; margin-right: 12px;">05</span> Network or connectivity issues
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <!-- Actions -->
-                            <h3 style="font-family: Georgia, serif; font-size: 14px; color: {cls.COLORS["text_primary"]}; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 16px 0; border-bottom: 1px solid {cls.COLORS["border"]}; padding-bottom: 8px;">
-                                Recommended Actions
-                            </h3>
+                        <td style="padding: 0 0 28px 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td style="padding: 8px 0; font-family: Georgia, serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
-                                        <span style="color: {cls.COLORS["accent_teal"]}; margin-right: 12px;">&rarr;</span> Verify products are available on the source websites
+                                    <td style="padding-bottom: 16px;">
+                                        <div style="width: 40px; height: 4px; background-color: {cls.COLORS["accent_rise"]}; border-radius: 2px;"></div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 8px 0; font-family: Georgia, serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
-                                        <span style="color: {cls.COLORS["accent_teal"]}; margin-right: 12px;">&rarr;</span> Check GitHub Actions logs for detailed errors
+                                    <td>
+                                        <h1 style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 28px; font-weight: 700; color: {cls.COLORS["accent_rise"]}; letter-spacing: -0.5px;">
+                                            Monitoring Failed
+                                        </h1>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 8px 0; font-family: Georgia, serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
-                                        <span style="color: {cls.COLORS["accent_teal"]}; margin-right: 12px;">&rarr;</span> Update scraper selectors if site structure changed
+                                    <td style="padding-top: 8px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; color: {cls.COLORS["text_muted"]};">
+                                            {today}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Error card -->
+                    <tr>
+                        <td style="padding: 0 0 20px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #fef2f2; border-radius: 12px;">
+                                <tr>
+                                    <td style="padding: 16px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; font-weight: 600; color: {cls.COLORS["accent_rise"]}; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Error Details
+                                        </span>
+                                        <pre style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 13px; color: {cls.COLORS["text_primary"]}; margin: 8px 0 0 0; white-space: pre-wrap; word-wrap: break-word; line-height: 1.5;">{error_details}</pre>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Possible causes -->
+                    <tr>
+                        <td style="padding: 0 0 20px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_white"]}; border-radius: 12px;">
+                                <tr>
+                                    <td style="padding: 16px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 600; color: {cls.COLORS["text_primary"]};">
+                                            Possible causes
+                                        </span>
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 12px;">
+                                            <tr>
+                                                <td style="padding: 6px 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; color: {cls.COLORS["text_secondary"]};">
+                                                    • Product URLs changed or invalid
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 6px 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; color: {cls.COLORS["text_secondary"]};">
+                                                    • Website structure updated
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 6px 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; color: {cls.COLORS["text_secondary"]};">
+                                                    • Anti-bot measures blocking access
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 6px 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; color: {cls.COLORS["text_secondary"]};">
+                                                    • Network or connectivity issues
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
                                 </tr>
                             </table>
@@ -523,12 +449,12 @@ class EmailTemplates:
 
                     <!-- Footer -->
                     <tr>
-                        <td style="padding: 24px 40px; background-color: {cls.COLORS["bg_light"]}; border-top: 1px solid {cls.COLORS["border"]};">
+                        <td style="padding: 16px 0 0 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td align="center">
-                                        <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; font-style: italic;">
-                                            Automated system alert &middot; Price Monitor
+                                    <td style="border-top: 1px solid {cls.COLORS["border"]}; padding-top: 16px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]};">
+                                            Check GitHub Actions logs for details
                                         </span>
                                     </td>
                                 </tr>
@@ -542,69 +468,62 @@ class EmailTemplates:
 
     @classmethod
     def create_test_email(cls) -> str:
-        """Create elegant test email"""
+        """Create clean test email"""
 
-        today = datetime.now().strftime("%B %d, %Y at %H:%M")
+        today = datetime.now().strftime("%b %d, %Y at %H:%M")
 
         content = f"""
                     <!-- Header -->
                     <tr>
-                        <td style="background-color: {cls.COLORS["accent_teal"]}; padding: 32px 40px; text-align: center;">
-                            <span style="font-family: Georgia, serif; font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 3px;">
-                                System Check
-                            </span>
-                            <h1 style="margin: 12px 0 0 0; font-family: Georgia, serif; font-size: 28px; font-weight: normal; color: {cls.COLORS["bg_white"]}; letter-spacing: -0.5px;">
-                                Connection Verified
-                            </h1>
-                        </td>
-                    </tr>
-
-                    <!-- Content -->
-                    <tr>
-                        <td style="padding: 40px; text-align: center;">
-                            <!-- Success checkmark -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin-bottom: 24px;">
+                        <td style="padding: 0 0 28px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td style="width: 64px; height: 64px; background-color: #e6f3f3; border-radius: 50%; text-align: center; line-height: 64px;">
-                                        <span style="font-size: 28px; color: {cls.COLORS["accent_teal"]};">&#10003;</span>
+                                    <td style="padding-bottom: 16px;">
+                                        <div style="width: 40px; height: 4px; background-color: {cls.COLORS["accent_drop"]}; border-radius: 2px;"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h1 style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 28px; font-weight: 700; color: {cls.COLORS["text_primary"]}; letter-spacing: -0.5px;">
+                                            Connection Verified
+                                        </h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top: 8px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; color: {cls.COLORS["text_muted"]};">
+                                            {today}
+                                        </span>
                                     </td>
                                 </tr>
                             </table>
+                        </td>
+                    </tr>
 
-                            <h2 style="font-family: Georgia, serif; font-size: 22px; font-weight: normal; color: {cls.COLORS["text_primary"]}; margin: 0 0 16px 0;">
-                                Email Configuration Successful
-                            </h2>
-
-                            <p style="font-family: Georgia, serif; font-size: 16px; color: {cls.COLORS["text_secondary"]}; line-height: 1.6; margin: 0 0 24px 0;">
-                                Your price monitoring system is properly configured and ready to send alerts. You'll receive notifications whenever tracked products change in price.
-                            </p>
-
-                            <!-- Status box -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_light"]}; border-radius: 4px;">
+                    <!-- Status card -->
+                    <tr>
+                        <td style="padding: 0 0 20px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_white"]}; border-radius: 12px;">
                                 <tr>
                                     <td style="padding: 20px;">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                        <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; color: {cls.COLORS["text_secondary"]}; line-height: 1.5; margin: 0 0 16px 0;">
+                                            Your price monitoring system is configured and ready. You'll receive alerts when tracked products change in price.
+                                        </p>
+
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-top: 1px solid {cls.COLORS["border"]}; padding-top: 16px;">
                                             <tr>
-                                                <td style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_muted"]}; padding: 4px 0;">
-                                                    Test sent
-                                                </td>
-                                                <td align="right" style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_primary"]}; padding: 4px 0;">
-                                                    {today}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_muted"]}; padding: 4px 0;">
+                                                <td style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; color: {cls.COLORS["text_muted"]}; padding: 8px 0;">
                                                     Email provider
                                                 </td>
-                                                <td align="right" style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_primary"]}; padding: 4px 0;">
+                                                <td align="right" style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; color: {cls.COLORS["text_primary"]}; font-weight: 500; padding: 8px 0;">
                                                     Resend API
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["text_muted"]}; padding: 4px 0;">
+                                                <td style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; color: {cls.COLORS["text_muted"]}; padding: 8px 0;">
                                                     Status
                                                 </td>
-                                                <td align="right" style="font-family: Georgia, serif; font-size: 13px; color: {cls.COLORS["accent_teal"]}; font-weight: bold; padding: 4px 0;">
+                                                <td align="right" style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; color: {cls.COLORS["accent_drop"]}; font-weight: 600; padding: 8px 0;">
                                                     Operational
                                                 </td>
                                             </tr>
@@ -617,12 +536,12 @@ class EmailTemplates:
 
                     <!-- Footer -->
                     <tr>
-                        <td style="padding: 24px 40px; background-color: {cls.COLORS["bg_light"]}; border-top: 1px solid {cls.COLORS["border"]};">
+                        <td style="padding: 8px 0 0 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td align="center">
-                                        <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; font-style: italic;">
-                                            Price Monitor &middot; Automated Alerts
+                                    <td style="border-top: 1px solid {cls.COLORS["border"]}; padding-top: 16px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]};">
+                                            Automated monitoring · Updates daily at 9:00 UTC
                                         </span>
                                     </td>
                                 </tr>
@@ -636,7 +555,7 @@ class EmailTemplates:
 
     @classmethod
     def create_analysis_report_email(cls, report_data: dict) -> str:
-        """Create monthly/quarterly analysis report with editorial design"""
+        """Create monthly/quarterly analysis report with modern design"""
 
         period = report_data.get("period", "Monthly")
         date_range = report_data.get("date_range", "")
@@ -649,48 +568,60 @@ class EmailTemplates:
         best_deal = summary.get("best_deal", {})
 
         content = f"""
-                    <!-- Masthead -->
+                    <!-- Header -->
                     <tr>
-                        <td style="background-color: {cls.COLORS["text_primary"]}; padding: 32px 40px; text-align: center;">
-                            <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 3px;">
-                                {period} Report
-                            </span>
-                            <h1 style="margin: 12px 0 0 0; font-family: Georgia, serif; font-size: 28px; font-weight: normal; color: {cls.COLORS["bg_white"]}; letter-spacing: -0.5px;">
-                                Price Analysis
-                            </h1>
-                            <p style="margin: 8px 0 0 0; font-family: Georgia, serif; font-size: 14px; color: {cls.COLORS["text_muted"]};">
-                                {date_range}
-                            </p>
+                        <td style="padding: 0 0 28px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="padding-bottom: 16px;">
+                                        <div style="width: 40px; height: 4px; background-color: {cls.COLORS["text_primary"]}; border-radius: 2px;"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h1 style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 28px; font-weight: 700; color: {cls.COLORS["text_primary"]}; letter-spacing: -0.5px;">
+                                            {period} Report
+                                        </h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top: 8px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; color: {cls.COLORS["text_muted"]};">
+                                            {date_range}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
 
-                    <!-- Summary stats -->
+                    <!-- Stats card -->
                     <tr>
-                        <td style="padding: 0;">
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <td style="padding: 0 0 16px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_white"]}; border-radius: 12px;">
                                 <tr>
-                                    <td width="33%" style="padding: 28px; text-align: center; border-bottom: 1px solid {cls.COLORS["border"]}; border-right: 1px solid {cls.COLORS["border"]};">
-                                        <span style="font-family: 'Courier New', monospace; font-size: 32px; font-weight: bold; color: {cls.COLORS["text_primary"]}; display: block;">
+                                    <td width="33%" style="padding: 20px 16px; text-align: center;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 28px; font-weight: 700; color: {cls.COLORS["text_primary"]}; display: block;">
                                             {total_products}
                                         </span>
-                                        <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 1px;">
-                                            Products Tracked
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 0.3px;">
+                                            Products
                                         </span>
                                     </td>
-                                    <td width="33%" style="padding: 28px; text-align: center; border-bottom: 1px solid {cls.COLORS["border"]}; border-right: 1px solid {cls.COLORS["border"]};">
-                                        <span style="font-family: 'Courier New', monospace; font-size: 32px; font-weight: bold; color: {cls.COLORS["accent_teal"]}; display: block;">
+                                    <td width="33%" style="padding: 20px 16px; text-align: center; border-left: 1px solid {cls.COLORS["border"]}; border-right: 1px solid {cls.COLORS["border"]};">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 28px; font-weight: 700; color: {cls.COLORS["accent_drop"]}; display: block;">
                                             {avg_savings:.0f}%
                                         </span>
-                                        <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 1px;">
-                                            Avg. Discount
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 0.3px;">
+                                            Avg Discount
                                         </span>
                                     </td>
-                                    <td width="34%" style="padding: 28px; text-align: center; border-bottom: 1px solid {cls.COLORS["border"]};">
-                                        <span style="font-family: 'Courier New', monospace; font-size: 32px; font-weight: bold; color: {cls.COLORS["accent_gold"]}; display: block;">
+                                    <td width="34%" style="padding: 20px 16px; text-align: center;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 28px; font-weight: 700; color: {cls.COLORS["text_secondary"]}; display: block;">
                                             {summary.get("price_changes", 0)}
                                         </span>
-                                        <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 1px;">
-                                            Price Changes
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 0.3px;">
+                                            Changes
                                         </span>
                                     </td>
                                 </tr>
@@ -701,20 +632,20 @@ class EmailTemplates:
         # Best deal highlight if available
         if best_deal:
             content += f"""
-                    <!-- Best deal highlight -->
+                    <!-- Best deal card -->
                     <tr>
-                        <td style="padding: 28px 40px; background-color: #f8f6f0;">
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <td style="padding: 0 0 16px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["accent_highlight"]}; border-radius: 12px;">
                                 <tr>
-                                    <td>
-                                        <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["accent_gold"]}; text-transform: uppercase; letter-spacing: 2px;">
-                                            Best Deal This Period
+                                    <td style="padding: 16px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; font-weight: 600; color: #92400e; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Best Deal
                                         </span>
-                                        <h3 style="margin: 8px 0; font-family: Georgia, serif; font-size: 18px; font-weight: normal; color: {cls.COLORS["text_primary"]};">
+                                        <h3 style="margin: 8px 0 4px 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17px; font-weight: 600; color: {cls.COLORS["text_primary"]};">
                                             {best_deal.get("name", "N/A")}
                                         </h3>
-                                        <span style="font-family: Georgia, serif; font-size: 14px; color: {cls.COLORS["text_secondary"]};">
-                                            Lowest price: <strong>{best_deal.get("lowest_price", 0):.2f} EUR</strong>
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; color: {cls.COLORS["text_secondary"]};">
+                                            Lowest: <strong>{best_deal.get("lowest_price", 0):.2f}€</strong>
                                             {f" ({best_deal.get('discount', 0):.0f}% off)" if best_deal.get("discount") else ""}
                                         </span>
                                     </td>
@@ -726,64 +657,61 @@ class EmailTemplates:
         # Individual product analysis
         if products:
             content += f"""
-                    <!-- Products section header -->
+                    <!-- Products section -->
                     <tr>
-                        <td style="padding: 28px 40px 16px 40px; border-bottom: 2px solid {cls.COLORS["text_primary"]};">
-                            <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 2px;">
-                                Detailed Analysis
-                            </span>
-                            <h2 style="margin: 4px 0 0 0; font-family: Georgia, serif; font-size: 22px; font-weight: normal; color: {cls.COLORS["text_primary"]};">
+                        <td style="padding: 8px 0 12px 0;">
+                            <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 600; color: {cls.COLORS["text_secondary"]}; text-transform: uppercase; letter-spacing: 0.5px;">
                                 Product Overview
-                            </h2>
+                            </span>
                         </td>
                     </tr>"""
 
             for product in products:
                 trend = product.get("trend", "stable")
                 trend_color = (
-                    cls.COLORS["price_drop"]
+                    cls.COLORS["accent_drop"]
                     if trend == "down"
-                    else (
-                        cls.COLORS["price_increase"] if trend == "up" else cls.COLORS["text_muted"]
-                    )
+                    else (cls.COLORS["accent_rise"] if trend == "up" else cls.COLORS["text_muted"])
                 )
-                trend_symbol = "▼" if trend == "down" else ("▲" if trend == "up" else "→")
+                trend_symbol = "↓" if trend == "down" else ("↑" if trend == "up" else "→")
 
                 content += f"""
                     <tr>
-                        <td style="padding: 24px 40px; border-bottom: 1px solid {cls.COLORS["border"]};">
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <td style="padding: 0 0 12px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_white"]}; border-radius: 12px;">
                                 <tr>
-                                    <td>
-                                        <span style="font-family: Georgia, serif; font-size: 16px; color: {cls.COLORS["text_primary"]};">
-                                            {product.get("name", "Unknown")}
-                                        </span>
-                                    </td>
-                                    <td align="right">
-                                        <span style="font-family: Georgia, serif; font-size: 13px; color: {trend_color};">
-                                            {trend_symbol} {trend.title()}
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="padding-top: 12px;">
+                                    <td style="padding: 16px;">
                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
+                                                <td>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; font-weight: 500; color: {cls.COLORS["text_primary"]};">
+                                                        {product.get("name", "Unknown")}
+                                                    </span>
+                                                </td>
+                                                <td align="right">
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 600; color: {trend_color};">
+                                                        {trend_symbol} {trend.title()}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 12px;">
+                                            <tr>
                                                 <td width="25%">
-                                                    <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; display: block;">Current</span>
-                                                    <span style="font-family: 'Courier New', monospace; font-size: 16px; color: {cls.COLORS["text_primary"]}; font-weight: bold;">{product.get("current_price", 0):.2f}</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; display: block;">Now</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 15px; color: {cls.COLORS["text_primary"]}; font-weight: 600;">{product.get("current_price", 0):.2f}€</span>
                                                 </td>
                                                 <td width="25%">
-                                                    <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; display: block;">Lowest</span>
-                                                    <span style="font-family: 'Courier New', monospace; font-size: 16px; color: {cls.COLORS["accent_teal"]};">{product.get("lowest_price", 0):.2f}</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; display: block;">Low</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 15px; color: {cls.COLORS["accent_drop"]}; font-weight: 500;">{product.get("lowest_price", 0):.2f}€</span>
                                                 </td>
                                                 <td width="25%">
-                                                    <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; display: block;">Highest</span>
-                                                    <span style="font-family: 'Courier New', monospace; font-size: 16px; color: {cls.COLORS["text_secondary"]};">{product.get("highest_price", 0):.2f}</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; display: block;">High</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 15px; color: {cls.COLORS["text_secondary"]};">{product.get("highest_price", 0):.2f}€</span>
                                                 </td>
                                                 <td width="25%">
-                                                    <span style="font-family: Georgia, serif; font-size: 11px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; display: block;">Average</span>
-                                                    <span style="font-family: 'Courier New', monospace; font-size: 16px; color: {cls.COLORS["text_secondary"]};">{product.get("average_price", 0):.2f}</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; display: block;">Avg</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 15px; color: {cls.COLORS["text_secondary"]};">{product.get("average_price", 0):.2f}€</span>
                                                 </td>
                                             </tr>
                                         </table>
@@ -797,12 +725,12 @@ class EmailTemplates:
         content += f"""
                     <!-- Footer -->
                     <tr>
-                        <td style="padding: 32px 40px; background-color: {cls.COLORS["bg_light"]}; border-top: 1px solid {cls.COLORS["border"]};">
+                        <td style="padding: 16px 0 0 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td align="center">
-                                        <span style="font-family: Georgia, serif; font-size: 12px; color: {cls.COLORS["text_muted"]}; font-style: italic;">
-                                            {period} analysis report &middot; Price Monitor
+                                    <td style="border-top: 1px solid {cls.COLORS["border"]}; padding-top: 16px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]};">
+                                            {period} report · Price Monitor
                                         </span>
                                     </td>
                                 </tr>
