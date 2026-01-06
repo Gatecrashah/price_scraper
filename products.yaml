@@ -1,166 +1,168 @@
 products:
   bjornborg:
-    # Tracked products
-    - name: Essential Socks 10-pack (Multi)
-      url: /fi/essential-socks-10-pack-10004564-mp001/
-      product_id: '10004564'
-      site: bjornborg
-      category: socks
-      status: track
-    - name: Essential Socks 10-pack (Variant 1)
-      url: /fi/essential-socks-10-pack-10001228-mp001/
-      product_id: '10001228'
-      site: bjornborg
-      category: socks
-      status: track
-    - name: Essential Socks 10-pack (Variant 2)
-      url: /fi/essential-socks-10-pack-10004085-mp001/
-      product_id: '10004085'
-      site: bjornborg
-      category: socks
-      status: track
-    - name: Essential Socks 10-pack (Variant 3)
-      url: /fi/essential-socks-10-pack-10005071-mp001/
-      product_id: '10005071'
-      site: bjornborg
-      category: socks
-      status: track
-    - name: Essential Socks 10-pack (Variant 4)
-      url: /fi/essential-socks-10-pack-10003420-mp001/
-      product_id: '10003420'
-      site: bjornborg
-      category: socks
-      status: track
-    - name: Essential Ankle Socks 10-pack
-      url: /fi/essential-ankle-sock-10-pack-10002940-mp001/
-      product_id: '10002940'
-      site: bjornborg
-      category: socks
-      status: track
-    - name: Essential Socks 10-pack (Variant 5)
-      url: /fi/essential-socks-10-pack-10005412-mp001/
-      product_id: '10005412'
-      site: bjornborg
-      category: socks
-      status: track
-    - name: Centre Crew Sweatshirt (Grey)
-      url: /fi/centre-crew-9999-1431-gy013/
-      product_id: centre-crew-9999-1431-gy013
-      site: bjornborg
-      category: apparel
-      status: track
-    - name: Centre Crew Sweatshirt (Blue)
-      url: /fi/centre-crew-9999-1431-bl183/
-      product_id: centre-crew-9999-1431-bl183
-      site: bjornborg
-      category: apparel
-      status: track
-    - name: Centre Crew Sweatshirt (Black)
-      url: /fi/centre-crew-9999-1431-90741/
-      product_id: centre-crew-9999-1431-90741
-      site: bjornborg
-      category: apparel
-      status: track
-    # Ignored products
-    - name: Essential Ankle Socks 3-pack
-      url: /fi/essential-ankle-socks-3-pack-10004082-mp001/
-      product_id: '10004082'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Socks 5-pack (Variant 1)
-      url: /fi/essential-socks-5-pack-10003419-mp001/
-      product_id: '10003419'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Socks 5-pack (Variant 2)
-      url: /fi/essential-socks-5-pack-10005069-mp001/
-      product_id: '10005069'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Ankle Socks 5-pack (Variant 1)
-      url: /fi/essential-ankle-sock-5-pack-10003181-mp001/
-      product_id: '10003181'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Socks 5-pack (Variant 3)
-      url: /fi/essential-socks-5-pack-10004563-mp001/
-      product_id: '10004563'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Ankle Socks 5-pack (Variant 2)
-      url: /fi/essential-ankle-sock-5-pack-10002938-mp001/
-      product_id: '10002938'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Socks 5-pack (Variant 4)
-      url: /fi/essential-socks-5-pack-10004084-mp001/
-      product_id: '10004084'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Crew Socks 3-pack (Variant 1)
-      url: /fi/essential-crew-socks-3-pack-10004295-mp001/
-      product_id: '10004295'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Crew Socks 3-pack (Variant 2)
-      url: /fi/essential-crew-socks-3-pack-10004295-mp002/
-      product_id: '10004295'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Ankle Socks 3-pack (Variant 2)
-      url: /fi/essential-ankle-socks-3-pack-10004562-mp001/
-      product_id: '10004562'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Crew Socks 5-pack (Variant 1)
-      url: /fi/essential-crew-socks-5-pack-10005937-mp001/
-      product_id: '10005937'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Crew Socks 5-pack (Variant 2)
-      url: /fi/essential-crew-socks-5-pack-10005937-mp002/
-      product_id: '10005937'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Ankle Socks 3-pack (Variant 3)
-      url: /fi/essential-ankle-socks-3-pack-10005413-mp001/
-      product_id: '10005413'
-      site: bjornborg
-      category: socks
-      status: ignore
-    - name: Essential Socks 5-pack (Variant 5)
-      url: /fi/essential-socks-5-pack-10005414-mp001/
-      product_id: '10005414'
-      site: bjornborg
-      category: socks
-      status: ignore
-
+  - name: Essential Socks 10-pack (Multi)
+    url: /fi/essential-socks-10-pack-10004564-mp001/
+    product_id: '10004564'
+    site: bjornborg
+    category: socks
+    status: track
+  - name: Essential Socks 10-pack (Variant 1)
+    url: /fi/essential-socks-10-pack-10001228-mp001/
+    product_id: '10001228'
+    site: bjornborg
+    category: socks
+    status: track
+  - name: Essential Socks 10-pack (Variant 2)
+    url: /fi/essential-socks-10-pack-10004085-mp001/
+    product_id: '10004085'
+    site: bjornborg
+    category: socks
+    status: track
+  - name: Essential Socks 10-pack (Variant 3)
+    url: /fi/essential-socks-10-pack-10005071-mp001/
+    product_id: '10005071'
+    site: bjornborg
+    category: socks
+    status: track
+  - name: Essential Socks 10-pack (Variant 4)
+    url: /fi/essential-socks-10-pack-10003420-mp001/
+    product_id: '10003420'
+    site: bjornborg
+    category: socks
+    status: track
+  - name: Essential Ankle Socks 10-pack
+    url: /fi/essential-ankle-sock-10-pack-10002940-mp001/
+    product_id: '10002940'
+    site: bjornborg
+    category: socks
+    status: track
+  - name: Essential Socks 10-pack (Variant 5)
+    url: /fi/essential-socks-10-pack-10005412-mp001/
+    product_id: '10005412'
+    site: bjornborg
+    category: socks
+    status: track
+  - name: Centre Crew Sweatshirt (Grey)
+    url: /fi/centre-crew-9999-1431-gy013/
+    product_id: centre-crew-9999-1431-gy013
+    site: bjornborg
+    category: apparel
+    status: track
+  - name: Centre Crew Sweatshirt (Blue)
+    url: /fi/centre-crew-9999-1431-bl183/
+    product_id: centre-crew-9999-1431-bl183
+    site: bjornborg
+    category: apparel
+    status: track
+  - name: Centre Crew Sweatshirt (Black)
+    url: /fi/centre-crew-9999-1431-90741/
+    product_id: centre-crew-9999-1431-90741
+    site: bjornborg
+    category: apparel
+    status: track
+  - name: Essential Ankle Socks 3-pack
+    url: /fi/essential-ankle-socks-3-pack-10004082-mp001/
+    product_id: '10004082'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Socks 5-pack (Variant 1)
+    url: /fi/essential-socks-5-pack-10003419-mp001/
+    product_id: '10003419'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Socks 5-pack (Variant 2)
+    url: /fi/essential-socks-5-pack-10005069-mp001/
+    product_id: '10005069'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Ankle Socks 5-pack (Variant 1)
+    url: /fi/essential-ankle-sock-5-pack-10003181-mp001/
+    product_id: '10003181'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Socks 5-pack (Variant 3)
+    url: /fi/essential-socks-5-pack-10004563-mp001/
+    product_id: '10004563'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Ankle Socks 5-pack (Variant 2)
+    url: /fi/essential-ankle-sock-5-pack-10002938-mp001/
+    product_id: '10002938'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Socks 5-pack (Variant 4)
+    url: /fi/essential-socks-5-pack-10004084-mp001/
+    product_id: '10004084'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Crew Socks 3-pack (Variant 1)
+    url: /fi/essential-crew-socks-3-pack-10004295-mp001/
+    product_id: '10004295'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Crew Socks 3-pack (Variant 2)
+    url: /fi/essential-crew-socks-3-pack-10004295-mp002/
+    product_id: '10004295'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Ankle Socks 3-pack (Variant 2)
+    url: /fi/essential-ankle-socks-3-pack-10004562-mp001/
+    product_id: '10004562'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Crew Socks 5-pack (Variant 1)
+    url: /fi/essential-crew-socks-5-pack-10005937-mp001/
+    product_id: '10005937'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Crew Socks 5-pack (Variant 2)
+    url: /fi/essential-crew-socks-5-pack-10005937-mp002/
+    product_id: '10005937'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Ankle Socks 3-pack (Variant 3)
+    url: /fi/essential-ankle-socks-3-pack-10005413-mp001/
+    product_id: '10005413'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Socks 5-pack (Variant 5)
+    url: /fi/essential-socks-5-pack-10005414-mp001/
+    product_id: '10005414'
+    site: bjornborg
+    category: socks
+    status: ignore
+  - name: Essential Socks 10-pack
+    url: /fi/essential-socks-10-pack-10001760-mp001/
+    site: bjornborg
+    status: track
+    product_id: '10001760'
+    category: socks
   fitnesstukku:
-    - name: Whey-80 Protein 4kg
-      url: https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html
-      product_id: '5854R'
-      site: fitnesstukku
-      category: supplements
-      status: track
-    - name: Creatine Monohydrate 500g
-      url: https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html
-      product_id: '609'
-      site: fitnesstukku
-      category: supplements
-      status: track
-
+  - name: Whey-80 Protein 4kg
+    url: https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html
+    product_id: 5854R
+    site: fitnesstukku
+    category: supplements
+    status: track
+  - name: Creatine Monohydrate 500g
+    url: https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html
+    product_id: '609'
+    site: fitnesstukku
+    category: supplements
+    status: track
 sites:
   bjornborg:
     base_url: https://www.bjornborg.com
