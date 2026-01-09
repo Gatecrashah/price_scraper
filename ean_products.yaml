@@ -1,0 +1,40 @@
+# EAN-based product tracking configuration
+# Tracks products across multiple stores by EAN number
+
+products:
+  - ean: "6430050004729"
+    name: "Puhdas+ Premium Omega-3 1000mg 180 kaps"
+    category: supplements
+    status: track  # track | ignore
+    stores:
+      apteekki360:
+        url: "https://apteekki360.fi/products/puhdas-plus-premium-omega-3-1000mg"
+        status: active
+      tokmanni:
+        url: "https://www.tokmanni.fi/premium-omega-3-puhdas-180-kaps-6430050004729"
+        status: active
+      sinunapteekki:
+        url: "https://www.sinunapteekki.fi/products/puhdas-premium-omega-3-1000-mg-epa-dha-600-mg-kalaoljykapselit"
+        status: active
+      ruohonjuuri:
+        url: "https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-680-1360-mg"
+        status: active
+
+# Store configurations
+stores:
+  apteekki360:
+    name: "Apteekki360"
+    base_url: "https://apteekki360.fi"
+    platform: shopify
+  tokmanni:
+    name: "Tokmanni"
+    base_url: "https://www.tokmanni.fi"
+    platform: custom
+  sinunapteekki:
+    name: "Sinunapteekki"
+    base_url: "https://www.sinunapteekki.fi"
+    platform: shopify
+  ruohonjuuri:
+    name: "Ruohonjuuri"
+    base_url: "https://www.ruohonjuuri.fi"
+    platform: shopify

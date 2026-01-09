@@ -742,6 +742,228 @@ class EmailTemplates:
             content, f"{period} price analysis: {total_products} products tracked"
         )
 
+    @classmethod
+    def create_ean_price_alert_email(cls, price_drops: list[dict]) -> str:
+        """Create EAN-based cross-store price alert email"""
+
+        if not price_drops:
+            return "No price drops detected."
+
+        today = datetime.now().strftime("%b %d, %Y")
+        num_drops = len(price_drops)
+
+        # Build preheader
+        preheader = f"{num_drops} price drop{'s' if num_drops != 1 else ''} across stores"
+
+        # Header
+        content = f"""
+                    <!-- Header -->
+                    <tr>
+                        <td style="padding: 0 0 28px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="padding-bottom: 16px;">
+                                        <div style="width: 40px; height: 4px; background-color: {cls.COLORS["accent_drop"]}; border-radius: 2px;"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h1 style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 28px; font-weight: 700; color: {cls.COLORS["text_primary"]}; letter-spacing: -0.5px;">
+                                            Price Drop Alert
+                                        </h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top: 8px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; color: {cls.COLORS["text_muted"]};">
+                                            {today} · Cross-store comparison
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>"""
+
+        # Products
+        for drop in price_drops:
+            name = drop.get("name", "Unknown Product")
+            ean = drop.get("ean", "")
+            store = drop.get("store", "")
+            url = drop.get("url", "#")
+            current_price = drop.get("current_price", 0)
+            previous_price = drop.get("previous_price", 0)
+            savings = drop.get("savings", 0)
+            all_time_price = drop.get("all_time_price")
+            all_time_date = drop.get("all_time_date")
+            all_time_store = drop.get("all_time_store")
+            all_store_prices = drop.get("all_store_prices", {})
+
+            change_percent = (
+                ((previous_price - current_price) / previous_price * 100)
+                if previous_price > 0
+                else 0
+            )
+
+            # Check if this is the all-time lowest
+            is_all_time_low = all_time_price and current_price <= all_time_price
+
+            # All-time low badge
+            all_time_html = ""
+            if is_all_time_low:
+                all_time_html = f"""
+                                <tr>
+                                    <td style="padding-top: 12px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["accent_highlight"]}; border-radius: 8px;">
+                                            <tr>
+                                                <td style="padding: 10px 14px;">
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; font-weight: 600; color: #92400e;">
+                                                        ⭐ All-time lowest price!
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>"""
+            elif all_time_price and all_time_date:
+                all_time_html = f"""
+                                <tr>
+                                    <td style="padding-top: 12px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]};">
+                                            All-time low: <strong style="color: {cls.COLORS["text_secondary"]};">{all_time_price:.2f}€</strong> at {all_time_store} ({all_time_date})
+                                        </span>
+                                    </td>
+                                </tr>"""
+
+            # Other store prices
+            other_stores_html = ""
+            if all_store_prices and len(all_store_prices) > 1:
+                other_stores_html = f"""
+                                <tr>
+                                    <td style="padding-top: 16px; border-top: 1px solid {cls.COLORS["border"]}; margin-top: 12px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; font-weight: 600; color: {cls.COLORS["text_muted"]}; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Other in-stock prices
+                                        </span>
+                                    </td>
+                                </tr>"""
+
+                for other_store, other_price in sorted(
+                    all_store_prices.items(), key=lambda x: x[1]
+                ):
+                    if other_store != store and other_price:
+                        diff = other_price - current_price
+                        other_stores_html += f"""
+                                <tr>
+                                    <td style="padding: 6px 0;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; color: {cls.COLORS["text_secondary"]};">
+                                            {other_store.title()}: <strong>{other_price:.2f}€</strong>
+                                            <span style="color: {cls.COLORS["text_muted"]};">(+{diff:.2f}€)</span>
+                                        </span>
+                                    </td>
+                                </tr>"""
+
+            content += f'''
+                    <tr>
+                        <td style="padding: 0 0 16px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {cls.COLORS["bg_white"]}; border-radius: 12px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <!-- Percentage badge -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td>
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                        <tr>
+                                                            <td style="background-color: #ecfdf5; padding: 6px 12px; border-radius: 20px;">
+                                                                <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 700; color: {cls.COLORS["accent_drop"]};">
+                                                                    ↓ {change_percent:.0f}%
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Product name & EAN -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 14px;">
+                                            <tr>
+                                                <td>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 18px; font-weight: 500; color: {cls.COLORS["text_primary"]}; line-height: 1.4;">
+                                                        {name}
+                                                    </span>
+                                                    <br>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; font-size: 11px; color: {cls.COLORS["text_muted"]};">
+                                                        EAN: {ean}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Price display -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 16px;">
+                                            <tr>
+                                                <td>
+                                                    {cls._format_price(current_price, True, "large")}
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; color: {cls.COLORS["text_muted"]}; margin-left: 8px;">
+                                                        at {store.title()}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 6px;">
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17px; color: {cls.COLORS["text_muted"]}; text-decoration: line-through;">{previous_price:.2f}€</span>
+                                                    <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; font-weight: 600; color: {cls.COLORS["accent_drop"]}; margin-left: 10px;">
+                                                        Save {savings:.2f}€
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- All-time low info -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            {all_time_html}
+                                        </table>
+
+                                        <!-- Other store prices -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 12px;">
+                                            {other_stores_html}
+                                        </table>
+
+                                        <!-- CTA Button -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 16px;">
+                                            <tr>
+                                                <td>
+                                                    <a href="{url}" target="_blank" style="display: inline-block; padding: 12px 20px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; font-weight: 600; color: {cls.COLORS["bg_white"]}; background-color: {cls.COLORS["accent_drop"]}; text-decoration: none; border-radius: 8px;">
+                                                        Buy at {store.title()} →
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>'''
+
+        # Footer
+        content += f"""
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 16px 0 0 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="border-top: 1px solid {cls.COLORS["border"]}; padding-top: 16px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: {cls.COLORS["text_muted"]};">
+                                            EAN Price Monitor · Cross-store comparison · Daily at 9:15 UTC
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>"""
+
+        return cls._email_wrapper(content, preheader)
+
     # Legacy method aliases for backward compatibility
     @classmethod
     def get_base_styles(cls) -> str:

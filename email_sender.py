@@ -156,6 +156,50 @@ class EmailSender:
             logger.error(f"Failed to send analysis report: {e}")
             return False
 
+    def send_ean_price_alert(self, price_drops: list[dict]) -> bool:
+        """Send email notification about EAN price drops across stores"""
+
+        if not price_drops:
+            logger.info("No EAN price drops to report")
+            return True
+
+        try:
+            num_drops = len(price_drops)
+            subject = f"💊 📉 {num_drops} price drop{'s' if num_drops != 1 else ''} - Cross-store alert"
+
+            html_content = EmailTemplates.create_ean_price_alert_email(price_drops)
+
+            payload = {
+                "from": "EAN Price Tracker <onboarding@resend.dev>",
+                "to": [self.email_to],
+                "subject": subject,
+                "html": html_content,
+            }
+
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+            }
+
+            response = requests.post(self.api_url, json=payload, headers=headers)
+
+            if response.status_code == 200:
+                result = response.json()
+                email_id = result.get("id", "unknown")
+                logger.info(
+                    f"EAN price alert sent successfully to {self.email_to} (ID: {email_id})"
+                )
+                return True
+            else:
+                logger.error(
+                    f"Failed to send EAN alert. Status: {response.status_code}, Response: {response.text}"
+                )
+                return False
+
+        except Exception as e:
+            logger.error(f"Failed to send EAN price alert: {e}")
+            return False
+
     def send_test_email(self) -> bool:
         """Send a test email to verify Resend configuration"""
 
