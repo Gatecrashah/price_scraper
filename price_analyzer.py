@@ -28,48 +28,63 @@ class PriceAnalyzer:
             return {}
 
     def analyze_product_pricing(self, product_key: str) -> dict:
-        """Analyze pricing trends and statistics for a specific product"""
+        """Analyze pricing trends and statistics for a specific product (event-based format)"""
 
         if product_key not in self.price_history:
             return {"error": f"Product {product_key} not found in price history"}
 
         product_data = self.price_history[product_key]
-        history = product_data.get("price_history", {})
+        price_changes = product_data.get("price_changes", [])
+        current = product_data.get("current", {})
+        all_time_lowest = product_data.get("all_time_lowest", {})
 
-        if not history:
+        if not price_changes and not current:
             return {"error": f"No price history available for {product_key}"}
 
-        # Extract price data
+        # Extract price data from change events
         price_points = []
         dates = []
 
-        for date_str, data in sorted(history.items()):
+        for event in price_changes:
             try:
-                date_obj = datetime.strptime(date_str, "%Y-%m-%d")
-                price = float(data.get("current_price", 0))
+                date_obj = datetime.strptime(event.get("date", ""), "%Y-%m-%d")
+                # Get price from either initial event or change event
+                if event.get("type") == "initial":
+                    price = float(event.get("price", 0))
+                else:
+                    price = float(event.get("to", 0))
+
                 if price > 0:
                     price_points.append(price)
                     dates.append(date_obj)
             except (ValueError, TypeError):
                 continue
 
+        # Ensure current price is included
+        current_price = (
+            current.get("price") if current else (price_points[-1] if price_points else None)
+        )
+
+        if not price_points and current_price:
+            price_points = [current_price]
+            dates = [datetime.now()]
+
         if not price_points:
             return {"error": f"No valid price data for {product_key}"}
 
         # Calculate statistics
-        current_price = price_points[-1]
-        lowest_price = min(price_points)
+        lowest_price = all_time_lowest.get("price") if all_time_lowest else min(price_points)
         highest_price = max(price_points)
         average_price = statistics.mean(price_points)
 
         # Analyze trends
-        trend_analysis = self._analyze_price_trends(price_points, dates)
+        trend_analysis = self._analyze_price_trends(price_changes)
 
-        # Find best deals
-        best_deals = self._find_best_deals(price_points, dates)
+        # Find best deals from events
+        best_deals = self._find_best_deals(price_changes, all_time_lowest)
 
-        # Seasonal analysis
-        seasonal_patterns = self._analyze_seasonal_patterns(price_points, dates)
+        # Seasonal analysis (limited with event-based data)
+        seasonal_patterns = self._analyze_seasonal_patterns(price_changes)
 
         return {
             "product_name": product_data.get("name", "Unknown Product"),
@@ -82,22 +97,22 @@ class PriceAnalyzer:
                 "price_volatility": round(
                     statistics.stdev(price_points) if len(price_points) > 1 else 0, 2
                 ),
-                "total_data_points": len(price_points),
+                "total_price_changes": len(price_changes),
             },
             "trends": trend_analysis,
             "best_deals": best_deals,
             "seasonal_patterns": seasonal_patterns,
-            "days_tracked": len(price_points),
+            "price_changes_count": len(price_changes),
             "tracking_period": {
                 "start_date": dates[0].strftime("%Y-%m-%d") if dates else None,
                 "end_date": dates[-1].strftime("%Y-%m-%d") if dates else None,
             },
         }
 
-    def _analyze_price_trends(self, prices: list[float], dates: list[datetime]) -> dict:
-        """Analyze price trends over time"""
+    def _analyze_price_trends(self, price_changes: list[dict]) -> dict:
+        """Analyze price trends from change events"""
 
-        if len(prices) < 2:
+        if len(price_changes) < 2:
             return {
                 "trend": "stable",
                 "trend_strength": 0,
@@ -105,22 +120,30 @@ class PriceAnalyzer:
                 "analysis": "insufficient_data",
             }
 
-        # Calculate trend over entire period
-        first_price = prices[0]
-        last_price = prices[-1]
+        # Get first and last prices
+        first_event = price_changes[0]
+        last_event = price_changes[-1]
+
+        first_price = first_event.get("price") or first_event.get("to", 0)
+        last_price = last_event.get("price") or last_event.get("to", 0)
+
+        if not first_price or not last_price:
+            return {
+                "trend": "stable",
+                "trend_strength": 0,
+                "recent_change": 0,
+                "analysis": "insufficient_data",
+            }
+
         total_change = last_price - first_price
         total_change_pct = (total_change / first_price) * 100 if first_price > 0 else 0
 
-        # Recent trend (last 7 days or half the data, whichever is smaller)
-        recent_window = min(7, len(prices) // 2 + 1)
-        recent_prices = prices[-recent_window:]
-
+        # Recent change (from last event)
         recent_change = 0
-        if len(recent_prices) >= 2:
-            recent_change = recent_prices[-1] - recent_prices[0]
-            recent_change_pct = (
-                (recent_change / recent_prices[0]) * 100 if recent_prices[0] > 0 else 0
-            )
+        recent_change_pct = 0
+        if "from" in last_event and "to" in last_event:
+            recent_change = last_event["to"] - last_event["from"]
+            recent_change_pct = last_event.get("change_pct", 0)
 
         # Determine trend direction
         if abs(total_change_pct) < 1:  # Less than 1% change
@@ -139,56 +162,109 @@ class PriceAnalyzer:
             "total_change": round(total_change, 2),
             "total_change_percent": round(total_change_pct, 1),
             "recent_change": round(recent_change, 2),
-            "recent_change_percent": round(recent_change_pct, 1) if len(recent_prices) >= 2 else 0,
+            "recent_change_percent": round(recent_change_pct, 1),
+            "total_price_changes": len(price_changes),
             "analysis": "available",
         }
 
-    def _find_best_deals(self, prices: list[float], dates: list[datetime]) -> list[dict]:
-        """Find the best deals (lowest prices) in the history"""
+    def _find_best_deals(
+        self, price_changes: list[dict], all_time_lowest: dict | None
+    ) -> list[dict]:
+        """Find the best deals (lowest prices) from change events"""
 
-        if not prices or not dates:
+        if not price_changes:
             return []
 
-        # Create price-date pairs and sort by price
-        price_date_pairs = list(zip(prices, dates))
-        price_date_pairs.sort(key=lambda x: x[0])  # Sort by price (ascending)
+        # Extract all prices with dates
+        price_date_pairs = []
+        for event in price_changes:
+            try:
+                date_str = event.get("date", "")
+                date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+
+                # Get price from event
+                price = event.get("price") if event.get("type") == "initial" else event.get("to")
+
+                if price:
+                    price_date_pairs.append((price, date_obj, date_str))
+            except (ValueError, TypeError):
+                continue
+
+        if not price_date_pairs:
+            return []
+
+        # Sort by price (ascending)
+        price_date_pairs.sort(key=lambda x: x[0])
 
         best_deals = []
         current_date = datetime.now()
 
         # Take up to 3 best deals
-        for price, date in price_date_pairs[:3]:
-            days_ago = (current_date - date).days
+        for price, date_obj, date_str in price_date_pairs[:3]:
+            days_ago = (current_date - date_obj).days
             best_deals.append(
-                {"price": price, "date": date.strftime("%Y-%m-%d"), "days_ago": days_ago}
+                {
+                    "price": price,
+                    "date": date_str,
+                    "days_ago": days_ago,
+                }
             )
 
-        return best_deals
+        # If we have all_time_lowest and it's not already in best_deals, add it
+        if all_time_lowest and all_time_lowest.get("price"):
+            atl_price = all_time_lowest["price"]
+            if not any(d["price"] == atl_price for d in best_deals):
+                try:
+                    atl_date = datetime.strptime(all_time_lowest.get("date", ""), "%Y-%m-%d")
+                    days_ago = (current_date - atl_date).days
+                    best_deals.insert(
+                        0,
+                        {
+                            "price": atl_price,
+                            "date": all_time_lowest.get("date"),
+                            "days_ago": days_ago,
+                            "is_all_time_lowest": True,
+                        },
+                    )
+                except (ValueError, TypeError):
+                    pass
 
-    def _analyze_seasonal_patterns(self, prices: list[float], dates: list[datetime]) -> dict:
-        """Analyze seasonal price patterns"""
+        return best_deals[:3]  # Return top 3
 
-        if len(prices) < 14:  # Need at least 2 weeks of data
+    def _analyze_seasonal_patterns(self, price_changes: list[dict]) -> dict:
+        """Analyze seasonal price patterns from change events"""
+
+        if len(price_changes) < 3:
             return {
                 "analysis": "insufficient_data",
-                "message": "Need at least 14 days of data for seasonal analysis",
+                "message": "Need at least 3 price changes for seasonal analysis",
             }
 
-        # Group prices by month
+        # Group price changes by month to see when deals typically happen
         monthly_prices = {}
-        for price, date in zip(prices, dates):
-            month_name = calendar.month_name[date.month]
-            if month_name not in monthly_prices:
-                monthly_prices[month_name] = []
-            monthly_prices[month_name].append(price)
+        for event in price_changes:
+            try:
+                date_str = event.get("date", "")
+                date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+                month_name = calendar.month_name[date_obj.month]
+
+                # Get price from event
+                price = event.get("price") if event.get("type") == "initial" else event.get("to")
+
+                if price:
+                    if month_name not in monthly_prices:
+                        monthly_prices[month_name] = []
+                    monthly_prices[month_name].append(price)
+            except (ValueError, TypeError):
+                continue
 
         if len(monthly_prices) < 2:
             return {
                 "analysis": "insufficient_data",
-                "message": "Need data from multiple months for seasonal analysis",
+                "message": "Need price changes from multiple months for seasonal analysis",
             }
 
-        # Calculate average price per month
+        # Calculate average price per month (when changes occurred)
         monthly_averages = {}
         for month, month_prices in monthly_prices.items():
             monthly_averages[month] = statistics.mean(month_prices)
@@ -203,10 +279,11 @@ class PriceAnalyzer:
             "best_month": {"month": best_month[0], "average_price": round(best_month[1], 2)},
             "worst_month": {"month": worst_month[0], "average_price": round(worst_month[1], 2)},
             "seasonal_variation": round(worst_month[1] - best_month[1], 2),
+            "note": "Based on price change events, not daily snapshots",
         }
 
     def get_all_products_summary(self) -> dict:
-        """Get a summary of all products in the price history"""
+        """Get a summary of all products in the price history (event-based format)"""
 
         if not self.price_history:
             return {"error": "No price history data available"}
@@ -214,25 +291,24 @@ class PriceAnalyzer:
         summary = {"total_products": len(self.price_history), "products": []}
 
         for product_key, product_data in self.price_history.items():
-            history = product_data.get("price_history", {})
-            if history:
-                latest_date = max(history.keys())
-                latest_data = history[latest_date]
+            current = product_data.get("current", {})
+            price_changes = product_data.get("price_changes", [])
 
+            if current:
                 summary["products"].append(
                     {
                         "key": product_key,
                         "name": product_data.get("name", "Unknown"),
-                        "current_price": latest_data.get("current_price"),
-                        "days_tracked": len(history),
-                        "last_updated": latest_date,
+                        "current_price": current.get("price"),
+                        "price_changes_count": len(price_changes),
+                        "last_updated": current.get("since"),
                     }
                 )
 
         return summary
 
     def calculate_portfolio_insights(self) -> dict:
-        """Calculate insights across all tracked products"""
+        """Calculate insights across all tracked products (event-based format)"""
 
         if not self.price_history:
             return {"error": "No price history data available"}
@@ -250,7 +326,7 @@ class PriceAnalyzer:
                 stats = analysis["price_statistics"]
                 current = stats["current_price"]
                 lowest = stats["lowest_price"]
-                if current > lowest:
+                if current and lowest and current > lowest:
                     total_savings_potential += current - lowest
 
                 # Count trends
@@ -260,24 +336,26 @@ class PriceAnalyzer:
         if not all_analyses:
             return {"error": "No valid product analyses available"}
 
+        # Filter out None prices for statistics
+        valid_prices = [
+            a["price_statistics"]["current_price"]
+            for a in all_analyses
+            if a["price_statistics"]["current_price"] is not None
+        ]
+
         return {
             "total_products_analyzed": len(all_analyses),
             "total_savings_potential": round(total_savings_potential, 2),
             "trend_distribution": trend_counts,
-            "average_tracking_days": round(
-                statistics.mean([a["days_tracked"] for a in all_analyses]), 1
+            "average_price_changes": round(
+                statistics.mean([a["price_changes_count"] for a in all_analyses]), 1
             ),
             "price_ranges": {
-                "lowest_current_price": min(
-                    a["price_statistics"]["current_price"] for a in all_analyses
-                ),
-                "highest_current_price": max(
-                    a["price_statistics"]["current_price"] for a in all_analyses
-                ),
-                "average_current_price": round(
-                    statistics.mean([a["price_statistics"]["current_price"] for a in all_analyses]),
-                    2,
-                ),
+                "lowest_current_price": min(valid_prices) if valid_prices else None,
+                "highest_current_price": max(valid_prices) if valid_prices else None,
+                "average_current_price": round(statistics.mean(valid_prices), 2)
+                if valid_prices
+                else None,
             },
         }
 

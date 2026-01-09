@@ -76,19 +76,19 @@ class TestPriceMonitor:
 
     def test_detect_price_changes_decrease(self, monitor, sample_bjornborg_product):
         """Test detecting a price decrease."""
-        # Set up history with higher price
+        # Set up history with higher price (event-based format)
         monitor.price_history = {
             "base_10004564": {
                 "name": "Essential Socks 10-pack",
                 "purchase_url": sample_bjornborg_product["purchase_url"],
-                "price_history": {
-                    "2025-01-01": {
-                        "current_price": 44.95,
-                        "original_price": 44.95,
-                        "discount_percent": 0,
-                        "scraped_at": "2025-01-01T09:00:00",
-                    }
+                "current": {
+                    "price": 44.95,
+                    "original_price": 44.95,
+                    "discount_pct": 0,
+                    "since": "2025-01-01",
                 },
+                "all_time_lowest": {"price": 44.95, "date": "2025-01-01"},
+                "price_changes": [{"date": "2025-01-01", "price": 44.95, "type": "initial"}],
             }
         }
 
@@ -104,19 +104,19 @@ class TestPriceMonitor:
 
     def test_detect_price_changes_increase(self, monitor, sample_bjornborg_product):
         """Test detecting a price increase."""
-        # Set up history with lower price
+        # Set up history with lower price (event-based format)
         monitor.price_history = {
             "base_10004564": {
                 "name": "Essential Socks 10-pack",
                 "purchase_url": sample_bjornborg_product["purchase_url"],
-                "price_history": {
-                    "2025-01-01": {
-                        "current_price": 30.00,
-                        "original_price": 44.95,
-                        "discount_percent": 33,
-                        "scraped_at": "2025-01-01T09:00:00",
-                    }
+                "current": {
+                    "price": 30.00,
+                    "original_price": 44.95,
+                    "discount_pct": 33,
+                    "since": "2025-01-01",
                 },
+                "all_time_lowest": {"price": 30.00, "date": "2025-01-01"},
+                "price_changes": [{"date": "2025-01-01", "price": 30.00, "type": "initial"}],
             }
         }
 
@@ -131,19 +131,19 @@ class TestPriceMonitor:
 
     def test_detect_price_changes_no_change(self, monitor, sample_bjornborg_product):
         """Test that no change is detected when price is the same."""
-        # Set up history with same price
+        # Set up history with same price (event-based format)
         monitor.price_history = {
             "base_10004564": {
                 "name": "Essential Socks 10-pack",
                 "purchase_url": sample_bjornborg_product["purchase_url"],
-                "price_history": {
-                    "2025-01-01": {
-                        "current_price": 35.96,
-                        "original_price": 44.95,
-                        "discount_percent": 20,
-                        "scraped_at": "2025-01-01T09:00:00",
-                    }
+                "current": {
+                    "price": 35.96,
+                    "original_price": 44.95,
+                    "discount_pct": 20,
+                    "since": "2025-01-01",
                 },
+                "all_time_lowest": {"price": 35.96, "date": "2025-01-01"},
+                "price_changes": [{"date": "2025-01-01", "price": 35.96, "type": "initial"}],
             }
         }
 
@@ -171,11 +171,15 @@ class TestPriceMonitor:
 
         # No change detected for new products (no previous price to compare)
         assert len(changes) == 0
-        # But product should be added to history
+        # But product should be added to history with new format
         assert "id_NEW123" in monitor.price_history
+        assert "current" in monitor.price_history["id_NEW123"]
+        assert "price_changes" in monitor.price_history["id_NEW123"]
+        assert len(monitor.price_history["id_NEW123"]["price_changes"]) == 1
+        assert monitor.price_history["id_NEW123"]["price_changes"][0]["type"] == "initial"
 
     def test_cleanup_old_history(self, monitor):
-        """Test cleanup of old price history entries."""
+        """Test cleanup of old price change events."""
         old_date = (datetime.now() - timedelta(days=400)).strftime("%Y-%m-%d")
         recent_date = (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d")
 
@@ -183,18 +187,20 @@ class TestPriceMonitor:
             "test_product": {
                 "name": "Test",
                 "purchase_url": "https://example.com",
-                "price_history": {
-                    old_date: {"current_price": 10.00},
-                    recent_date: {"current_price": 10.00},
-                },
+                "current": {"price": 10.00, "since": recent_date},
+                "price_changes": [
+                    {"date": old_date, "price": 10.00, "type": "initial"},
+                    {"date": recent_date, "from": 10.00, "to": 12.00, "change_pct": 20.0},
+                ],
             }
         }
 
         monitor.cleanup_old_history(days_to_keep=365)
 
-        history = monitor.price_history["test_product"]["price_history"]
-        assert old_date not in history
-        assert recent_date in history
+        changes = monitor.price_history["test_product"]["price_changes"]
+        # Old event should be removed, but recent event kept
+        assert len(changes) == 1
+        assert changes[0]["date"] == recent_date
 
     def test_get_tracked_products(self, monitor):
         """Test getting list of tracked products from config."""
@@ -215,20 +221,21 @@ class TestPriceMonitor:
         assert monitor.price_history == {}
 
     def test_get_price_summary(self, monitor, sample_bjornborg_product):
-        """Test price summary generation."""
+        """Test price summary generation (event-based format)."""
         # Add product to history with today's data
         today = datetime.now().strftime("%Y-%m-%d")
         monitor.price_history = {
             "base_10004564": {
                 "name": "Essential Socks 10-pack",
                 "purchase_url": sample_bjornborg_product["purchase_url"],
-                "price_history": {
-                    today: {
-                        "current_price": 35.96,
-                        "original_price": 44.95,
-                        "discount_percent": 20,
-                    }
+                "current": {
+                    "price": 35.96,
+                    "original_price": 44.95,
+                    "discount_pct": 20,
+                    "since": today,
                 },
+                "all_time_lowest": {"price": 35.96, "date": today},
+                "price_changes": [{"date": today, "price": 35.96, "type": "initial"}],
             }
         }
 

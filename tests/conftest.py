@@ -56,43 +56,71 @@ def sample_fitnesstukku_product():
 
 @pytest.fixture
 def sample_price_history():
-    """Sample price history data structure."""
+    """Sample price history data structure (event-based format)."""
     return {
         "base_10004564": {
             "name": "Essential Socks 10-pack",
             "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/",
-            "price_history": {
-                "2025-01-01": {
-                    "current_price": 44.95,
-                    "original_price": 44.95,
-                    "discount_percent": 0,
-                    "scraped_at": "2025-01-01T09:00:00",
-                },
-                "2025-01-02": {
-                    "current_price": 35.96,
-                    "original_price": 44.95,
-                    "discount_percent": 20,
-                    "scraped_at": "2025-01-02T09:00:00",
-                },
+            "current": {
+                "price": 35.96,
+                "original_price": 44.95,
+                "discount_pct": 20,
+                "since": "2025-01-02",
             },
+            "all_time_lowest": {
+                "price": 35.96,
+                "date": "2025-01-02",
+                "original_price": 44.95,
+            },
+            "price_changes": [
+                {
+                    "date": "2025-01-01",
+                    "price": 44.95,
+                    "original_price": 44.95,
+                    "discount_pct": 0,
+                    "type": "initial",
+                },
+                {
+                    "date": "2025-01-02",
+                    "from": 44.95,
+                    "to": 35.96,
+                    "change_pct": -20.0,
+                    "original_price": 44.95,
+                    "discount_pct": 20,
+                },
+            ],
         },
         "id_fitnesstukku_5854R": {
             "name": "Whey-80 4 kg",
             "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
-            "price_history": {
-                "2025-01-01": {
-                    "current_price": 99.90,
-                    "original_price": None,
-                    "discount_percent": None,
-                    "scraped_at": "2025-01-01T09:00:00",
-                },
-                "2025-01-02": {
-                    "current_price": 89.90,
-                    "original_price": 99.90,
-                    "discount_percent": 10,
-                    "scraped_at": "2025-01-02T09:00:00",
-                },
+            "current": {
+                "price": 89.90,
+                "original_price": 99.90,
+                "discount_pct": 10,
+                "since": "2025-01-02",
             },
+            "all_time_lowest": {
+                "price": 89.90,
+                "date": "2025-01-02",
+                "original_price": 99.90,
+            },
+            "price_changes": [
+                {
+                    "date": "2025-01-01",
+                    "price": 99.90,
+                    "original_price": None,
+                    "discount_pct": None,
+                    "type": "initial",
+                },
+                {
+                    "date": "2025-01-02",
+                    "from": 99.90,
+                    "to": 89.90,
+                    "change_pct": -10.0,
+                    "original_price": 99.90,
+                    "discount_pct": 10,
+                },
+            ],
         },
     }
 

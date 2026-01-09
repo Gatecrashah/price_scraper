@@ -165,7 +165,9 @@ class EmailSender:
 
         try:
             num_drops = len(price_drops)
-            subject = f"💊 📉 {num_drops} price drop{'s' if num_drops != 1 else ''} - Cross-store alert"
+            subject = (
+                f"💊 📉 {num_drops} price drop{'s' if num_drops != 1 else ''} - Cross-store alert"
+            )
 
             html_content = EmailTemplates.create_ean_price_alert_email(price_drops)
 

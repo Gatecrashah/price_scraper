@@ -1,6 +1,6 @@
 # Multi-Site Price Monitoring System
 
-A sophisticated, automated price monitoring system that tracks product prices across **Björn Borg** (Finnish site) and **Fitnesstukku** (Finnish fitness supplements), with intelligent GitHub issue-based product management and robust structured data extraction.
+A sophisticated, automated price monitoring system that tracks product prices across **Björn Borg** (Finnish site), **Fitnesstukku** (Finnish fitness supplements), and **cross-store EAN tracking** (Apteekki360, Sinunapteekki, Ruohonjuuri, Tokmanni), with intelligent GitHub issue-based product management and robust structured data extraction.
 
 ## 🏗️ Architecture Overview
 
@@ -14,11 +14,14 @@ This system uses a modern, resilient architecture with structured data prioritiz
 │   ├── bjornborg.py            # JSON-LD structured data scraper
 │   └── fitnesstukku.py         # dataTrackingView structured data scraper
 ├── price_monitor.py            # Main orchestration & GitHub integration
+├── ean_price_monitor.py        # Cross-store EAN price comparison
 ├── email_sender.py             # Resend API email notifications
 ├── email_templates.py          # HTML email generation
 ├── product_manager.py          # GitHub issue comment processing
 ├── products.yaml               # Product configuration (auto-managed)
-└── price_history.json          # Historical price data (auto-managed)
+├── ean_products.yaml           # EAN products with store URLs
+├── price_history.json          # Historical price data (event-based)
+└── ean_price_history.json      # Cross-store price data (event-based)
 ```
 
 ### Key Features
@@ -28,6 +31,8 @@ This system uses a modern, resilient architecture with structured data prioritiz
 - **📧 Smart Email Alerts**: Multi-site HTML notifications via Resend API
 - **📈 Price Analytics**: Trend analysis and monthly reports
 - **🔄 Zero-Maintenance**: Fully automated via GitHub Actions
+- **🏪 Cross-Store Comparison**: EAN-based tracking across multiple Finnish stores
+- **📦 Event-Based Storage**: Efficient data format that only records actual price changes (25x compression)
 
 ## 🚀 How It Works
 
@@ -382,11 +387,28 @@ monitor = PriceMonitor()
 This is a personal price monitoring system. Feel free to fork and adapt for your own use cases.
 
 ### Recent Improvements
+- ✅ **Event-based data storage** - 25x compression, only records actual price changes
+- ✅ **EAN cross-store monitoring** - Compare prices across Apteekki360, Sinunapteekki, Ruohonjuuri, Tokmanni
 - ✅ **Modular scraper architecture** with structured data prioritization
 - ✅ **GitHub issue-based product management** replacing email workflows
 - ✅ **100% structured data extraction** for maximum reliability
 - ✅ **Enhanced robustness** against website changes
 - ✅ **Comprehensive error handling** with loud failures
+
+### Data Format
+The system uses an **event-based format** that only records price changes:
+```json
+{
+  "product_key": {
+    "current": {"price": 31.47, "since": "2025-12-25"},
+    "all_time_lowest": {"price": 31.47, "date": "2025-11-25"},
+    "price_changes": [
+      {"date": "2025-07-04", "price": 35.96, "type": "initial"},
+      {"date": "2025-08-05", "from": 35.96, "to": 38.21, "change_pct": 6.3}
+    ]
+  }
+}
+```
 
 ---
 

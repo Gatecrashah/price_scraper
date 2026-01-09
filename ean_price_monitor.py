@@ -23,9 +23,7 @@ from scrapers.shopify_scraper import (
 from scrapers.tokmanni import TokmanniScraper
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -137,9 +135,7 @@ class EANPriceMonitor:
 
         return results
 
-    def find_lowest_price(
-        self, store_results: dict[str, dict]
-    ) -> tuple[str, float, str] | None:
+    def find_lowest_price(self, store_results: dict[str, dict]) -> tuple[str, float, str] | None:
         """
         Find the store with the lowest price among in-stock items.
 
@@ -169,45 +165,36 @@ class EANPriceMonitor:
         return min(valid_prices, key=lambda x: x[1])
 
     def detect_price_drop(
-        self, ean: str, today_lowest: float, history: dict
+        self, ean: str, today_lowest: float, today_store: str, history: dict
     ) -> dict | None:
         """
-        Check if today's lowest price is lower than yesterday's lowest.
+        Check if today's lowest price is lower than the previous lowest.
 
         Args:
             ean: Product EAN
             today_lowest: Today's lowest price across stores
+            today_store: Store with the lowest price
             history: Full price history dict
 
         Returns:
             Dict with drop info if price dropped, None otherwise
         """
         ean_history = history.get(ean, {})
-        cross_store = ean_history.get("cross_store_lowest", {})
+        current_lowest = ean_history.get("current_lowest", {})
+        previous_price = current_lowest.get("price") if current_lowest else None
 
-        today = datetime.now().strftime("%Y-%m-%d")
-
-        # Get yesterday's lowest (most recent excluding today)
-        yesterday_lowest = None
-        sorted_dates = sorted(cross_store.keys(), reverse=True)
-
-        for date in sorted_dates:
-            if date != today:
-                yesterday_lowest = cross_store[date].get("price")
-                break
-
-        # Check for price drop
-        if yesterday_lowest and today_lowest < yesterday_lowest - 0.01:
+        # Check for price drop compared to previous lowest
+        if previous_price and today_lowest < previous_price - 0.01:
             all_time = ean_history.get("all_time_lowest", {})
 
             return {
                 "dropped": True,
                 "today": today_lowest,
-                "yesterday": yesterday_lowest,
-                "savings": yesterday_lowest - today_lowest,
-                "all_time_price": all_time.get("price"),
-                "all_time_date": all_time.get("date"),
-                "all_time_store": all_time.get("store"),
+                "yesterday": previous_price,
+                "savings": previous_price - today_lowest,
+                "all_time_price": all_time.get("price") if all_time else None,
+                "all_time_date": all_time.get("date") if all_time else None,
+                "all_time_store": all_time.get("store") if all_time else None,
             }
 
         return None
@@ -220,7 +207,9 @@ class EANPriceMonitor:
         lowest: tuple[str, float, str] | None,
     ):
         """
-        Update price history for an EAN product.
+        Update price history for an EAN product (event-based format).
+
+        Only records changes - if price/availability changed, adds to price_changes.
 
         Args:
             ean: Product EAN
@@ -235,36 +224,90 @@ class EANPriceMonitor:
             self.price_history[ean] = {
                 "name": product_name,
                 "stores": {},
-                "cross_store_lowest": {},
+                "current_lowest": None,
                 "all_time_lowest": None,
+                "price_changes": [],
             }
 
         ean_history = self.price_history[ean]
         ean_history["name"] = product_name
 
-        # Update per-store history
-        for store_name, data in store_results.items():
-            if store_name not in ean_history["stores"]:
-                ean_history["stores"][store_name] = {
-                    "url": data.get("url"),
-                    "price_history": {},
-                }
+        # Ensure price_changes exists (for migrated data)
+        if "price_changes" not in ean_history:
+            ean_history["price_changes"] = []
 
-            ean_history["stores"][store_name]["url"] = data.get("url")
-            ean_history["stores"][store_name]["price_history"][today] = {
-                "price": data.get("current_price"),
-                "available": data.get("available", True),
-                "scraped_at": datetime.now().isoformat(),
+        # Update per-store data and detect changes
+        for store_name, data in store_results.items():
+            new_price = data.get("current_price")
+            new_available = data.get("available", True)
+
+            # Get previous state for this store
+            prev_store = ean_history.get("stores", {}).get(store_name, {})
+            prev_price = prev_store.get("current_price")
+            prev_available = prev_store.get("available")
+
+            # Check for changes
+            price_changed = (
+                prev_price is not None
+                and new_price is not None
+                and abs(new_price - prev_price) > 0.01
+            )
+            avail_changed = prev_available is not None and new_available != prev_available
+            is_new = store_name not in ean_history.get("stores", {})
+
+            # Record change event if something changed
+            if is_new:
+                ean_history["price_changes"].append(
+                    {
+                        "date": today,
+                        "store": store_name,
+                        "price": new_price,
+                        "available": new_available,
+                        "type": "initial",
+                    }
+                )
+            elif price_changed or avail_changed:
+                change_entry = {
+                    "date": today,
+                    "store": store_name,
+                    "available": new_available,
+                }
+                if price_changed:
+                    change_pct = round(((new_price - prev_price) / prev_price) * 100, 1)
+                    change_entry["from"] = prev_price
+                    change_entry["to"] = new_price
+                    change_entry["change_pct"] = change_pct
+                if avail_changed:
+                    change_entry["availability_changed"] = True
+                    change_entry["from_available"] = prev_available
+
+                ean_history["price_changes"].append(change_entry)
+
+            # Update current store state
+            if "stores" not in ean_history:
+                ean_history["stores"] = {}
+
+            ean_history["stores"][store_name] = {
+                "url": data.get("url"),
+                "current_price": new_price,
+                "available": new_available,
+                "last_updated": today,
             }
 
-        # Update cross-store lowest
+        # Update current lowest
         if lowest:
             store_name, price, url = lowest
-            ean_history["cross_store_lowest"][today] = {
-                "price": price,
-                "store": store_name,
-                "url": url,
-            }
+            prev_lowest = ean_history.get("current_lowest", {})
+            prev_lowest_price = prev_lowest.get("price") if prev_lowest else None
+
+            # Check if cross-store lowest changed
+            if prev_lowest_price is None or abs(price - prev_lowest_price) > 0.01:
+                ean_history["current_lowest"] = {
+                    "price": price,
+                    "store": store_name,
+                    "url": url,
+                    "since": today,
+                }
 
             # Update all-time lowest
             current_all_time = ean_history.get("all_time_lowest")
@@ -315,7 +358,7 @@ class EANPriceMonitor:
                 logger.info(f"  💰 Lowest in-stock price: €{price:.2f} at {store_name}")
 
                 # Check for price drop
-                drop_info = self.detect_price_drop(ean, price, self.price_history)
+                drop_info = self.detect_price_drop(ean, price, store_name, self.price_history)
 
                 if drop_info:
                     logger.info(

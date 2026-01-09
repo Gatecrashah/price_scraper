@@ -1,8 +1,7 @@
 """Tests for the EAN Price Monitor and Shopify/Tokmanni scrapers."""
 
 import json
-import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -269,26 +268,47 @@ class TestEANPriceMonitor:
 
     @pytest.fixture
     def ean_history(self):
-        """Sample EAN price history."""
+        """Sample EAN price history (event-based format)."""
         return {
             "6430050004729": {
                 "name": "Puhdas+ Premium Omega-3 1000mg 180 kaps",
                 "stores": {
                     "apteekki360": {
                         "url": "https://apteekki360.fi/products/test",
-                        "price_history": {
-                            "2026-01-08": {"price": 30.00, "available": True}
-                        },
+                        "current_price": 30.00,
+                        "available": True,
+                        "last_updated": "2026-01-08",
                     }
                 },
-                "cross_store_lowest": {
-                    "2026-01-08": {"price": 30.00, "store": "apteekki360"}
+                "current_lowest": {
+                    "price": 30.00,
+                    "store": "apteekki360",
+                    "url": "https://apteekki360.fi/products/test",
+                    "since": "2026-01-08",
                 },
                 "all_time_lowest": {
                     "price": 28.00,
                     "store": "apteekki360",
                     "date": "2025-12-15",
+                    "url": "https://apteekki360.fi/products/test",
                 },
+                "price_changes": [
+                    {
+                        "date": "2025-12-15",
+                        "store": "apteekki360",
+                        "price": 28.00,
+                        "available": True,
+                        "type": "initial",
+                    },
+                    {
+                        "date": "2026-01-08",
+                        "store": "apteekki360",
+                        "from": 28.00,
+                        "to": 30.00,
+                        "change_pct": 7.1,
+                        "available": True,
+                    },
+                ],
             }
         }
 
@@ -310,9 +330,7 @@ class TestEANPriceMonitor:
 
         # Mock email sender
         with patch("ean_price_monitor.EmailSender"):
-            monitor = EANPriceMonitor(
-                history_file=str(history_file), config_file=str(config_file)
-            )
+            monitor = EANPriceMonitor(history_file=str(history_file), config_file=str(config_file))
 
         return monitor
 
@@ -343,11 +361,9 @@ class TestEANPriceMonitor:
         assert result is None
 
     def test_detect_price_drop(self, monitor, ean_history):
-        """Test price drop detection."""
+        """Test price drop detection (event-based format)."""
         # Previous lowest was 30.00, today is 28.00
-        drop_info = monitor.detect_price_drop(
-            "6430050004729", 28.00, ean_history
-        )
+        drop_info = monitor.detect_price_drop("6430050004729", 28.00, "apteekki360", ean_history)
 
         assert drop_info is not None
         assert drop_info["dropped"] is True
@@ -358,14 +374,12 @@ class TestEANPriceMonitor:
     def test_detect_no_price_drop(self, monitor, ean_history):
         """Test no price drop when price is same or higher."""
         # Previous lowest was 30.00, today is 32.00
-        drop_info = monitor.detect_price_drop(
-            "6430050004729", 32.00, ean_history
-        )
+        drop_info = monitor.detect_price_drop("6430050004729", 32.00, "apteekki360", ean_history)
 
         assert drop_info is None
 
     def test_update_history(self, monitor):
-        """Test history update functionality."""
+        """Test history update functionality (event-based format)."""
         store_results = {
             "apteekki360": {
                 "current_price": 28.40,
@@ -385,3 +399,8 @@ class TestEANPriceMonitor:
         assert "NEW_EAN_123" in monitor.price_history
         assert monitor.price_history["NEW_EAN_123"]["name"] == "New Test Product"
         assert "apteekki360" in monitor.price_history["NEW_EAN_123"]["stores"]
+        # Check new event-based format
+        assert "current_lowest" in monitor.price_history["NEW_EAN_123"]
+        assert "price_changes" in monitor.price_history["NEW_EAN_123"]
+        assert len(monitor.price_history["NEW_EAN_123"]["price_changes"]) == 1
+        assert monitor.price_history["NEW_EAN_123"]["price_changes"][0]["type"] == "initial"

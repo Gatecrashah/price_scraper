@@ -114,7 +114,7 @@ class PriceMonitor:
         return all_products
 
     def detect_price_changes(self, current_products: list[dict]) -> list[dict]:
-        """Detect price changes compared to last scrape"""
+        """Detect price changes compared to last scrape (event-based format)"""
         price_changes = []
         today = datetime.now().strftime("%Y-%m-%d")
 
@@ -130,46 +130,30 @@ class PriceMonitor:
                 self.price_history[product_key] = {
                     "name": product.get("name", "Unknown"),
                     "purchase_url": product.get("purchase_url", product.get("url", "")),
-                    "price_history": {},
+                    "current": None,
+                    "all_time_lowest": None,
+                    "price_changes": [],
                 }
 
-            # Get previous price (most recent entry)
-            price_hist = self.price_history[product_key]["price_history"]
+            product_history = self.price_history[product_key]
+
+            # Ensure price_changes exists (for migrated data)
+            if "price_changes" not in product_history:
+                product_history["price_changes"] = []
+
+            # Get previous price from current state
             previous_price = None
-
-            if price_hist:
-                # Get the most recent price (excluding today)
-                sorted_dates = sorted(price_hist.keys(), reverse=True)
-                for date in sorted_dates:
-                    if date != today:
-                        previous_price = price_hist[date].get("current_price")
-                        break
-
-            # Record today's price
-            self.price_history[product_key]["price_history"][today] = {
-                "current_price": current_price,
-                "original_price": product.get("original_price"),
-                "discount_percent": product.get("discount_percent"),
-                "scraped_at": datetime.now().isoformat(),
-            }
+            if product_history.get("current"):
+                previous_price = product_history["current"].get("price")
 
             # Update product info
-            self.price_history[product_key]["name"] = product.get(
-                "name", self.price_history[product_key]["name"]
-            )
-            self.price_history[product_key]["purchase_url"] = product.get(
-                "purchase_url", product.get("url", "")
-            )
+            product_history["name"] = product.get("name", product_history["name"])
+            product_history["purchase_url"] = product.get("purchase_url", product.get("url", ""))
 
-            # Calculate historical lowest price
-            lowest_price = None
-            lowest_price_date = None
-            if price_hist:
-                for date, data in price_hist.items():
-                    price = data.get("current_price")
-                    if price and (lowest_price is None or price < lowest_price):
-                        lowest_price = price
-                        lowest_price_date = date
+            # Get all-time lowest for notifications
+            all_time = product_history.get("all_time_lowest", {})
+            lowest_price = all_time.get("price") if all_time else None
+            lowest_price_date = all_time.get("date") if all_time else None
 
             # Format the lowest price date for display
             lowest_price_date_formatted = None
@@ -182,9 +166,38 @@ class PriceMonitor:
                     lowest_price_date_formatted = lowest_price_date
 
             # Check for price changes
-            if (
+            is_new = previous_price is None
+            price_changed = (
                 previous_price is not None and abs(current_price - previous_price) > 0.01
-            ):  # Ignore tiny rounding differences
+            )
+
+            if is_new:
+                # First time seeing this product - record initial price
+                product_history["price_changes"].append(
+                    {
+                        "date": today,
+                        "price": current_price,
+                        "original_price": product.get("original_price"),
+                        "discount_pct": product.get("discount_percent"),
+                        "type": "initial",
+                    }
+                )
+                logger.info(f"New product tracked: {product.get('name')}: {current_price:.2f} EUR")
+
+            elif price_changed:
+                # Price changed - record the change event
+                change_pct = round(((current_price - previous_price) / previous_price) * 100, 1)
+                product_history["price_changes"].append(
+                    {
+                        "date": today,
+                        "from": previous_price,
+                        "to": current_price,
+                        "change_pct": change_pct,
+                        "original_price": product.get("original_price"),
+                        "discount_pct": product.get("discount_percent"),
+                    }
+                )
+
                 logger.info(
                     f"Price change detected for {product.get('name')}: {previous_price:.2f} → {current_price:.2f} EUR"
                 )
@@ -206,28 +219,55 @@ class PriceMonitor:
             else:
                 logger.info(f"No price change for {product.get('name')}: {current_price:.2f} EUR")
 
+            # Update current state
+            product_history["current"] = {
+                "price": current_price,
+                "original_price": product.get("original_price"),
+                "discount_pct": product.get("discount_percent"),
+                "since": today
+                if (is_new or price_changed)
+                else product_history.get("current", {}).get("since", today),
+            }
+
+            # Update all-time lowest
+            if lowest_price is None or current_price < lowest_price:
+                product_history["all_time_lowest"] = {
+                    "price": current_price,
+                    "date": today,
+                    "original_price": product.get("original_price"),
+                }
+
         return price_changes
 
     def cleanup_old_history(self, days_to_keep=365):
-        """Remove price history older than specified days"""
+        """Remove price change events older than specified days"""
         cutoff_date = (datetime.now() - timedelta(days=days_to_keep)).strftime("%Y-%m-%d")
         total_removed = 0
 
         for product_key in self.price_history:
-            price_hist = self.price_history[product_key]["price_history"]
-            dates_to_remove = [date for date in price_hist.keys() if date < cutoff_date]
+            product_data = self.price_history[product_key]
+            price_changes = product_data.get("price_changes", [])
 
-            for date in dates_to_remove:
-                del price_hist[date]
-                total_removed += 1
+            # Keep events newer than cutoff, but always keep the most recent one
+            if len(price_changes) > 1:
+                original_count = len(price_changes)
+                # Filter out old events, but keep at least the last one
+                new_changes = [e for e in price_changes if e.get("date", "") >= cutoff_date]
+
+                # Always keep at least the most recent event for context
+                if not new_changes and price_changes:
+                    new_changes = [price_changes[-1]]
+
+                product_data["price_changes"] = new_changes
+                total_removed += original_count - len(new_changes)
 
         if total_removed > 0:
             logger.info(
-                f"Cleaned up {total_removed} price history entries older than {days_to_keep} days"
+                f"Cleaned up {total_removed} price change events older than {days_to_keep} days"
             )
 
     def get_price_summary(self, current_products: list[dict] | None = None) -> dict:
-        """Get a summary of current prices and trends"""
+        """Get a summary of current prices and trends (event-based format)"""
         # If current_products is provided, only show those in summary
         if current_products:
             current_product_keys = {self.get_product_key(p) for p in current_products}
@@ -241,37 +281,33 @@ class PriceMonitor:
             if current_product_keys and product_key not in current_product_keys:
                 continue
 
-            price_hist = product_data["price_history"]
-            if not price_hist:
+            current = product_data.get("current")
+            if not current:
                 continue
 
-            # Get latest price
-            latest_date = max(price_hist.keys())
-            latest_data = price_hist[latest_date]
-
-            # Calculate trend (compare with 7 days ago)
-            week_ago = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+            # Calculate trend from recent price changes
+            price_changes = product_data.get("price_changes", [])
             trend = "stable"
             trend_change = 0
 
-            if week_ago in price_hist:
-                old_price = price_hist[week_ago]["current_price"]
-                current_price = latest_data["current_price"]
-                trend_change = current_price - old_price
-
-                if abs(trend_change) > 0.01:
-                    trend = "down" if trend_change < 0 else "up"
+            # Look at the most recent change to determine trend
+            if len(price_changes) >= 2:
+                last_change = price_changes[-1]
+                if "from" in last_change and "to" in last_change:
+                    trend_change = last_change["to"] - last_change["from"]
+                    if abs(trend_change) > 0.01:
+                        trend = "down" if trend_change < 0 else "up"
 
             summary["products"].append(
                 {
                     "name": product_data["name"],
-                    "current_price": latest_data["current_price"],
-                    "original_price": latest_data.get("original_price"),
-                    "discount_percent": latest_data.get("discount_percent"),
-                    "purchase_url": product_data["purchase_url"],
+                    "current_price": current.get("price"),
+                    "original_price": current.get("original_price"),
+                    "discount_percent": current.get("discount_pct"),
+                    "purchase_url": product_data.get("purchase_url", ""),
                     "trend": trend,
                     "trend_change": trend_change,
-                    "last_updated": latest_date,
+                    "last_updated": current.get("since"),
                 }
             )
 

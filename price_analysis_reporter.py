@@ -76,7 +76,7 @@ class PriceAnalysisReporter:
             # Calculate total savings potential
             current = stats["current_price"]
             lowest = stats["lowest_price"]
-            if current > lowest:
+            if current and lowest and current > lowest:
                 total_savings_potential += current - lowest
 
             # Count trends
@@ -224,29 +224,29 @@ class PriceAnalysisReporter:
             )
 
             # Savings calculation
-            savings = stats["current_price"] - stats["lowest_price"]
-            savings_pct = (
-                (savings / stats["current_price"]) * 100 if stats["current_price"] > 0 else 0
-            )
+            current_price = stats["current_price"] or 0
+            lowest_price = stats["lowest_price"] or 0
+            savings = current_price - lowest_price
+            savings_pct = (savings / current_price) * 100 if current_price > 0 else 0
 
             html += f"""
                 <div class="product">
                     <h3>{analysis["product_name"]}</h3>
                     <div class="price-info">
                         <div class="price-item">
-                            <div class="price-value" style="color: #2c3e50;">€{stats["current_price"]:.2f}</div>
+                            <div class="price-value" style="color: #2c3e50;">€{current_price:.2f}</div>
                             <div class="price-label">Current Price</div>
                         </div>
                         <div class="price-item">
-                            <div class="price-value" style="color: #27ae60;">€{stats["lowest_price"]:.2f}</div>
+                            <div class="price-value" style="color: #27ae60;">€{lowest_price:.2f}</div>
                             <div class="price-label">Best Deal</div>
                         </div>
                         <div class="price-item">
-                            <div class="price-value" style="color: #e74c3c;">€{stats["highest_price"]:.2f}</div>
+                            <div class="price-value" style="color: #e74c3c;">€{stats["highest_price"] or 0:.2f}</div>
                             <div class="price-label">Highest Price</div>
                         </div>
                         <div class="price-item">
-                            <div class="price-value" style="color: #3498db;">€{stats["average_price"]:.2f}</div>
+                            <div class="price-value" style="color: #3498db;">€{stats["average_price"] or 0:.2f}</div>
                             <div class="price-label">Average Price</div>
                         </div>
                     </div>
