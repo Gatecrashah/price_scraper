@@ -56,3 +56,9 @@ addopts = "-v --tb=short"
 filterwarnings = [
     "ignore::DeprecationWarning",
 ]
+
+[tool.coverage.run]
+omit = [
+    "migrate_price_history.py",  # One-time migration script
+    "price_analysis_reporter.py",  # Reporter with main() entry point
+]
