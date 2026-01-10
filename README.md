@@ -78,10 +78,10 @@ When new products are discovered:
   "ecommerce": {
     "detail": {
       "products": [{
-        "id": "590-1",
+        "id": "5854R",
         "name": "Whey-80, 4 kg, Double Rich Chocolate",
         "brand": "Star Nutrition",
-        "price": "86.90"
+        "price": "89.90"
       }]
     }
   }
@@ -90,14 +90,16 @@ When new products are discovered:
 
 ## 📋 Current Products Tracked
 
-### Björn Borg (9 products)
-- **Essential Socks 10-pack**: 4 variants (Multi, Variant 1, 2, + 1 new)
+### Björn Borg (11 products)
+- **Essential Socks 10-pack**: 8 color variants
 - **Centre Crew Sweatshirt**: 3 colors (Grey, Blue, Black)
-- **Essential Ankle Socks**: 2 variants (3-pack, 10-pack)
 
 ### Fitnesstukku (2 products)
 - **Whey-80 Protein 4kg** (Star Nutrition)
 - **Creatine Monohydrate 500g** (Star Nutrition)
+
+### EAN Cross-Store Tracking (1 product across 4 stores)
+- **Puhdas+ Premium Omega-3 1000mg 180 kaps** - tracked at Apteekki360, Tokmanni, Sinunapteekki, Ruohonjuuri
 
 ## ⚙️ Setup & Configuration
 
