@@ -371,10 +371,10 @@
     "name": "Whey-80, 4 kg, Double Rich Chocolate",
     "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
     "current": {
-      "price": 89.9,
+      "price": 84.5,
       "original_price": null,
       "discount_pct": null,
-      "since": "2025-12-03"
+      "since": "2026-01-12"
     },
     "all_time_lowest": {
       "price": 79.9,
@@ -426,6 +426,14 @@
         "from": 84.5,
         "to": 89.9,
         "change_pct": 6.4,
+        "original_price": null,
+        "discount_pct": null
+      },
+      {
+        "date": "2026-01-12",
+        "from": 89.9,
+        "to": 84.5,
+        "change_pct": -6.0,
         "original_price": null,
         "discount_pct": null
       }
