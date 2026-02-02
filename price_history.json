@@ -3,10 +3,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/",
     "current": {
-      "price": 31.47,
-      "original_price": 44.95,
-      "discount_pct": 30,
-      "since": "2025-12-25"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 31.47,
@@ -60,6 +60,14 @@
         "change_pct": -17.6,
         "original_price": 44.95,
         "discount_pct": 30
+      },
+      {
+        "date": "2026-02-02",
+        "from": 31.47,
+        "to": 44.95,
+        "change_pct": 42.8,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -67,10 +75,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
     "current": {
-      "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2025-12-25"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 35.96,
@@ -116,6 +124,14 @@
         "change_pct": -20.0,
         "original_price": 44.95,
         "discount_pct": 20
+      },
+      {
+        "date": "2026-02-02",
+        "from": 35.96,
+        "to": 44.95,
+        "change_pct": 25.0,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -123,10 +139,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004085-mp001/",
     "current": {
-      "price": 31.47,
-      "original_price": 44.95,
-      "discount_pct": 30,
-      "since": "2025-12-25"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 31.47,
@@ -180,6 +196,14 @@
         "change_pct": -17.6,
         "original_price": 44.95,
         "discount_pct": 30
+      },
+      {
+        "date": "2026-02-02",
+        "from": 31.47,
+        "to": 44.95,
+        "change_pct": 42.8,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -187,10 +211,10 @@
     "name": "Centre Crew",
     "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-gy013/",
     "current": {
-      "price": 41.97,
-      "original_price": 69.95,
-      "discount_pct": 40,
-      "since": "2025-12-25"
+      "price": 69.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 41.97,
@@ -244,6 +268,14 @@
         "change_pct": -25.0,
         "original_price": 69.95,
         "discount_pct": 40
+      },
+      {
+        "date": "2026-02-02",
+        "from": 41.97,
+        "to": 69.95,
+        "change_pct": 66.7,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -251,10 +283,10 @@
     "name": "Centre Crew",
     "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
     "current": {
-      "price": 41.97,
-      "original_price": 69.95,
-      "discount_pct": 40,
-      "since": "2025-12-25"
+      "price": 69.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 41.97,
@@ -308,6 +340,14 @@
         "change_pct": -25.0,
         "original_price": 69.95,
         "discount_pct": 40
+      },
+      {
+        "date": "2026-02-02",
+        "from": 41.97,
+        "to": 69.95,
+        "change_pct": 66.7,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -315,10 +355,10 @@
     "name": "Centre Crew",
     "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
     "current": {
-      "price": 41.97,
-      "original_price": 69.95,
-      "discount_pct": 40,
-      "since": "2025-12-25"
+      "price": 69.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 41.97,
@@ -364,6 +404,14 @@
         "change_pct": -25.0,
         "original_price": 69.95,
         "discount_pct": 40
+      },
+      {
+        "date": "2026-02-02",
+        "from": 41.97,
+        "to": 69.95,
+        "change_pct": 66.7,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -371,10 +419,10 @@
     "name": "Whey-80, 4 kg, Double Rich Chocolate",
     "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
     "current": {
-      "price": 84.5,
+      "price": 89.9,
       "original_price": null,
       "discount_pct": null,
-      "since": "2026-01-12"
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 79.9,
@@ -436,6 +484,14 @@
         "change_pct": -6.0,
         "original_price": null,
         "discount_pct": null
+      },
+      {
+        "date": "2026-02-02",
+        "from": 84.5,
+        "to": 89.9,
+        "change_pct": 6.4,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -443,10 +499,10 @@
     "name": "Creatine Monohydrate, 500 g",
     "purchase_url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
     "current": {
-      "price": 12.9,
+      "price": 19.9,
       "original_price": null,
       "discount_pct": null,
-      "since": "2026-01-27"
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 11.9,
@@ -612,6 +668,14 @@
         "change_pct": 8.4,
         "original_price": null,
         "discount_pct": null
+      },
+      {
+        "date": "2026-02-02",
+        "from": 12.9,
+        "to": 19.9,
+        "change_pct": 54.3,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -619,10 +683,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
     "current": {
-      "price": 31.47,
-      "original_price": 44.95,
-      "discount_pct": 30,
-      "since": "2025-12-25"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 31.47,
@@ -660,6 +724,14 @@
         "change_pct": -30.0,
         "original_price": 44.95,
         "discount_pct": 30
+      },
+      {
+        "date": "2026-02-02",
+        "from": 31.47,
+        "to": 44.95,
+        "change_pct": 42.8,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -739,10 +811,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-ankle-sock-10-pack-10002940-mp001/",
     "current": {
-      "price": 26.97,
-      "original_price": 44.95,
-      "discount_pct": 40,
-      "since": "2025-12-25"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 26.97,
@@ -796,6 +868,14 @@
         "change_pct": -29.4,
         "original_price": 44.95,
         "discount_pct": 40
+      },
+      {
+        "date": "2026-02-02",
+        "from": 26.97,
+        "to": 44.95,
+        "change_pct": 66.7,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -803,10 +883,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
     "current": {
-      "price": 31.47,
-      "original_price": 44.95,
-      "discount_pct": 30,
-      "since": "2025-12-25"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 31.47,
@@ -844,6 +924,14 @@
         "change_pct": -30.0,
         "original_price": 44.95,
         "discount_pct": 30
+      },
+      {
+        "date": "2026-02-02",
+        "from": 31.47,
+        "to": 44.95,
+        "change_pct": 42.8,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -851,10 +939,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001760-mp001/",
     "current": {
-      "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-01-04"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-02"
     },
     "all_time_lowest": {
       "price": 35.96,
@@ -868,6 +956,14 @@
         "original_price": 44.95,
         "discount_pct": 20,
         "type": "initial"
+      },
+      {
+        "date": "2026-02-02",
+        "from": 35.96,
+        "to": 44.95,
+        "change_pct": 25.0,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   }
