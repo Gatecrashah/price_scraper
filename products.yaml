@@ -186,6 +186,12 @@ products:
     status: ignore
     product_id: '10005575'
     category: socks
+  - name: Essential Socks 10-pack
+    url: /fi/essential-socks-10-pack-10005576-mp003/
+    site: bjornborg
+    status: track
+    product_id: '10005576'
+    category: socks
   fitnesstukku:
   - name: Whey-80 Protein 4kg
     url: https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html
