@@ -1038,5 +1038,29 @@
         "discount_pct": null
       }
     ]
+  },
+  "base_10005576": {
+    "name": "Essential Socks 10-pack",
+    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp002/",
+    "current": {
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-02-06"
+    },
+    "all_time_lowest": {
+      "price": 44.95,
+      "date": "2026-02-06",
+      "original_price": null
+    },
+    "price_changes": [
+      {
+        "date": "2026-02-06",
+        "price": 44.95,
+        "original_price": null,
+        "discount_pct": null,
+        "type": "initial"
+      }
+    ]
   }
 }
