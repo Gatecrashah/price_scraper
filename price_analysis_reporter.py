@@ -4,10 +4,15 @@ Automated price analysis reporter - generates and emails comprehensive pricing i
 """
 
 import json
+from collections import defaultdict
 from datetime import datetime, timedelta
 
 from email_sender import EmailSender
+from email_templates import EmailTemplates
 from price_analyzer import PriceAnalyzer
+
+C = EmailTemplates.COLORS
+FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
 
 
 class PriceAnalysisReporter:
@@ -36,6 +41,8 @@ class PriceAnalysisReporter:
             analysis = self.analyzer.analyze_product_pricing(product_key)
 
             if "error" not in analysis:
+                # Attach purchase_url from history for site detection
+                analysis["_purchase_url"] = product_data.get("purchase_url", "")
                 report_data["products"][product_key] = analysis
                 all_products_analysis.append(analysis)
 
@@ -43,7 +50,75 @@ class PriceAnalysisReporter:
         if all_products_analysis:
             report_data["summary"] = self._generate_summary_insights(all_products_analysis)
 
+        # Group products by name for the HTML report
+        report_data["grouped_products"] = self._group_products(report_data["products"])
+
         return report_data
+
+    def _group_products(self, products: dict) -> dict:
+        """Group products by name, aggregating stats across variants."""
+        groups_by_name: dict[str, list] = defaultdict(list)
+
+        for product_key, analysis in products.items():
+            name = analysis["product_name"]
+            groups_by_name[name].append(analysis)
+
+        grouped = {}
+        for name, variants in groups_by_name.items():
+            current_prices = [
+                v["price_statistics"]["current_price"]
+                for v in variants
+                if v["price_statistics"]["current_price"]
+            ]
+            lowest_prices = [
+                v["price_statistics"]["lowest_price"]
+                for v in variants
+                if v["price_statistics"]["lowest_price"]
+            ]
+
+            # Find cheapest variant for the CTA link
+            cheapest_variant = min(
+                variants,
+                key=lambda v: v["price_statistics"]["current_price"] or float("inf"),
+            )
+
+            # Dominant trend
+            trend_counts: dict[str, int] = defaultdict(int)
+            for v in variants:
+                trend_counts[v["trends"]["trend"]] += 1
+            dominant_trend = max(trend_counts, key=lambda t: trend_counts[t])
+
+            # Best month across variants
+            best_month = None
+            for v in variants:
+                seasonal = v["seasonal_patterns"]
+                if seasonal.get("analysis") == "available":
+                    bm = seasonal["best_month"]
+                    if best_month is None or bm["average_price"] < best_month["average_price"]:
+                        best_month = bm
+
+            # Detect site from purchase URL
+            url = cheapest_variant.get("_purchase_url", cheapest_variant.get("purchase_url", ""))
+            if "bjornborg" in url.lower():
+                site = "bjornborg"
+            elif "fitnesstukku" in url.lower():
+                site = "fitnesstukku"
+            else:
+                site = "other"
+
+            grouped[name] = {
+                "name": name,
+                "variant_count": len(variants),
+                "price_low": min(current_prices) if current_prices else 0,
+                "price_high": max(current_prices) if current_prices else 0,
+                "best_ever": min(lowest_prices) if lowest_prices else 0,
+                "trend": dominant_trend,
+                "best_month": best_month,
+                "best_url": cheapest_variant.get("purchase_url", "#"),
+                "site": site,
+            }
+
+        return grouped
 
     def _determine_report_period(self) -> str:
         """Determine what period this report covers"""
@@ -129,165 +204,288 @@ class PriceAnalysisReporter:
             return "mixed"  # Mixed signals
 
     def format_html_report(self, report_data: dict) -> str:
-        """Format the report as beautiful HTML for email"""
+        """Format the report as HTML email matching the price alert design."""
 
-        html = f"""
-        <html>
-        <head>
-            <style>
-                body {{ font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f7fa; }}
-                .container {{ max-width: 800px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }}
-                .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }}
-                .header h1 {{ margin: 0; font-size: 28px; font-weight: 300; }}
-                .header p {{ margin: 10px 0 0 0; opacity: 0.9; }}
-                .summary {{ background: #f8f9fb; padding: 25px; border-bottom: 1px solid #e1e8ed; }}
-                .summary h2 {{ color: #2c3e50; margin-top: 0; }}
-                .stats-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }}
-                .stat-card {{ background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #3498db; }}
-                .stat-number {{ font-size: 24px; font-weight: bold; color: #2c3e50; }}
-                .stat-label {{ color: #7f8c8d; font-size: 14px; }}
-                .product {{ margin: 25px; padding: 20px; border: 1px solid #e1e8ed; border-radius: 8px; }}
-                .product h3 {{ color: #2c3e50; margin-top: 0; }}
-                .price-info {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 15px 0; }}
-                .price-item {{ text-align: center; }}
-                .price-value {{ font-size: 18px; font-weight: bold; }}
-                .price-label {{ font-size: 12px; color: #7f8c8d; }}
-                .trend {{ padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; }}
-                .trend-up {{ background: #fee; color: #e74c3c; }}
-                .trend-down {{ background: #efe; color: #27ae60; }}
-                .trend-stable {{ background: #f0f0f0; color: #7f8c8d; }}
-                .buy-btn {{ background: #3498db; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin-top: 15px; }}
-                .footer {{ background: #2c3e50; color: white; padding: 20px; text-align: center; font-size: 14px; }}
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>🧦 Björn Borg Price Analysis Report</h1>
-                    <p>{report_data["report_period"]} • Generated {report_data["report_date"]}</p>
-                </div>
-        """
+        summary = report_data.get("summary", {})
+        grouped = report_data.get("grouped_products", {})
+        today = self.report_date.strftime("%b %d, %Y")
+        period = report_data["report_period"]
+        total = summary.get("total_products_tracked", 0)
+        trends = summary.get("price_trends", {})
+        savings = summary.get("total_savings_potential", 0)
 
-        # Add summary section
-        if "summary" in report_data:
-            summary = report_data["summary"]
-            sentiment_colors = {
-                "bullish": "#e74c3c",
-                "bearish": "#27ae60",
-                "mixed": "#f39c12",
-                "unknown": "#95a5a6",
-            }
-            sentiment_color = sentiment_colors.get(
-                summary.get("market_sentiment", "unknown"), "#95a5a6"
-            )
+        # ── Header ──────────────────────────────────────────────
+        content = f"""
+                    <!-- Header -->
+                    <tr>
+                        <td style="padding: 0 0 28px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="padding-bottom: 16px;">
+                                        <div style="width: 40px; height: 4px; background-color: {C["text_primary"]}; border-radius: 2px;"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h1 style="margin: 0; font-family: {FONT}; font-size: 28px; font-weight: 700; color: {C["text_primary"]}; letter-spacing: -0.5px;">
+                                            Monthly Report
+                                        </h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top: 8px;">
+                                        <span style="font-family: {FONT}; font-size: 16px; color: {C["text_muted"]};">
+                                            {today} &middot; {period}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>"""
 
-            html += f"""
-                <div class="summary">
-                    <h2>📊 Executive Summary</h2>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number">{summary["total_products_tracked"]}</div>
-                            <div class="stat-label">Products Tracked</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" style="color: #27ae60;">€{summary["total_savings_potential"]:.2f}</div>
-                            <div class="stat-label">Total Savings Potential</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" style="color: {sentiment_color};">{summary["market_sentiment"].title()}</div>
-                            <div class="stat-label">Market Sentiment</div>
-                        </div>
-                    </div>
-            """
+        # ── Summary card ────────────────────────────────────────
+        content += f"""
+                    <!-- Summary -->
+                    <tr>
+                        <td style="padding: 0 0 24px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: {C["bg_white"]}; border-radius: 12px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="font-family: {FONT}; font-size: 13px; font-weight: 600; color: {C["text_secondary"]}; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 16px;">
+                                                    Overview
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                        <tr>
+                                                            <td style="font-family: {FONT}; font-size: 14px; color: {C["text_secondary"]}; padding: 6px 0;">
+                                                                Products tracked
+                                                            </td>
+                                                            <td align="right" style="font-family: {FONT}; font-size: 14px; font-weight: 600; color: {C["text_primary"]};">
+                                                                {total}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-family: {FONT}; font-size: 14px; color: {C["text_secondary"]}; padding: 6px 0;">
+                                                                Savings potential
+                                                            </td>
+                                                            <td align="right" style="font-family: {FONT}; font-size: 14px; font-weight: 600; color: {C["accent_drop"]};">
+                                                                {savings:.2f}&euro;
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-family: {FONT}; font-size: 14px; color: {C["text_secondary"]}; padding: 6px 0;">
+                                                                Trends
+                                                            </td>
+                                                            <td align="right" style="font-family: {FONT}; font-size: 14px; font-weight: 600; color: {C["text_primary"]};">
+                                                                {trends.get("decreasing", 0)} &#8595; &middot; {trends.get("increasing", 0)} &#8593; &middot; {trends.get("stable", 0)} &#8594;
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>"""
 
-            # Add trend breakdown
-            trends = summary["price_trends"]
-            html += f"""
-                    <p><strong>Price Trends:</strong>
-                    📈 {trends["increasing"]} increasing •
-                    📉 {trends["decreasing"]} decreasing •
-                    ➡️ {trends["stable"]} stable</p>
-                </div>
-            """
+        # ── Product groups by site ──────────────────────────────
+        site_labels = {
+            "bjornborg": "Björn Borg",
+            "fitnesstukku": "Fitnesstukku",
+            "other": "Other",
+        }
 
-        # Add individual product analyses
-        for product_key, analysis in report_data.get("products", {}).items():
-            stats = analysis["price_statistics"]
-            trends = analysis["trends"]
+        for site_key, site_label in site_labels.items():
+            site_groups = [g for g in grouped.values() if g["site"] == site_key]
+            if not site_groups:
+                continue
 
-            # Trend styling
-            trend_class = (
-                f"trend-{trends['trend'].replace('increasing', 'up').replace('decreasing', 'down')}"
-            )
-            trend_icon = {"increasing": "📈", "decreasing": "📉", "stable": "➡️"}.get(
-                trends["trend"], "❓"
-            )
+            content += f"""
+                    <!-- {site_label} Section -->
+                    <tr>
+                        <td style="padding: 0 0 8px 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="padding-bottom: 12px;">
+                                        <span style="font-family: {FONT}; font-size: 13px; font-weight: 600; color: {C["text_secondary"]}; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            {site_label}
+                                        </span>
+                                        <span style="font-family: {FONT}; font-size: 12px; color: {C["text_muted"]}; margin-left: 8px;">
+                                            {len(site_groups)} product{"s" if len(site_groups) != 1 else ""}
+                                        </span>
+                                    </td>
+                                </tr>"""
 
-            # Savings calculation
-            current_price = stats["current_price"] or 0
-            lowest_price = stats["lowest_price"] or 0
-            savings = current_price - lowest_price
-            savings_pct = (savings / current_price) * 100 if current_price > 0 else 0
+            for group in site_groups:
+                content += self._format_product_group(group)
 
-            html += f"""
-                <div class="product">
-                    <h3>{analysis["product_name"]}</h3>
-                    <div class="price-info">
-                        <div class="price-item">
-                            <div class="price-value" style="color: #2c3e50;">€{current_price:.2f}</div>
-                            <div class="price-label">Current Price</div>
-                        </div>
-                        <div class="price-item">
-                            <div class="price-value" style="color: #27ae60;">€{lowest_price:.2f}</div>
-                            <div class="price-label">Best Deal</div>
-                        </div>
-                        <div class="price-item">
-                            <div class="price-value" style="color: #e74c3c;">€{stats["highest_price"] or 0:.2f}</div>
-                            <div class="price-label">Highest Price</div>
-                        </div>
-                        <div class="price-item">
-                            <div class="price-value" style="color: #3498db;">€{stats["average_price"] or 0:.2f}</div>
-                            <div class="price-label">Average Price</div>
-                        </div>
-                    </div>
+            content += """
+                            </table>
+                        </td>
+                    </tr>"""
 
-                    <div style="margin: 15px 0;">
-                        <span class="trend {trend_class}">{trend_icon} {trends["trend"].title()}</span>
-                        {f'<span style="margin-left: 15px; color: #27ae60; font-weight: bold;">💰 Save €{savings:.2f} ({savings_pct:.1f}%) vs current</span>' if savings > 0.01 else ""}
-                    </div>
-            """
+        # ── Footer ──────────────────────────────────────────────
+        content += f"""
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 24px 0 0 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="border-top: 1px solid {C["border"]}; padding-top: 16px;">
+                                        <span style="font-family: {FONT}; font-size: 12px; color: {C["text_muted"]};">
+                                            Automated analysis &middot; Generated monthly
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>"""
 
-            # Best deals info
-            if analysis["best_deals"]:
-                deal = analysis["best_deals"][0]
-                html += f"""<p><strong>🎯 Last Best Deal:</strong> €{deal["price"]:.2f} ({deal["days_ago"]} days ago)</p>"""
+        return EmailTemplates._email_wrapper(content, f"{period} - {total} products analyzed")
 
-            # Seasonal insights
-            seasonal = analysis["seasonal_patterns"]
-            if seasonal.get("analysis") == "available":
-                best_month = seasonal["best_month"]
-                html += f"""<p><strong>📅 Best Month:</strong> {best_month["month"]} (avg: €{best_month["average_price"]:.2f})</p>"""
+    @staticmethod
+    def _format_product_group(group: dict) -> str:
+        """Format a single grouped product card."""
+        name = group["name"]
+        variant_count = group["variant_count"]
+        price_low = group["price_low"]
+        price_high = group["price_high"]
+        best_ever = group["best_ever"]
+        trend = group["trend"]
+        best_month = group["best_month"]
+        best_url = group["best_url"]
 
-            html += f"""<a href="{analysis["purchase_url"]}" class="buy-btn">🛒 Buy Now</a></div>"""
+        # Price range display
+        if variant_count > 1 and price_low != price_high:
+            price_display = f"{price_low:.2f} &ndash; {price_high:.2f}&euro;"
+        else:
+            price_display = f"{price_low:.2f}&euro;"
 
-        html += """
-                <div class="footer">
-                    <p>🤖 Automated analysis by your Björn Borg price monitoring system</p>
-                    <p>📈 Use these insights to time your purchases for maximum savings!</p>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
+        # Trend badge
+        trend_colors = {
+            "decreasing": (C["accent_drop"], "#ecfdf5"),
+            "increasing": (C["accent_rise"], "#fef2f2"),
+            "stable": (C["text_muted"], C["bg_card"]),
+        }
+        trend_fg, trend_bg = trend_colors.get(trend, (C["text_muted"], C["bg_card"]))
+        trend_labels = {
+            "decreasing": "&#8595; Decreasing",
+            "increasing": "&#8593; Increasing",
+            "stable": "&#8594; Stable",
+        }
+        trend_label = trend_labels.get(trend, trend.title())
 
-        return html
+        # Variant count label
+        variant_label = f"{variant_count} variants" if variant_count > 1 else ""
+
+        # Best month info
+        best_month_html = ""
+        if best_month:
+            best_month_html = f"""
+                                                <tr>
+                                                    <td style="font-family: {FONT}; font-size: 13px; color: {C["text_secondary"]}; padding: 4px 0;">
+                                                        Best month: <strong style="color: {C["text_primary"]};">{best_month["month"]}</strong> (avg {best_month["average_price"]:.2f}&euro;)
+                                                    </td>
+                                                </tr>"""
+
+        return f"""
+                                <tr>
+                                    <td style="padding: 20px; background-color: {
+            C["bg_white"]
+        }; border-radius: 12px;">
+                                        <!-- Trend badge -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="background-color: {
+            trend_bg
+        }; padding: 5px 12px; border-radius: 20px;">
+                                                    <span style="font-family: {
+            FONT
+        }; font-size: 13px; font-weight: 700; color: {trend_fg};">
+                                                        {trend_label}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Product name -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 14px;">
+                                            <tr>
+                                                <td>
+                                                    <span style="font-family: {
+            FONT
+        }; font-size: 18px; font-weight: 500; color: {C["text_primary"]}; line-height: 1.4;">
+                                                        {name}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Price info -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 12px;">
+                                            <tr>
+                                                <td style="font-family: {
+            FONT
+        }; font-size: 14px; color: {C["text_secondary"]}; padding: 4px 0;">
+                                                    Current: <strong style="color: {
+            C["text_primary"]
+        };">{price_display}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-family: {
+            FONT
+        }; font-size: 14px; color: {C["text_secondary"]}; padding: 4px 0;">
+                                                    Best ever: <strong style="color: {
+            C["accent_drop"]
+        };">{best_ever:.2f}&euro;</strong>
+                                                </td>
+                                            </tr>
+                                            {
+            f'''<tr>
+                                                <td style="font-family: {FONT}; font-size: 13px; color: {C["text_muted"]}; padding: 4px 0;">
+                                                    {variant_label}
+                                                </td>
+                                            </tr>'''
+            if variant_label
+            else ""
+        }
+                                            {best_month_html}
+                                        </table>
+
+                                        <!-- CTA -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 16px;">
+                                            <tr>
+                                                <td>
+                                                    <a href="{
+            best_url
+        }" target="_blank" style="display: inline-block; padding: 12px 20px; font-family: {
+            FONT
+        }; font-size: 14px; font-weight: 600; color: {C["bg_white"]}; background-color: {
+            C["text_primary"]
+        }; text-decoration: none; border-radius: 8px;">
+                                                        View best price &#8594;
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <!-- Spacer -->
+                                <tr><td style="height: 12px;"></td></tr>"""
 
     def send_analysis_report(self, report_data: dict) -> bool:
         """Send the analysis report via email using EmailSender"""
 
         if "error" in report_data:
             # Send error notification
-            subject = "❌ Price Analysis Report - Error"
+            subject = "Price Analysis Report - Error"
             html_content = f"""
             <html><body style="font-family: Arial, sans-serif; margin: 20px;">
                 <h2 style="color: #e74c3c;">Price Analysis Report Error</h2>
@@ -301,20 +499,20 @@ class PriceAnalysisReporter:
             period = report_data["report_period"]
             total_products = report_data.get("summary", {}).get("total_products_tracked", 0)
 
-            subject = f"📊 {period} - {total_products} Products Analyzed"
+            subject = f"{period} - {total_products} Products Analyzed"
             html_content = self.format_html_report(report_data)
 
         # Use EmailSender's method instead of duplicating logic
         try:
             success = self.email_sender.send_analysis_report(subject, html_content)
             if success:
-                print("✅ Analysis report sent successfully")
+                print("Analysis report sent successfully")
             else:
-                print("❌ Failed to send analysis report")
+                print("Failed to send analysis report")
             return success
 
         except Exception as e:
-            print(f"❌ Failed to send analysis report: {e}")
+            print(f"Failed to send analysis report: {e}")
             return False
 
     def save_report_files(self, report_data: dict) -> None:
@@ -332,13 +530,13 @@ class PriceAnalysisReporter:
             with open(f"price_analysis_{timestamp}.html", "w", encoding="utf-8") as f:
                 f.write(html_content)
 
-        print(f"📄 Report files saved with timestamp: {timestamp}")
+        print(f"Report files saved with timestamp: {timestamp}")
 
 
 def main():
     """Generate and send automated price analysis report"""
 
-    print("📊 Starting automated price analysis report generation...")
+    print("Starting automated price analysis report generation...")
 
     reporter = PriceAnalysisReporter()
 
@@ -352,9 +550,9 @@ def main():
     success = reporter.send_analysis_report(report_data)
 
     if success:
-        print("🎉 Price analysis report generated and sent successfully!")
+        print("Price analysis report generated and sent successfully!")
     else:
-        print("❌ Failed to send price analysis report")
+        print("Failed to send price analysis report")
         exit(1)
 
 
