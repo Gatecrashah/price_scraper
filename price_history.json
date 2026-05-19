@@ -587,10 +587,10 @@
     "name": "Creatine Monohydrate, 500 g",
     "purchase_url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
     "current": {
-      "price": 12.9,
+      "price": 9.9,
       "original_price": null,
       "discount_pct": null,
-      "since": "2026-04-27"
+      "since": "2026-05-19"
     },
     "all_time_lowest": {
       "price": 9.9,
@@ -786,6 +786,14 @@
         "from": 19.9,
         "to": 12.9,
         "change_pct": -35.2,
+        "original_price": null,
+        "discount_pct": null
+      },
+      {
+        "date": "2026-05-19",
+        "from": 12.9,
+        "to": 9.9,
+        "change_pct": -23.3,
         "original_price": null,
         "discount_pct": null
       }
