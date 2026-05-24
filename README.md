@@ -12,11 +12,15 @@ This system uses a modern, resilient architecture with structured data prioritiz
 ├── scrapers/                    # Modular scraper architecture
 │   ├── base_scraper.py         # Common interface & utilities
 │   ├── bjornborg.py            # JSON-LD structured data scraper
-│   └── fitnesstukku.py         # dataTrackingView structured data scraper
+│   ├── fitnesstukku.py         # dataTrackingView structured data scraper
+│   ├── shopify_scraper.py      # Shopify-based store scraper
+│   └── tokmanni.py             # Tokmanni scraper
 ├── price_monitor.py            # Main orchestration & GitHub integration
 ├── ean_price_monitor.py        # Cross-store EAN price comparison
 ├── email_sender.py             # Resend API email notifications
 ├── email_templates.py          # HTML email generation
+├── price_analyzer.py           # Advanced analytics & trend analysis
+├── price_analysis_reporter.py  # Monthly/quarterly analysis reports
 ├── product_manager.py          # GitHub issue comment processing
 ├── products.yaml               # Product configuration (auto-managed)
 ├── ean_products.yaml           # EAN products with store URLs
@@ -90,8 +94,8 @@ When new products are discovered:
 
 ## 📋 Current Products Tracked
 
-### Björn Borg (11 products)
-- **Essential Socks 10-pack**: 8 color variants
+### Björn Borg (12 products)
+- **Essential Socks 10-pack**: 9 variants (including ankle)
 - **Centre Crew Sweatshirt**: 3 colors (Grey, Blue, Black)
 
 ### Fitnesstukku (2 products)
