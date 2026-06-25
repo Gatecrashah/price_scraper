@@ -843,10 +843,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
     "current": {
-      "price": 35.96,
+      "price": 31.47,
       "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-02-03"
+      "discount_pct": 30,
+      "since": "2026-06-25"
     },
     "all_time_lowest": {
       "price": 31.47,
@@ -900,6 +900,14 @@
         "change_pct": -20.0,
         "original_price": 44.95,
         "discount_pct": 20
+      },
+      {
+        "date": "2026-06-25",
+        "from": 35.96,
+        "to": 31.47,
+        "change_pct": -12.5,
+        "original_price": 44.95,
+        "discount_pct": 30
       }
     ]
   },
@@ -1067,10 +1075,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
     "current": {
-      "price": 35.96,
+      "price": 31.47,
       "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-02-03"
+      "discount_pct": 30,
+      "since": "2026-06-25"
     },
     "all_time_lowest": {
       "price": 31.47,
@@ -1124,6 +1132,14 @@
         "change_pct": -20.0,
         "original_price": 44.95,
         "discount_pct": 20
+      },
+      {
+        "date": "2026-06-25",
+        "from": 35.96,
+        "to": 31.47,
+        "change_pct": -12.5,
+        "original_price": 44.95,
+        "discount_pct": 30
       }
     ]
   },
