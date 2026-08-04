@@ -83,10 +83,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
     "current": {
-      "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-06-11"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 35.96,
@@ -148,6 +148,14 @@
         "change_pct": -20.0,
         "original_price": 44.95,
         "discount_pct": 20
+      },
+      {
+        "date": "2026-08-04",
+        "from": 35.96,
+        "to": 44.95,
+        "change_pct": 25.0,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -315,10 +323,10 @@
     "name": "Centre Crew",
     "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
     "current": {
-      "price": 41.97,
-      "original_price": 69.95,
-      "discount_pct": 40,
-      "since": "2026-06-11"
+      "price": 69.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 41.97,
@@ -396,6 +404,14 @@
         "change_pct": -25.0,
         "original_price": 69.95,
         "discount_pct": 40
+      },
+      {
+        "date": "2026-08-04",
+        "from": 41.97,
+        "to": 69.95,
+        "change_pct": 66.7,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -403,10 +419,10 @@
     "name": "Centre Crew",
     "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
     "current": {
-      "price": 41.97,
-      "original_price": 69.95,
-      "discount_pct": 40,
-      "since": "2026-06-11"
+      "price": 69.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 41.97,
@@ -476,6 +492,14 @@
         "change_pct": -25.0,
         "original_price": 69.95,
         "discount_pct": 40
+      },
+      {
+        "date": "2026-08-04",
+        "from": 41.97,
+        "to": 69.95,
+        "change_pct": 66.7,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -851,10 +875,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
     "current": {
-      "price": 31.47,
-      "original_price": 44.95,
-      "discount_pct": 30,
-      "since": "2026-06-25"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 31.47,
@@ -916,6 +940,14 @@
         "change_pct": -12.5,
         "original_price": 44.95,
         "discount_pct": 30
+      },
+      {
+        "date": "2026-08-04",
+        "from": 31.47,
+        "to": 44.95,
+        "change_pct": 42.8,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -995,10 +1027,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-ankle-sock-10-pack-10002940-mp001/",
     "current": {
-      "price": 22.48,
-      "original_price": 44.95,
-      "discount_pct": 50,
-      "since": "2026-06-11"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 22.48,
@@ -1076,6 +1108,14 @@
         "change_pct": -37.5,
         "original_price": 44.95,
         "discount_pct": 50
+      },
+      {
+        "date": "2026-08-04",
+        "from": 22.48,
+        "to": 44.95,
+        "change_pct": 100.0,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -1083,10 +1123,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
     "current": {
-      "price": 31.47,
-      "original_price": 44.95,
-      "discount_pct": 30,
-      "since": "2026-06-25"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 31.47,
@@ -1148,6 +1188,14 @@
         "change_pct": -12.5,
         "original_price": 44.95,
         "discount_pct": 30
+      },
+      {
+        "date": "2026-08-04",
+        "from": 31.47,
+        "to": 44.95,
+        "change_pct": 42.8,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -1155,10 +1203,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001760-mp001/",
     "current": {
-      "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-06-11"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 35.96,
@@ -1188,6 +1236,14 @@
         "change_pct": -20.0,
         "original_price": 44.95,
         "discount_pct": 20
+      },
+      {
+        "date": "2026-08-04",
+        "from": 35.96,
+        "to": 44.95,
+        "change_pct": 25.0,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -1195,10 +1251,10 @@
     "name": "Essential Socks 10-pack",
     "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp002/",
     "current": {
-      "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-06-11"
+      "price": 44.95,
+      "original_price": null,
+      "discount_pct": null,
+      "since": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 35.96,
@@ -1220,6 +1276,14 @@
         "change_pct": -20.0,
         "original_price": 44.95,
         "discount_pct": 20
+      },
+      {
+        "date": "2026-08-04",
+        "from": 35.96,
+        "to": 44.95,
+        "change_pct": 25.0,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   }
