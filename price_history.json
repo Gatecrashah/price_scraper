@@ -523,10 +523,10 @@
     "name": "Whey-80, 4 kg, Double Rich Chocolate",
     "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
     "current": {
-      "price": 107.9,
+      "price": 119.9,
       "original_price": null,
       "discount_pct": null,
-      "since": "2026-08-22"
+      "since": "2026-09-07"
     },
     "all_time_lowest": {
       "price": 79.9,
@@ -668,6 +668,14 @@
         "change_pct": -10.0,
         "original_price": null,
         "discount_pct": null
+      },
+      {
+        "date": "2026-09-07",
+        "from": 107.9,
+        "to": 119.9,
+        "change_pct": 11.1,
+        "original_price": null,
+        "discount_pct": null
       }
     ]
   },
@@ -675,10 +683,10 @@
     "name": "Kreatiinimonohydraatti 500 g",
     "purchase_url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
     "current": {
-      "price": 8.9,
+      "price": 9.9,
       "original_price": null,
       "discount_pct": null,
-      "since": "2026-08-30"
+      "since": "2026-09-07"
     },
     "all_time_lowest": {
       "price": 8.9,
@@ -906,6 +914,14 @@
         "from": 9.9,
         "to": 8.9,
         "change_pct": -10.1,
+        "original_price": null,
+        "discount_pct": null
+      },
+      {
+        "date": "2026-09-07",
+        "from": 8.9,
+        "to": 9.9,
+        "change_pct": 11.2,
         "original_price": null,
         "discount_pct": null
       }
