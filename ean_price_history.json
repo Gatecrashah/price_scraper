@@ -5,26 +5,26 @@
       "apteekki360": {
         "url": "https://apteekki360.fi/products/puhdas-plus-premium-omega-3-1000mg",
         "current_price": 51.99,
-        "available": false,
-        "last_updated": "2026-11-10"
+        "available": true,
+        "last_updated": "2026-11-11"
       },
       "tokmanni": {
         "url": "https://www.tokmanni.fi/premium-omega-3-puhdas-180-kaps-6430050004729",
         "current_price": 29.9,
         "available": false,
-        "last_updated": "2026-11-10"
+        "last_updated": "2026-11-11"
       },
       "sinunapteekki": {
         "url": "https://www.sinunapteekki.fi/products/puhdas-premium-omega-3-1000-mg-epa-dha-600-mg-kalaoljykapselit",
         "current_price": 29.9,
         "available": true,
-        "last_updated": "2026-11-10"
+        "last_updated": "2026-11-11"
       },
       "ruohonjuuri": {
         "url": "https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-680-1360-mg",
         "current_price": 49.9,
         "available": true,
-        "last_updated": "2026-11-10"
+        "last_updated": "2026-11-11"
       }
     },
     "current_lowest": {
@@ -600,6 +600,13 @@
         "from": 37.42,
         "to": 49.9,
         "change_pct": 33.4
+      },
+      {
+        "date": "2026-11-11",
+        "store": "apteekki360",
+        "available": true,
+        "availability_changed": true,
+        "from_available": false
       }
     ]
   }
