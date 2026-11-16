@@ -17,9 +17,6 @@ plan.md
 improvements.md
 spec/
 
-# Variant discovery tracking (managed by automation)
-last_variant_discovery.json
-
 # Test artifacts
 .pytest_cache/
 .ruff_cache/
