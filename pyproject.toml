@@ -1,20 +1,19 @@
 [project]
 name = "price-monitor"
 version = "1.0.0"
-description = "Multi-site price monitoring system for Björn Borg and Fitnesstukku products"
+description = "Daily price monitor for a handful of products across Finnish web stores"
 readme = "README.md"
 requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12.0",
+    "pyyaml>=6.0",
+    "requests>=2.31.0",
+]
 
 [dependency-groups]
 dev = [
-    "beautifulsoup4>=4.12.0",
-    "lxml>=4.9.0",
-    "pyyaml>=6.0",
-    "requests>=2.31.0",
     "pytest>=8.0.0",
-    "pytest-cov>=4.1.0",
     "ruff>=0.4.0",
-    "responses>=0.25.0",
 ]
 
 [tool.ruff]
@@ -42,23 +41,15 @@ ignore = [
     "SIM118", # Use key in dict instead of dict.keys()
 ]
 
-[tool.ruff.lint.isort]
-known-first-party = ["scrapers"]
-
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 python_files = "test_*.py"
 addopts = "-v --tb=short"
 filterwarnings = [
     "ignore::DeprecationWarning",
-]
-
-[tool.coverage.run]
-omit = [
-    "migrate_price_history.py",  # One-time migration script
-    "price_analysis_reporter.py",  # Reporter with main() entry point
 ]

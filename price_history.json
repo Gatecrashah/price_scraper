@@ -1,1401 +1,1945 @@
 {
   "base_10004564": {
-    "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/",
-    "current": {
+    "name": "Essential Socks 10-pack (Multi)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/",
+        "price": 35.96,
+        "original_price": 44.95,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
       "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-02-03"
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/",
+      "date": "2026-02-03"
     },
     "all_time_lowest": {
       "price": 31.47,
-      "date": "2025-11-25",
-      "original_price": 44.95
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/",
+      "date": "2025-11-25"
     },
     "price_changes": [
       {
         "date": "2025-07-04",
+        "store": "bjornborg",
         "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20,
-        "type": "initial"
+        "available": true
       },
       {
         "date": "2025-08-05",
-        "from": 35.96,
-        "to": 38.21,
-        "change_pct": 6.3,
+        "store": "bjornborg",
+        "price": 38.21,
         "original_price": 44.95,
-        "discount_pct": 15
+        "available": true
       },
       {
         "date": "2025-11-25",
-        "from": 38.21,
-        "to": 31.47,
-        "change_pct": -17.6,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2025-12-02",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2025-12-03",
-        "from": 44.95,
-        "to": 38.21,
-        "change_pct": -15.0,
+        "store": "bjornborg",
+        "price": 38.21,
         "original_price": 44.95,
-        "discount_pct": 15
+        "available": true
       },
       {
         "date": "2025-12-25",
-        "from": 38.21,
-        "to": 31.47,
-        "change_pct": -17.6,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2026-02-02",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-02-03",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       }
     ]
   },
   "base_10001228": {
-    "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
-    "current": {
+    "name": "Essential Socks 10-pack (Variant 1)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
+        "price": 44.95,
+        "original_price": null,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
       "price": 44.95,
-      "original_price": null,
-      "discount_pct": null,
-      "since": "2026-08-04"
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
+      "date": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 35.96,
-      "date": "2025-07-04",
-      "original_price": 44.95
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
+      "date": "2025-07-04"
     },
     "price_changes": [
       {
         "date": "2025-07-04",
+        "store": "bjornborg",
         "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20,
-        "type": "initial"
+        "available": true
       },
       {
         "date": "2025-08-05",
-        "from": 35.96,
-        "to": 44.95,
-        "change_pct": 25.0,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2025-11-25",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       },
       {
         "date": "2025-12-03",
-        "from": 35.96,
-        "to": 44.95,
-        "change_pct": 25.0,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2025-12-25",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       },
       {
         "date": "2026-02-02",
-        "from": 35.96,
-        "to": 44.95,
-        "change_pct": 25.0,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-06-11",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       },
       {
         "date": "2026-08-04",
-        "from": 35.96,
-        "to": 44.95,
-        "change_pct": 25.0,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       }
     ]
   },
   "base_10004085": {
-    "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004085-mp001/",
-    "current": {
+    "name": "Essential Socks 10-pack (Variant 2)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004085-mp001/",
+        "price": 35.96,
+        "original_price": 44.95,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
       "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-02-03"
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004085-mp001/",
+      "date": "2026-02-03"
     },
     "all_time_lowest": {
       "price": 31.47,
-      "date": "2025-11-25",
-      "original_price": 44.95
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10004085-mp001/",
+      "date": "2025-11-25"
     },
     "price_changes": [
       {
         "date": "2025-07-04",
+        "store": "bjornborg",
         "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20,
-        "type": "initial"
+        "available": true
       },
       {
         "date": "2025-08-05",
-        "from": 35.96,
-        "to": 38.21,
-        "change_pct": 6.3,
+        "store": "bjornborg",
+        "price": 38.21,
         "original_price": 44.95,
-        "discount_pct": 15
+        "available": true
       },
       {
         "date": "2025-11-25",
-        "from": 38.21,
-        "to": 31.47,
-        "change_pct": -17.6,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2025-12-02",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2025-12-03",
-        "from": 44.95,
-        "to": 38.21,
-        "change_pct": -15.0,
+        "store": "bjornborg",
+        "price": 38.21,
         "original_price": 44.95,
-        "discount_pct": 15
+        "available": true
       },
       {
         "date": "2025-12-25",
-        "from": 38.21,
-        "to": 31.47,
-        "change_pct": -17.6,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2026-02-02",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-02-03",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
-      }
-    ]
-  },
-  "id_centre-crew-9999-1431-gy013": {
-    "name": "Centre Crew",
-    "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-gy013/",
-    "current": {
-      "price": 55.96,
-      "original_price": 69.95,
-      "discount_pct": 20,
-      "since": "2026-02-03"
-    },
-    "all_time_lowest": {
-      "price": 41.97,
-      "date": "2025-07-05",
-      "original_price": 69.95
-    },
-    "price_changes": [
-      {
-        "date": "2025-07-05",
-        "price": 41.97,
-        "original_price": 69.95,
-        "discount_pct": 40,
-        "type": "initial"
-      },
-      {
-        "date": "2025-08-05",
-        "from": 41.97,
-        "to": 55.96,
-        "change_pct": 33.3,
-        "original_price": 69.95,
-        "discount_pct": 20
-      },
-      {
-        "date": "2025-11-25",
-        "from": 55.96,
-        "to": 41.97,
-        "change_pct": -25.0,
-        "original_price": 69.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2025-12-02",
-        "from": 41.97,
-        "to": 69.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-12-03",
-        "from": 69.95,
-        "to": 55.96,
-        "change_pct": -20.0,
-        "original_price": 69.95,
-        "discount_pct": 20
-      },
-      {
-        "date": "2025-12-25",
-        "from": 55.96,
-        "to": 41.97,
-        "change_pct": -25.0,
-        "original_price": 69.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2026-02-02",
-        "from": 41.97,
-        "to": 69.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-02-03",
-        "from": 69.95,
-        "to": 55.96,
-        "change_pct": -20.0,
-        "original_price": 69.95,
-        "discount_pct": 20
-      }
-    ]
-  },
-  "id_centre-crew-9999-1431-bl183": {
-    "name": "Centre Crew",
-    "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
-    "current": {
-      "price": 55.96,
-      "original_price": 69.95,
-      "discount_pct": 20,
-      "since": "2026-08-05"
-    },
-    "all_time_lowest": {
-      "price": 41.97,
-      "date": "2025-07-05",
-      "original_price": 69.95
-    },
-    "price_changes": [
-      {
-        "date": "2025-07-05",
-        "price": 41.97,
-        "original_price": 69.95,
-        "discount_pct": 40,
-        "type": "initial"
-      },
-      {
-        "date": "2025-08-05",
-        "from": 41.97,
-        "to": 55.96,
-        "change_pct": 33.3,
-        "original_price": 69.95,
-        "discount_pct": 20
-      },
-      {
-        "date": "2025-11-25",
-        "from": 55.96,
-        "to": 41.97,
-        "change_pct": -25.0,
-        "original_price": 69.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2025-12-02",
-        "from": 41.97,
-        "to": 69.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-12-03",
-        "from": 69.95,
-        "to": 55.96,
-        "change_pct": -20.0,
-        "original_price": 69.95,
-        "discount_pct": 20
-      },
-      {
-        "date": "2025-12-25",
-        "from": 55.96,
-        "to": 41.97,
-        "change_pct": -25.0,
-        "original_price": 69.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2026-02-02",
-        "from": 41.97,
-        "to": 69.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-02-03",
-        "from": 69.95,
-        "to": 55.96,
-        "change_pct": -20.0,
-        "original_price": 69.95,
-        "discount_pct": 20
-      },
-      {
-        "date": "2026-06-11",
-        "from": 55.96,
-        "to": 41.97,
-        "change_pct": -25.0,
-        "original_price": 69.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2026-08-04",
-        "from": 41.97,
-        "to": 69.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-08-05",
-        "from": 69.95,
-        "to": 55.96,
-        "change_pct": -20.0,
-        "original_price": 69.95,
-        "discount_pct": 20
-      }
-    ]
-  },
-  "id_centre-crew-9999-1431-90741": {
-    "name": "Centre Crew",
-    "purchase_url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
-    "current": {
-      "price": 55.96,
-      "original_price": 69.95,
-      "discount_pct": 20,
-      "since": "2026-08-05"
-    },
-    "all_time_lowest": {
-      "price": 41.97,
-      "date": "2025-07-05",
-      "original_price": 69.95
-    },
-    "price_changes": [
-      {
-        "date": "2025-07-05",
-        "price": 41.97,
-        "original_price": 69.95,
-        "discount_pct": 40,
-        "type": "initial"
-      },
-      {
-        "date": "2025-08-05",
-        "from": 41.97,
-        "to": 55.96,
-        "change_pct": 33.3,
-        "original_price": 69.95,
-        "discount_pct": 20
-      },
-      {
-        "date": "2025-11-25",
-        "from": 55.96,
-        "to": 41.97,
-        "change_pct": -25.0,
-        "original_price": 69.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2025-12-03",
-        "from": 41.97,
-        "to": 55.96,
-        "change_pct": 33.3,
-        "original_price": 69.95,
-        "discount_pct": 20
-      },
-      {
-        "date": "2025-12-25",
-        "from": 55.96,
-        "to": 41.97,
-        "change_pct": -25.0,
-        "original_price": 69.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2026-02-02",
-        "from": 41.97,
-        "to": 69.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-02-03",
-        "from": 69.95,
-        "to": 55.96,
-        "change_pct": -20.0,
-        "original_price": 69.95,
-        "discount_pct": 20
-      },
-      {
-        "date": "2026-06-11",
-        "from": 55.96,
-        "to": 41.97,
-        "change_pct": -25.0,
-        "original_price": 69.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2026-08-04",
-        "from": 41.97,
-        "to": 69.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-08-05",
-        "from": 69.95,
-        "to": 55.96,
-        "change_pct": -20.0,
-        "original_price": 69.95,
-        "discount_pct": 20
-      }
-    ]
-  },
-  "id_fitnesstukku_5854R": {
-    "name": "Whey-80, 4 kg, Double Rich Chocolate",
-    "purchase_url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
-    "current": {
-      "price": 132.9,
-      "original_price": null,
-      "discount_pct": null,
-      "since": "2026-09-08"
-    },
-    "all_time_lowest": {
-      "price": 79.9,
-      "date": "2025-08-04",
-      "original_price": null
-    },
-    "price_changes": [
-      {
-        "date": "2025-07-05",
-        "price": 86.9,
-        "original_price": null,
-        "discount_pct": null,
-        "type": "initial"
-      },
-      {
-        "date": "2025-08-04",
-        "from": 86.9,
-        "to": 79.9,
-        "change_pct": -8.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-09-08",
-        "from": 79.9,
-        "to": 86.9,
-        "change_pct": 8.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-10-02",
-        "from": 86.9,
-        "to": 89.9,
-        "change_pct": 3.5,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-11-20",
-        "from": 89.9,
-        "to": 84.5,
-        "change_pct": -6.0,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-12-03",
-        "from": 84.5,
-        "to": 89.9,
-        "change_pct": 6.4,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-01-12",
-        "from": 89.9,
-        "to": 84.5,
-        "change_pct": -6.0,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-02-02",
-        "from": 84.5,
-        "to": 89.9,
-        "change_pct": 6.4,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-02-05",
-        "from": 89.9,
-        "to": 97.9,
-        "change_pct": 8.9,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-02-23",
-        "from": 97.9,
-        "to": 92.5,
-        "change_pct": -5.5,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-03-02",
-        "from": 92.5,
-        "to": 97.9,
-        "change_pct": 5.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-03-23",
-        "from": 97.9,
-        "to": 89.9,
-        "change_pct": -8.2,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-04-06",
-        "from": 89.9,
-        "to": 97.9,
-        "change_pct": 8.9,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-04-14",
-        "from": 97.9,
-        "to": 99.9,
-        "change_pct": 2.0,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-07-17",
-        "from": 99.9,
-        "to": 107.9,
-        "change_pct": 8.0,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-08-14",
-        "from": 107.9,
-        "to": 119.9,
-        "change_pct": 11.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-08-22",
-        "from": 119.9,
-        "to": 107.9,
-        "change_pct": -10.0,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-09-07",
-        "from": 107.9,
-        "to": 119.9,
-        "change_pct": 11.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-09-08",
-        "from": 119.9,
-        "to": 132.9,
-        "change_pct": 10.8,
-        "original_price": null,
-        "discount_pct": null
-      }
-    ]
-  },
-  "id_fitnesstukku_609": {
-    "name": "Kreatiinimonohydraatti 500 g",
-    "purchase_url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
-    "current": {
-      "price": 8.9,
-      "original_price": null,
-      "discount_pct": null,
-      "since": "2026-11-11"
-    },
-    "all_time_lowest": {
-      "price": 8.9,
-      "date": "2026-08-30",
-      "original_price": null
-    },
-    "price_changes": [
-      {
-        "date": "2025-07-05",
-        "price": 22.9,
-        "original_price": null,
-        "discount_pct": null,
-        "type": "initial"
-      },
-      {
-        "date": "2025-08-04",
-        "from": 22.9,
-        "to": 19.9,
-        "change_pct": -13.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-09-08",
-        "from": 19.9,
-        "to": 22.9,
-        "change_pct": 15.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-09-21",
-        "from": 22.9,
-        "to": 13.9,
-        "change_pct": -39.3,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-09-22",
-        "from": 13.9,
-        "to": 22.9,
-        "change_pct": 64.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-10-06",
-        "from": 22.9,
-        "to": 19.9,
-        "change_pct": -13.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-10-10",
-        "from": 19.9,
-        "to": 16.9,
-        "change_pct": -15.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-11-10",
-        "from": 16.9,
-        "to": 19.9,
-        "change_pct": 17.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-11-13",
-        "from": 19.9,
-        "to": 16.9,
-        "change_pct": -15.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-11-20",
-        "from": 16.9,
-        "to": 19.9,
-        "change_pct": 17.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-11-21",
-        "from": 19.9,
-        "to": 16.9,
-        "change_pct": -15.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-11-24",
-        "from": 16.9,
-        "to": 14.9,
-        "change_pct": -11.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-11-28",
-        "from": 14.9,
-        "to": 11.9,
-        "change_pct": -20.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-11-29",
-        "from": 11.9,
-        "to": 14.9,
-        "change_pct": 25.2,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-12-03",
-        "from": 14.9,
-        "to": 16.9,
-        "change_pct": 13.4,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-12-22",
-        "from": 16.9,
-        "to": 19.9,
-        "change_pct": 17.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-01-06",
-        "from": 19.9,
-        "to": 14.9,
-        "change_pct": -25.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-01-14",
-        "from": 14.9,
-        "to": 12.9,
-        "change_pct": -13.4,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-01-25",
-        "from": 12.9,
-        "to": 11.9,
-        "change_pct": -7.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-01-27",
-        "from": 11.9,
-        "to": 12.9,
-        "change_pct": 8.4,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-02-02",
-        "from": 12.9,
-        "to": 19.9,
-        "change_pct": 54.3,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-02-17",
-        "from": 19.9,
-        "to": 9.9,
-        "change_pct": -50.3,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-04-06",
-        "from": 9.9,
-        "to": 19.9,
-        "change_pct": 101.0,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-04-27",
-        "from": 19.9,
-        "to": 12.9,
-        "change_pct": -35.2,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-05-19",
-        "from": 12.9,
-        "to": 9.9,
-        "change_pct": -23.3,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-05-31",
-        "from": 9.9,
-        "to": 15.92,
-        "change_pct": 60.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-06-01",
-        "from": 15.92,
-        "to": 9.9,
-        "change_pct": -37.8,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-08-30",
-        "from": 9.9,
-        "to": 8.9,
-        "change_pct": -10.1,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-09-07",
-        "from": 8.9,
-        "to": 9.9,
-        "change_pct": 11.2,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-09-30",
-        "from": 9.9,
-        "to": 12.9,
-        "change_pct": 30.3,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-10-05",
-        "from": 12.9,
-        "to": 9.9,
-        "change_pct": -23.3,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2026-11-11",
-        "from": 9.9,
-        "to": 8.9,
-        "change_pct": -10.1,
-        "original_price": null,
-        "discount_pct": null
+        "available": true
       }
     ]
   },
   "base_10005071": {
-    "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
-    "current": {
+    "name": "Essential Socks 10-pack (Variant 3)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
+        "price": 35.96,
+        "original_price": 44.95,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
       "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-08-05"
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
+      "date": "2026-08-05"
     },
     "all_time_lowest": {
       "price": 31.47,
-      "date": "2025-11-25",
-      "original_price": 44.95
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
+      "date": "2025-11-25"
     },
     "price_changes": [
       {
         "date": "2025-07-23",
+        "store": "bjornborg",
         "price": 44.95,
         "original_price": null,
-        "discount_pct": null,
-        "type": "initial"
+        "available": true
       },
       {
         "date": "2025-11-25",
-        "from": 44.95,
-        "to": 31.47,
-        "change_pct": -30.0,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2025-12-02",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2025-12-25",
-        "from": 44.95,
-        "to": 31.47,
-        "change_pct": -30.0,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2026-02-02",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-02-03",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       },
       {
         "date": "2026-06-25",
-        "from": 35.96,
-        "to": 31.47,
-        "change_pct": -12.5,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2026-08-04",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-08-05",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
-      }
-    ]
-  },
-  "base_10003420": {
-    "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10003420-mp001/",
-    "current": {
-      "price": 44.95,
-      "original_price": null,
-      "discount_pct": null,
-      "since": "2026-01-30"
-    },
-    "all_time_lowest": {
-      "price": 26.97,
-      "date": "2025-07-23",
-      "original_price": 44.95
-    },
-    "price_changes": [
-      {
-        "date": "2025-07-23",
-        "price": 26.97,
-        "original_price": 44.95,
-        "discount_pct": 40,
-        "type": "initial"
-      },
-      {
-        "date": "2025-08-05",
-        "from": 26.97,
-        "to": 38.21,
-        "change_pct": 41.7,
-        "original_price": 44.95,
-        "discount_pct": 15
-      },
-      {
-        "date": "2025-11-25",
-        "from": 38.21,
-        "to": 26.97,
-        "change_pct": -29.4,
-        "original_price": 44.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2025-12-02",
-        "from": 26.97,
-        "to": 44.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
-      },
-      {
-        "date": "2025-12-03",
-        "from": 44.95,
-        "to": 38.21,
-        "change_pct": -15.0,
-        "original_price": 44.95,
-        "discount_pct": 15
-      },
-      {
-        "date": "2025-12-25",
-        "from": 38.21,
-        "to": 26.97,
-        "change_pct": -29.4,
-        "original_price": 44.95,
-        "discount_pct": 40
-      },
-      {
-        "date": "2026-01-30",
-        "from": 26.97,
-        "to": 44.95,
-        "change_pct": 66.7,
-        "original_price": null,
-        "discount_pct": null
+        "available": true
       }
     ]
   },
   "base_10002940": {
-    "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-ankle-sock-10-pack-10002940-mp001/",
-    "current": {
+    "name": "Essential Ankle Socks 10-pack",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-ankle-sock-10-pack-10002940-mp001/",
+        "price": 35.96,
+        "original_price": 44.95,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
       "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-08-05"
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-ankle-sock-10-pack-10002940-mp001/",
+      "date": "2026-08-05"
     },
     "all_time_lowest": {
       "price": 22.48,
-      "date": "2026-06-11",
-      "original_price": 44.95
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-ankle-sock-10-pack-10002940-mp001/",
+      "date": "2026-06-11"
     },
     "price_changes": [
       {
         "date": "2025-07-23",
+        "store": "bjornborg",
         "price": 26.97,
         "original_price": 44.95,
-        "discount_pct": 40,
-        "type": "initial"
+        "available": true
       },
       {
         "date": "2025-08-05",
-        "from": 26.97,
-        "to": 38.21,
-        "change_pct": 41.7,
+        "store": "bjornborg",
+        "price": 38.21,
         "original_price": 44.95,
-        "discount_pct": 15
+        "available": true
       },
       {
         "date": "2025-11-25",
-        "from": 38.21,
-        "to": 26.97,
-        "change_pct": -29.4,
+        "store": "bjornborg",
+        "price": 26.97,
         "original_price": 44.95,
-        "discount_pct": 40
+        "available": true
       },
       {
         "date": "2025-12-02",
-        "from": 26.97,
-        "to": 44.95,
-        "change_pct": 66.7,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2025-12-03",
-        "from": 44.95,
-        "to": 38.21,
-        "change_pct": -15.0,
+        "store": "bjornborg",
+        "price": 38.21,
         "original_price": 44.95,
-        "discount_pct": 15
+        "available": true
       },
       {
         "date": "2025-12-25",
-        "from": 38.21,
-        "to": 26.97,
-        "change_pct": -29.4,
+        "store": "bjornborg",
+        "price": 26.97,
         "original_price": 44.95,
-        "discount_pct": 40
+        "available": true
       },
       {
         "date": "2026-02-02",
-        "from": 26.97,
-        "to": 44.95,
-        "change_pct": 66.7,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-02-03",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       },
       {
         "date": "2026-06-11",
-        "from": 35.96,
-        "to": 22.48,
-        "change_pct": -37.5,
+        "store": "bjornborg",
+        "price": 22.48,
         "original_price": 44.95,
-        "discount_pct": 50
+        "available": true
       },
       {
         "date": "2026-08-04",
-        "from": 22.48,
-        "to": 44.95,
-        "change_pct": 100.0,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-08-05",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       }
     ]
   },
   "base_10005412": {
-    "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
-    "current": {
+    "name": "Essential Socks 10-pack (Variant 5)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
+        "price": 35.96,
+        "original_price": 44.95,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
       "price": 35.96,
-      "original_price": 44.95,
-      "discount_pct": 20,
-      "since": "2026-08-05"
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
+      "date": "2026-08-05"
     },
     "all_time_lowest": {
       "price": 31.47,
-      "date": "2025-11-25",
-      "original_price": 44.95
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
+      "date": "2025-11-25"
     },
     "price_changes": [
       {
         "date": "2025-10-12",
+        "store": "bjornborg",
         "price": 44.95,
         "original_price": null,
-        "discount_pct": null,
-        "type": "initial"
+        "available": true
       },
       {
         "date": "2025-11-25",
-        "from": 44.95,
-        "to": 31.47,
-        "change_pct": -30.0,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2025-12-03",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2025-12-25",
-        "from": 44.95,
-        "to": 31.47,
-        "change_pct": -30.0,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2026-02-02",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-02-03",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       },
       {
         "date": "2026-06-25",
-        "from": 35.96,
-        "to": 31.47,
-        "change_pct": -12.5,
+        "store": "bjornborg",
+        "price": 31.47,
         "original_price": 44.95,
-        "discount_pct": 30
+        "available": true
       },
       {
         "date": "2026-08-04",
-        "from": 31.47,
-        "to": 44.95,
-        "change_pct": 42.8,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-08-05",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
+      }
+    ]
+  },
+  "id_centre-crew-9999-1431-gy013": {
+    "name": "Centre Crew Sweatshirt (Grey)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-gy013/",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
+      "price": 55.96,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-gy013/",
+      "date": "2026-02-03"
+    },
+    "all_time_lowest": {
+      "price": 41.97,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-gy013/",
+      "date": "2025-07-05"
+    },
+    "price_changes": [
+      {
+        "date": "2025-07-05",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-08-05",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-11-25",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-12-02",
+        "store": "bjornborg",
+        "price": 69.95,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-12-03",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-12-25",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2026-02-02",
+        "store": "bjornborg",
+        "price": 69.95,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-03",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      }
+    ]
+  },
+  "id_centre-crew-9999-1431-bl183": {
+    "name": "Centre Crew Sweatshirt (Blue)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
+      "price": 55.96,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
+      "date": "2026-08-05"
+    },
+    "all_time_lowest": {
+      "price": 41.97,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
+      "date": "2025-07-05"
+    },
+    "price_changes": [
+      {
+        "date": "2025-07-05",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-08-05",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-11-25",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-12-02",
+        "store": "bjornborg",
+        "price": 69.95,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-12-03",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-12-25",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2026-02-02",
+        "store": "bjornborg",
+        "price": 69.95,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-03",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2026-06-11",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2026-08-04",
+        "store": "bjornborg",
+        "price": 69.95,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-08-05",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      }
+    ]
+  },
+  "id_centre-crew-9999-1431-90741": {
+    "name": "Centre Crew Sweatshirt (Black)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
+      "price": 55.96,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
+      "date": "2026-08-05"
+    },
+    "all_time_lowest": {
+      "price": 41.97,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
+      "date": "2025-07-05"
+    },
+    "price_changes": [
+      {
+        "date": "2025-07-05",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-08-05",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-11-25",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-12-03",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2025-12-25",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2026-02-02",
+        "store": "bjornborg",
+        "price": 69.95,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-03",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2026-06-11",
+        "store": "bjornborg",
+        "price": 41.97,
+        "original_price": 69.95,
+        "available": true
+      },
+      {
+        "date": "2026-08-04",
+        "store": "bjornborg",
+        "price": 69.95,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-08-05",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": true
       }
     ]
   },
   "base_10001760": {
     "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001760-mp001/",
-    "current": {
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001760-mp001/",
+        "price": 44.95,
+        "original_price": null,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
       "price": 44.95,
-      "original_price": null,
-      "discount_pct": null,
-      "since": "2026-08-04"
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001760-mp001/",
+      "date": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 35.96,
-      "date": "2026-01-04",
-      "original_price": 44.95
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001760-mp001/",
+      "date": "2026-01-04"
     },
     "price_changes": [
       {
         "date": "2026-01-04",
+        "store": "bjornborg",
         "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20,
-        "type": "initial"
+        "available": true
       },
       {
         "date": "2026-02-02",
-        "from": 35.96,
-        "to": 44.95,
-        "change_pct": 25.0,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       },
       {
         "date": "2026-06-11",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       },
       {
         "date": "2026-08-04",
-        "from": 35.96,
-        "to": 44.95,
-        "change_pct": 25.0,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
       }
     ]
   },
-  "base_10005576": {
-    "name": "Essential Socks 10-pack",
-    "purchase_url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp002/",
-    "current": {
+  "base_10005576-mp002": {
+    "name": "Essential Socks 10-pack (mp002)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp002/",
+        "price": 44.95,
+        "original_price": null,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
       "price": 44.95,
-      "original_price": null,
-      "discount_pct": null,
-      "since": "2026-08-04"
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp002/",
+      "date": "2026-08-04"
     },
     "all_time_lowest": {
       "price": 35.96,
-      "date": "2026-06-11",
-      "original_price": 44.95
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp002/",
+      "date": "2026-06-11"
     },
     "price_changes": [
       {
         "date": "2026-02-06",
+        "store": "bjornborg",
         "price": 44.95,
         "original_price": null,
-        "discount_pct": null,
-        "type": "initial"
+        "available": true
       },
       {
         "date": "2026-06-11",
-        "from": 44.95,
-        "to": 35.96,
-        "change_pct": -20.0,
+        "store": "bjornborg",
+        "price": 35.96,
         "original_price": 44.95,
-        "discount_pct": 20
+        "available": true
       },
       {
         "date": "2026-08-04",
-        "from": 35.96,
-        "to": 44.95,
-        "change_pct": 25.0,
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
-        "discount_pct": null
+        "available": true
+      }
+    ]
+  },
+  "id_fitnesstukku_5854R": {
+    "name": "Whey-80 Protein 4kg",
+    "stores": {
+      "fitnesstukku": {
+        "url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+        "price": 132.9,
+        "original_price": null,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
+      "price": 132.9,
+      "store": "fitnesstukku",
+      "url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+      "date": "2026-09-08"
+    },
+    "all_time_lowest": {
+      "price": 79.9,
+      "store": "fitnesstukku",
+      "url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
+      "date": "2025-08-04"
+    },
+    "price_changes": [
+      {
+        "date": "2025-07-05",
+        "store": "fitnesstukku",
+        "price": 86.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-08-04",
+        "store": "fitnesstukku",
+        "price": 79.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-09-08",
+        "store": "fitnesstukku",
+        "price": 86.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-10-02",
+        "store": "fitnesstukku",
+        "price": 89.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-11-20",
+        "store": "fitnesstukku",
+        "price": 84.5,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-12-03",
+        "store": "fitnesstukku",
+        "price": 89.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-12",
+        "store": "fitnesstukku",
+        "price": 84.5,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-02",
+        "store": "fitnesstukku",
+        "price": 89.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-05",
+        "store": "fitnesstukku",
+        "price": 97.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-23",
+        "store": "fitnesstukku",
+        "price": 92.5,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-03-02",
+        "store": "fitnesstukku",
+        "price": 97.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-03-23",
+        "store": "fitnesstukku",
+        "price": 89.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-04-06",
+        "store": "fitnesstukku",
+        "price": 97.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-04-14",
+        "store": "fitnesstukku",
+        "price": 99.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-07-17",
+        "store": "fitnesstukku",
+        "price": 107.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-08-14",
+        "store": "fitnesstukku",
+        "price": 119.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-08-22",
+        "store": "fitnesstukku",
+        "price": 107.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-07",
+        "store": "fitnesstukku",
+        "price": 119.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-08",
+        "store": "fitnesstukku",
+        "price": 132.9,
+        "original_price": null,
+        "available": true
+      }
+    ]
+  },
+  "id_fitnesstukku_609": {
+    "name": "Creatine Monohydrate 500g",
+    "stores": {
+      "fitnesstukku": {
+        "url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
+        "price": 8.9,
+        "original_price": null,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
+      "price": 8.9,
+      "store": "fitnesstukku",
+      "url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
+      "date": "2026-11-11"
+    },
+    "all_time_lowest": {
+      "price": 8.9,
+      "store": "fitnesstukku",
+      "url": "https://www.fitnesstukku.fi/creatine-monohydrate-500-g/609.html",
+      "date": "2026-08-30"
+    },
+    "price_changes": [
+      {
+        "date": "2025-07-05",
+        "store": "fitnesstukku",
+        "price": 22.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-08-04",
+        "store": "fitnesstukku",
+        "price": 19.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-09-08",
+        "store": "fitnesstukku",
+        "price": 22.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-09-21",
+        "store": "fitnesstukku",
+        "price": 13.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-09-22",
+        "store": "fitnesstukku",
+        "price": 22.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-10-06",
+        "store": "fitnesstukku",
+        "price": 19.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-10-10",
+        "store": "fitnesstukku",
+        "price": 16.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-11-10",
+        "store": "fitnesstukku",
+        "price": 19.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-11-13",
+        "store": "fitnesstukku",
+        "price": 16.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-11-20",
+        "store": "fitnesstukku",
+        "price": 19.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-11-21",
+        "store": "fitnesstukku",
+        "price": 16.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-11-24",
+        "store": "fitnesstukku",
+        "price": 14.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-11-28",
+        "store": "fitnesstukku",
+        "price": 11.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-11-29",
+        "store": "fitnesstukku",
+        "price": 14.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-12-03",
+        "store": "fitnesstukku",
+        "price": 16.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-12-22",
+        "store": "fitnesstukku",
+        "price": 19.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-06",
+        "store": "fitnesstukku",
+        "price": 14.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-14",
+        "store": "fitnesstukku",
+        "price": 12.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-25",
+        "store": "fitnesstukku",
+        "price": 11.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-27",
+        "store": "fitnesstukku",
+        "price": 12.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-02",
+        "store": "fitnesstukku",
+        "price": 19.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-17",
+        "store": "fitnesstukku",
+        "price": 9.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-04-06",
+        "store": "fitnesstukku",
+        "price": 19.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-04-27",
+        "store": "fitnesstukku",
+        "price": 12.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-05-19",
+        "store": "fitnesstukku",
+        "price": 9.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-05-31",
+        "store": "fitnesstukku",
+        "price": 15.92,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-06-01",
+        "store": "fitnesstukku",
+        "price": 9.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-08-30",
+        "store": "fitnesstukku",
+        "price": 8.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-07",
+        "store": "fitnesstukku",
+        "price": 9.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-30",
+        "store": "fitnesstukku",
+        "price": 12.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-10-05",
+        "store": "fitnesstukku",
+        "price": 9.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-11-11",
+        "store": "fitnesstukku",
+        "price": 8.9,
+        "original_price": null,
+        "available": true
+      }
+    ]
+  },
+  "base_10003420": {
+    "name": "Essential Socks 10-pack",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10003420-mp001/",
+        "price": 44.95,
+        "original_price": null,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
+      "price": 44.95,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10003420-mp001/",
+      "date": "2026-01-30"
+    },
+    "all_time_lowest": {
+      "price": 26.97,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10003420-mp001/",
+      "date": "2025-07-23"
+    },
+    "price_changes": [
+      {
+        "date": "2025-07-23",
+        "store": "bjornborg",
+        "price": 26.97,
+        "original_price": 44.95,
+        "available": true
+      },
+      {
+        "date": "2025-08-05",
+        "store": "bjornborg",
+        "price": 38.21,
+        "original_price": 44.95,
+        "available": true
+      },
+      {
+        "date": "2025-11-25",
+        "store": "bjornborg",
+        "price": 26.97,
+        "original_price": 44.95,
+        "available": true
+      },
+      {
+        "date": "2025-12-02",
+        "store": "bjornborg",
+        "price": 44.95,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2025-12-03",
+        "store": "bjornborg",
+        "price": 38.21,
+        "original_price": 44.95,
+        "available": true
+      },
+      {
+        "date": "2025-12-25",
+        "store": "bjornborg",
+        "price": 26.97,
+        "original_price": 44.95,
+        "available": true
+      },
+      {
+        "date": "2026-01-30",
+        "store": "bjornborg",
+        "price": 44.95,
+        "original_price": null,
+        "available": true
+      }
+    ]
+  },
+  "6430050004729": {
+    "name": "Puhdas+ Premium Omega-3 1000mg 180 kaps",
+    "stores": {
+      "apteekki360": {
+        "url": "https://apteekki360.fi/products/puhdas-plus-premium-omega-3-1000mg",
+        "price": 51.99,
+        "original_price": null,
+        "available": true,
+        "error": null
+      },
+      "tokmanni": {
+        "url": "https://www.tokmanni.fi/premium-omega-3-puhdas-180-kaps-6430050004729",
+        "price": 29.9,
+        "original_price": null,
+        "available": false,
+        "error": null
+      },
+      "sinunapteekki": {
+        "url": "https://www.sinunapteekki.fi/products/puhdas-premium-omega-3-1000-mg-epa-dha-600-mg-kalaoljykapselit",
+        "price": 29.9,
+        "original_price": null,
+        "available": true,
+        "error": null
+      },
+      "ruohonjuuri": {
+        "url": "https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-680-1360-mg",
+        "price": 49.9,
+        "original_price": null,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
+      "price": 29.9,
+      "store": "sinunapteekki",
+      "url": "https://www.sinunapteekki.fi/products/puhdas-premium-omega-3-1000-mg-epa-dha-600-mg-kalaoljykapselit",
+      "date": "2026-06-05"
+    },
+    "all_time_lowest": {
+      "price": 27.42,
+      "store": "apteekki360",
+      "url": "https://apteekki360.fi/products/puhdas-plus-premium-omega-3-1000mg",
+      "date": "2026-01-25"
+    },
+    "price_changes": [
+      {
+        "date": "2026-01-09",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-09",
+        "store": "ruohonjuuri",
+        "price": 49.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-09",
+        "store": "sinunapteekki",
+        "price": 29.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-09",
+        "store": "tokmanni",
+        "price": 29.9,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-01-10",
+        "store": "apteekki360",
+        "price": 27.43,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-12",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-01-15",
+        "store": "apteekki360",
+        "price": 27.43,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-01-18",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-19",
+        "store": "apteekki360",
+        "price": 27.43,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-19",
+        "store": "tokmanni",
+        "price": 23.92,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-01-20",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-21",
+        "store": "apteekki360",
+        "price": 27.43,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-21",
+        "store": "ruohonjuuri",
+        "price": 49.9,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-01-23",
+        "store": "apteekki360",
+        "price": 27.43,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-01-24",
+        "store": "apteekki360",
+        "price": 27.43,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-01-26",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-01-26",
+        "store": "tokmanni",
+        "price": 29.9,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-01",
+        "store": "sinunapteekki",
+        "price": 29.9,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-03",
+        "store": "apteekki360",
+        "price": 27.42,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-02-05",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-06",
+        "store": "apteekki360",
+        "price": 27.42,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-07",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-08",
+        "store": "apteekki360",
+        "price": 27.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-09",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-10",
+        "store": "apteekki360",
+        "price": 27.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-11",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-12",
+        "store": "apteekki360",
+        "price": 27.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-13",
+        "store": "apteekki360",
+        "price": 28.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-14",
+        "store": "apteekki360",
+        "price": 27.4,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-02-15",
+        "store": "apteekki360",
+        "price": 45.43,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-03-14",
+        "store": "apteekki360",
+        "price": 45.43,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-03-24",
+        "store": "apteekki360",
+        "price": 45.43,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-03-30",
+        "store": "tokmanni",
+        "price": 23.92,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-04-06",
+        "store": "tokmanni",
+        "price": 29.9,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-04-23",
+        "store": "apteekki360",
+        "price": 45.43,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-05-05",
+        "store": "apteekki360",
+        "price": 45.43,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-05-25",
+        "store": "apteekki360",
+        "price": 49.33,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-05-27",
+        "store": "apteekki360",
+        "price": 45.43,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-05-29",
+        "store": "apteekki360",
+        "price": 49.33,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-06-05",
+        "store": "sinunapteekki",
+        "price": 29.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-06-10",
+        "store": "ruohonjuuri",
+        "price": 49.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-06-30",
+        "store": "apteekki360",
+        "price": 46.54,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-07-13",
+        "store": "apteekki360",
+        "price": 46.54,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-07-14",
+        "store": "apteekki360",
+        "price": 36.0,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-07-16",
+        "store": "apteekki360",
+        "price": 33.32,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-08-11",
+        "store": "apteekki360",
+        "price": 32.19,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-08-30",
+        "store": "apteekki360",
+        "price": 39.54,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-08-31",
+        "store": "apteekki360",
+        "price": 32.19,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-01",
+        "store": "apteekki360",
+        "price": 31.12,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-04",
+        "store": "apteekki360",
+        "price": 31.35,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-06",
+        "store": "apteekki360",
+        "price": 31.25,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-07",
+        "store": "apteekki360",
+        "price": 31.35,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-10",
+        "store": "apteekki360",
+        "price": 31.25,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-16",
+        "store": "apteekki360",
+        "price": 39.54,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-17",
+        "store": "apteekki360",
+        "price": 31.38,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-18",
+        "store": "apteekki360",
+        "price": 33.09,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-19",
+        "store": "apteekki360",
+        "price": 33.52,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-09-30",
+        "store": "apteekki360",
+        "price": 34.17,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-10-05",
+        "store": "tokmanni",
+        "price": 23.92,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-10-07",
+        "store": "apteekki360",
+        "price": 31.99,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-10-14",
+        "store": "apteekki360",
+        "price": 31.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-10-18",
+        "store": "apteekki360",
+        "price": 31.9,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-10-19",
+        "store": "apteekki360",
+        "price": 31.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-10-19",
+        "store": "tokmanni",
+        "price": 29.9,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-10-22",
+        "store": "apteekki360",
+        "price": 31.2,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-10-23",
+        "store": "apteekki360",
+        "price": 31.2,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-10-29",
+        "store": "apteekki360",
+        "price": 31.2,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-10-29",
+        "store": "ruohonjuuri",
+        "price": 37.42,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-10-30",
+        "store": "apteekki360",
+        "price": 31.9,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-11-01",
+        "store": "apteekki360",
+        "price": 51.99,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-11-03",
+        "store": "ruohonjuuri",
+        "price": 49.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-11-11",
+        "store": "apteekki360",
+        "price": 51.99,
+        "original_price": null,
+        "available": true
       }
     ]
   }

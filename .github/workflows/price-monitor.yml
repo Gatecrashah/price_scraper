@@ -1,0 +1,35 @@
+name: Price Monitor
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+concurrency: price-monitor
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Run monitor
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: uv run --no-dev python monitor.py
+
+      - name: Commit price history
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action Bot"
+          git add price_history.json
+          if ! git diff --staged --quiet; then
+            git commit -m "📊 Update price history - $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
