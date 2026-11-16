@@ -2,34 +2,18 @@
 # `id` is the key in price_history.json; changing it starts a new history.
 
 products:
-- id: base_10004564
-  name: Essential Socks 10-pack (Multi)
-  urls:
-  - https://www.bjornborg.com/fi/essential-socks-10-pack-10004564-mp001/
 - id: base_10001228
   name: Essential Socks 10-pack (Variant 1)
   urls:
   - https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/
-- id: base_10004085
-  name: Essential Socks 10-pack (Variant 2)
-  urls:
-  - https://www.bjornborg.com/fi/essential-socks-10-pack-10004085-mp001/
 - id: base_10005071
   name: Essential Socks 10-pack (Variant 3)
   urls:
   - https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/
-- id: base_10002940
-  name: Essential Ankle Socks 10-pack
-  urls:
-  - https://www.bjornborg.com/fi/essential-ankle-sock-10-pack-10002940-mp001/
 - id: base_10005412
   name: Essential Socks 10-pack (Variant 5)
   urls:
   - https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/
-- id: id_centre-crew-9999-1431-gy013
-  name: Centre Crew Sweatshirt (Grey)
-  urls:
-  - https://www.bjornborg.com/fi/centre-crew-9999-1431-gy013/
 - id: id_centre-crew-9999-1431-bl183
   name: Centre Crew Sweatshirt (Blue)
   urls:
