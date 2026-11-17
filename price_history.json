@@ -718,7 +718,7 @@
         "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
         "price": 55.96,
         "original_price": 69.95,
-        "available": true,
+        "available": false,
         "error": null
       }
     },
@@ -804,6 +804,13 @@
         "price": 55.96,
         "original_price": 69.95,
         "available": true
+      },
+      {
+        "date": "2026-11-17",
+        "store": "bjornborg",
+        "price": 55.96,
+        "original_price": 69.95,
+        "available": false
       }
     ]
   },
@@ -814,7 +821,7 @@
         "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001760-mp001/",
         "price": 44.95,
         "original_price": null,
-        "available": true,
+        "available": false,
         "error": null
       }
     },
@@ -858,6 +865,13 @@
         "price": 44.95,
         "original_price": null,
         "available": true
+      },
+      {
+        "date": "2026-11-17",
+        "store": "bjornborg",
+        "price": 44.95,
+        "original_price": null,
+        "available": false
       }
     ]
   },
@@ -913,17 +927,17 @@
     "stores": {
       "fitnesstukku": {
         "url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
-        "price": 132.9,
+        "price": 125.9,
         "original_price": null,
         "available": true,
         "error": null
       }
     },
     "current_lowest": {
-      "price": 132.9,
+      "price": 125.9,
       "store": "fitnesstukku",
       "url": "https://www.fitnesstukku.fi/whey-80-heraproteiini-4-kg/5854R.html",
-      "date": "2026-09-08"
+      "date": "2026-11-17"
     },
     "all_time_lowest": {
       "price": 79.9,
@@ -1062,6 +1076,13 @@
         "date": "2026-09-08",
         "store": "fitnesstukku",
         "price": 132.9,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-11-17",
+        "store": "fitnesstukku",
+        "price": 125.9,
         "original_price": null,
         "available": true
       }
@@ -1400,7 +1421,7 @@
         "price": 51.99,
         "original_price": null,
         "available": true,
-        "error": null
+        "error": "HTTPError: 429 Client Error: Too Many Requests for url: https://apteekki360.fi/products/puhdas-plus-premium-omega-3-1000mg"
       },
       "tokmanni": {
         "url": "https://www.tokmanni.fi/premium-omega-3-puhdas-180-kaps-6430050004729",
@@ -1414,14 +1435,14 @@
         "price": 29.9,
         "original_price": null,
         "available": true,
-        "error": null
+        "error": "HTTPError: 429 Client Error: Too Many Requests for url: https://www.sinunapteekki.fi/products/puhdas-premium-omega-3-1000-mg-epa-dha-600-mg-kalaoljykapselit"
       },
       "ruohonjuuri": {
         "url": "https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-680-1360-mg",
         "price": 49.9,
         "original_price": null,
         "available": true,
-        "error": null
+        "error": "HTTPError: 429 Client Error: Too Many Requests for url: https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-680-1360-mg"
       }
     },
     "current_lowest": {
@@ -1938,6 +1959,39 @@
         "date": "2026-11-11",
         "store": "apteekki360",
         "price": 51.99,
+        "original_price": null,
+        "available": true
+      }
+    ]
+  },
+  "base_10005576-mp003": {
+    "name": "Essential Socks 10-pack (mp003)",
+    "stores": {
+      "bjornborg": {
+        "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp003/",
+        "price": 44.95,
+        "original_price": null,
+        "available": true,
+        "error": null
+      }
+    },
+    "current_lowest": {
+      "price": 44.95,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp003/",
+      "date": "2026-11-17"
+    },
+    "all_time_lowest": {
+      "price": 44.95,
+      "store": "bjornborg",
+      "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp003/",
+      "date": "2026-11-17"
+    },
+    "price_changes": [
+      {
+        "date": "2026-11-17",
+        "store": "bjornborg",
+        "price": 44.95,
         "original_price": null,
         "available": true
       }
