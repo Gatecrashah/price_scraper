@@ -4,6 +4,7 @@ from monitor import (
     Failed,
     NewFailure,
     Product,
+    Recovered,
     load_products,
     new_history,
     store_name,
@@ -29,7 +30,7 @@ def test_first_sighting_records_state_without_reporting_a_change():
 
     result = update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, True)}, "2026-01-01")
 
-    assert result == (None, [])
+    assert result == (None, [], [])
     assert entry == {
         "name": "Socks",
         "stores": {
@@ -69,12 +70,14 @@ def test_unchanged_price_adds_nothing_and_a_drop_is_reported_with_the_previous_p
     entry = new_history()
     update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, True)}, "2026-01-01")
 
-    same, _ = update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, True)}, "2026-01-02")
+    same, _, _ = update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, True)}, "2026-01-02")
     assert same is None
     assert len(entry["price_changes"]) == 1
     assert entry["current_lowest"]["date"] == "2026-01-01"
 
-    change, _ = update_product(entry, SOCKS, {SOCKS_URL: Offer(35.96, True, 44.95)}, "2026-01-03")
+    change, _, _ = update_product(
+        entry, SOCKS, {SOCKS_URL: Offer(35.96, True, 44.95)}, "2026-01-03"
+    )
     assert (change.price, change.previous_price, change.original_price) == (35.96, 44.95, 44.95)
     assert change.all_time_lowest["price"] == 44.95
     assert [e["price"] for e in entry["price_changes"]] == [44.95, 35.96]
@@ -91,7 +94,7 @@ def test_price_increase_is_reported_and_keeps_the_all_time_low():
     entry = new_history()
     update_product(entry, SOCKS, {SOCKS_URL: Offer(35.96, True)}, "2026-01-01")
 
-    change, _ = update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, True)}, "2026-01-02")
+    change, _, _ = update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, True)}, "2026-01-02")
 
     assert (change.price, change.previous_price) == (44.95, 35.96)
     assert entry["all_time_lowest"]["price"] == 35.96
@@ -105,7 +108,7 @@ def test_lowest_price_ignores_out_of_stock_stores():
     assert entry["current_lowest"]["store"] == "apteekki360"
     assert entry["current_lowest"]["price"] == 31.9
 
-    change, _ = update_product(
+    change, _, _ = update_product(
         entry, OMEGA, {A_URL: Offer(31.9, True), T_URL: Offer(29.9, True)}, "2026-01-02"
     )
 
@@ -127,35 +130,37 @@ def test_nothing_in_stock_keeps_the_last_known_lowest_and_reports_nothing():
 
     result = update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, False)}, "2026-01-02")
 
-    assert result == (None, [])
+    assert result == (None, [], [])
     assert entry["current_lowest"]["price"] == 44.95
     assert entry["price_changes"][-1]["available"] is False
 
 
-def test_a_failing_url_is_reported_once_and_keeps_the_last_known_price():
+def test_a_failing_url_is_reported_once_keeps_its_price_and_is_reported_when_it_recovers():
     entry = new_history()
     update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, True)}, "2026-01-01")
 
     first = update_product(entry, SOCKS, {SOCKS_URL: Failed("404 Not Found")}, "2026-01-02")
     second = update_product(entry, SOCKS, {SOCKS_URL: Failed("404 Not Found")}, "2026-01-03")
 
-    assert first == (None, [NewFailure("Socks", SOCKS_URL, "404 Not Found")])
-    assert second == (None, [])
+    assert first == (None, [NewFailure("Socks", SOCKS_URL, "404 Not Found")], [])
+    assert second == (None, [], [])
     assert entry["stores"]["bjornborg"]["price"] == 44.95
     assert entry["stores"]["bjornborg"]["error"] == "404 Not Found"
     assert len(entry["price_changes"]) == 1
 
-    recovered = update_product(entry, SOCKS, {SOCKS_URL: Offer(44.95, True)}, "2026-01-04")
-    again = update_product(entry, SOCKS, {SOCKS_URL: Failed("timeout")}, "2026-01-05")
-    assert recovered == (None, [])
-    assert again == (None, [NewFailure("Socks", SOCKS_URL, "timeout")])
+    recovered = update_product(entry, SOCKS, {SOCKS_URL: Offer(39.95, True)}, "2026-01-04")
+    still_fine = update_product(entry, SOCKS, {SOCKS_URL: Offer(39.95, True)}, "2026-01-05")
+    again = update_product(entry, SOCKS, {SOCKS_URL: Failed("timeout")}, "2026-01-06")
+    assert recovered[1:] == ([], [Recovered("Socks", SOCKS_URL, 39.95, True)])
+    assert still_fine == (None, [], [])
+    assert again == (None, [NewFailure("Socks", SOCKS_URL, "timeout")], [])
 
 
 def test_a_failing_store_does_not_hide_a_change_at_another_store():
     entry = new_history()
     update_product(entry, OMEGA, {A_URL: Offer(31.9, True), T_URL: Offer(33.0, True)}, "2026-01-01")
 
-    change, failures = update_product(
+    change, failures, _ = update_product(
         entry, OMEGA, {A_URL: Failed("429"), T_URL: Offer(33.0, True)}, "2026-01-02"
     )
 
