@@ -12,9 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      UV_PYTHON_PREFERENCE: only-system
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
 
       - uses: astral-sh/setup-uv@v6
 
