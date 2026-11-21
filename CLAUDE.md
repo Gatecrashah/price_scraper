@@ -14,6 +14,9 @@ config format and history format.
 - `price_history.json` is committed by the workflow every day. Don't commit local
   changes to it; a local non-dry run rewrites it.
 - The pharmacy Shopify stores (apteekki360, sinunapteekki, ruohonjuuri) answer 429 to
-  some networks, so a local dry run may show them as failing while CI reads them fine.
+  clients their bot check dislikes. From CI they accept GitHub's `setup-python` build
+  but reject uv's own Python downloads, so `price-monitor.yml` must keep
+  `actions/setup-python` and `UV_PYTHON_PREFERENCE: only-system`. Locally they answer
+  429 to any Python, so a local dry run shows them as failing.
 - A product's `id` in `products.yaml` is its key in `price_history.json`. Renaming it
   starts a new history.
