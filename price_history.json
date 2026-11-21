@@ -1421,7 +1421,7 @@
         "price": 51.99,
         "original_price": null,
         "available": true,
-        "error": "HTTPError: 429 Client Error: Too Many Requests for url: https://apteekki360.fi/products/puhdas-plus-premium-omega-3-1000mg"
+        "error": null
       },
       "tokmanni": {
         "url": "https://www.tokmanni.fi/premium-omega-3-puhdas-180-kaps-6430050004729",
@@ -1435,14 +1435,14 @@
         "price": 29.9,
         "original_price": null,
         "available": true,
-        "error": "HTTPError: 429 Client Error: Too Many Requests for url: https://www.sinunapteekki.fi/products/puhdas-premium-omega-3-1000-mg-epa-dha-600-mg-kalaoljykapselit"
+        "error": null
       },
       "ruohonjuuri": {
-        "url": "https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-680-1360-mg",
-        "price": 49.9,
+        "url": "https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-180-kaps",
+        "price": 37.42,
         "original_price": null,
         "available": true,
-        "error": "HTTPError: 429 Client Error: Too Many Requests for url: https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-680-1360-mg"
+        "error": null
       }
     },
     "current_lowest": {
@@ -1959,6 +1959,13 @@
         "date": "2026-11-11",
         "store": "apteekki360",
         "price": 51.99,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-11-21",
+        "store": "ruohonjuuri",
+        "price": 37.42,
         "original_price": null,
         "available": true
       }
