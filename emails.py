@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 import requests
 
 if TYPE_CHECKING:
-    from monitor import NewFailure, PriceChange
+    from monitor import NewFailure, PriceChange, Recovered
 
 FONT = "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;"
 TEXT = "#1c1917"
@@ -35,8 +35,11 @@ def send(subject: str, html: str) -> None:
     response.raise_for_status()
 
 
-def render_alert(changes: "list[PriceChange]", failures: "list[NewFailure]") -> tuple[str, str]:
-    """Return (subject, html) for one email covering price changes and newly failing URLs."""
+def render_alert(
+    changes: "list[PriceChange]", failures: "list[NewFailure]", recoveries: "list[Recovered]"
+) -> tuple[str, str]:
+    """Return (subject, html) for one email covering price changes and URLs that started
+    failing or work again."""
     drops = sum(1 for c in changes if c.price < c.previous_price)
     rises = len(changes) - drops
     parts = []
@@ -46,12 +49,16 @@ def render_alert(changes: "list[PriceChange]", failures: "list[NewFailure]") -> 
         parts.append(f"📈 {rises} price increase{'s' if rises != 1 else ''}")
     if failures:
         parts.append(f"⚠️ {len(failures)} URL{'s' if len(failures) != 1 else ''} failing")
+    if recoveries:
+        parts.append(f"✅ {len(recoveries)} URL{'s' if len(recoveries) != 1 else ''} working again")
     summary = " · ".join(parts)
-    accent = DROP if drops else RISE
+    accent = DROP if drops or not (rises or failures) else RISE
 
     rows = "".join(_change_card(c) for c in changes)
     if failures:
         rows += _failures_card(failures)
+    if recoveries:
+        rows += _recoveries_card(recoveries)
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -144,5 +151,21 @@ def _failures_card(failures: "list[NewFailure]") -> str:
 <tr><td style="padding: 20px; background-color: #ffffff; border-radius: 12px;">
   <div style="{FONT} font-size: 13px; font-weight: 600; color: {SECONDARY}; text-transform: uppercase; letter-spacing: 0.5px;">Could not read these pages</div>{items}
   <div style="margin-top: 12px; {FONT} font-size: 12px; color: {MUTED};">Reported once, when a URL starts failing. Fix or remove it in products.yaml.</div>
+</td></tr>
+<tr><td style="height: 12px;"></td></tr>"""
+
+
+def _recoveries_card(recoveries: "list[Recovered]") -> str:
+    items = "".join(
+        f"""
+  <div style="margin-top: 12px; {FONT} font-size: 13px; color: {TEXT};">
+    <strong>{escape(r.name)}</strong> · {r.price:.2f}€ ({"in stock" if r.available else "out of stock"})<br>
+    <a href="{escape(r.url)}" style="color: {SECONDARY}; word-break: break-all;">{escape(r.url)}</a>
+  </div>"""
+        for r in recoveries
+    )
+    return f"""
+<tr><td style="padding: 20px; background-color: #ffffff; border-radius: 12px;">
+  <div style="{FONT} font-size: 13px; font-weight: 600; color: {DROP}; text-transform: uppercase; letter-spacing: 0.5px;">Working again</div>{items}
 </td></tr>
 <tr><td style="height: 12px;"></td></tr>"""

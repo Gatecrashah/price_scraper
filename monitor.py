@@ -87,6 +87,14 @@ class NewFailure:
     error: str
 
 
+@dataclass(frozen=True)
+class Recovered:
+    name: str
+    url: str
+    price: float
+    available: bool
+
+
 def store_name(url: str) -> str:
     """https://www.bjornborg.com/fi/... -> bjornborg"""
     return (urlsplit(url).hostname or url).removeprefix("www.").split(".")[0]
@@ -116,15 +124,17 @@ def new_history() -> ProductHistory:
 
 def update_product(
     entry: ProductHistory, product: Product, results: dict[str, Offer | Failed], today: str
-) -> tuple[PriceChange | None, list[NewFailure]]:
+) -> tuple[PriceChange | None, list[NewFailure], list[Recovered]]:
     """Fold today's scrape results into the product's history.
 
-    Returns the change in the lowest in-stock price, if any, and the URLs that started failing.
+    Returns the change in the lowest in-stock price, if any, the URLs that started failing
+    and the URLs that work again after failing.
     """
     previous = entry["stores"]
     entry["name"] = product.name
     entry["stores"] = {}
     failures = []
+    recoveries = []
 
     for url, result in results.items():
         store = store_name(url)
@@ -140,6 +150,8 @@ def update_product(
                 "error": result.error,
             }
             continue
+        if before is not None and before["error"] is not None:
+            recoveries.append(Recovered(product.name, url, result.price, result.available))
         if before is None or (before["price"], before["available"]) != (
             result.price,
             result.available,
@@ -167,7 +179,7 @@ def update_product(
         if state["error"] is None and state["available"] and state["price"] is not None
     }
     if not in_stock:
-        return None, failures
+        return None, failures, recoveries
 
     store = min(in_stock, key=lambda s: in_stock[s])
     price = in_stock[store]
@@ -195,7 +207,7 @@ def update_product(
     entry["current_lowest"] = {"price": price, "store": store, "url": url, "date": since}
     if all_time is None or price < all_time["price"]:
         entry["all_time_lowest"] = {"price": price, "store": store, "url": url, "date": today}
-    return change, failures
+    return change, failures, recoveries
 
 
 def scrape(session: requests.Session, url: str) -> Offer | Failed:
@@ -217,6 +229,7 @@ def main() -> None:
     session = requests.Session()
     changes: list[PriceChange] = []
     failures: list[NewFailure] = []
+    recoveries: list[Recovered] = []
 
     for product in products:
         logger.info(product.name)
@@ -229,21 +242,27 @@ def main() -> None:
                 stock = "in stock" if results[url].available else "out of stock"
                 logger.info("  %s: %.2f € (%s)", store_name(url), results[url].price, stock)
             time.sleep(1)
-        change, failed = update_product(
+        change, failed, recovered = update_product(
             history.setdefault(product.id, new_history()), product, results, today
         )
         if change:
             logger.info("  CHANGED %.2f -> %.2f €", change.previous_price, change.price)
             changes.append(change)
         failures.extend(failed)
+        recoveries.extend(recovered)
 
-    logger.info("%d price change(s), %d newly failing URL(s)", len(changes), len(failures))
+    logger.info(
+        "%d price change(s), %d newly failing URL(s), %d URL(s) working again",
+        len(changes),
+        len(failures),
+        len(recoveries),
+    )
     if dry_run:
         return
 
     HISTORY_FILE.write_text(json.dumps(history, indent=2, ensure_ascii=False) + "\n", "utf-8")
-    if changes or failures:
-        emails.send(*emails.render_alert(changes, failures))
+    if changes or failures or recoveries:
+        emails.send(*emails.render_alert(changes, failures, recoveries))
 
 
 if __name__ == "__main__":
