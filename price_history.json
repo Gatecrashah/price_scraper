@@ -1425,7 +1425,7 @@
       },
       "tokmanni": {
         "url": "https://www.tokmanni.fi/premium-omega-3-puhdas-180-kaps-6430050004729",
-        "price": 29.9,
+        "price": 20.93,
         "original_price": null,
         "available": false,
         "error": null
@@ -1439,7 +1439,7 @@
       },
       "ruohonjuuri": {
         "url": "https://www.ruohonjuuri.fi/products/puhdas-premium-omega-3-180-kaps",
-        "price": 37.42,
+        "price": 49.9,
         "original_price": null,
         "available": true,
         "error": null
@@ -1966,6 +1966,20 @@
         "date": "2026-11-21",
         "store": "ruohonjuuri",
         "price": 37.42,
+        "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-11-23",
+        "store": "tokmanni",
+        "price": 20.93,
+        "original_price": null,
+        "available": false
+      },
+      {
+        "date": "2026-11-23",
+        "store": "ruohonjuuri",
+        "price": 49.9,
         "original_price": null,
         "available": true
       }
