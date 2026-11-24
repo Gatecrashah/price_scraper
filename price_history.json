@@ -86,17 +86,17 @@
     "stores": {
       "bjornborg": {
         "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
-        "price": 44.95,
-        "original_price": null,
+        "price": 35.96,
+        "original_price": 44.95,
         "available": true,
         "error": null
       }
     },
     "current_lowest": {
-      "price": 44.95,
+      "price": 35.96,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10001228-mp001/",
-      "date": "2026-08-04"
+      "date": "2026-11-24"
     },
     "all_time_lowest": {
       "price": 35.96,
@@ -159,6 +159,13 @@
         "store": "bjornborg",
         "price": 44.95,
         "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-11-24",
+        "store": "bjornborg",
+        "price": 35.96,
+        "original_price": 44.95,
         "available": true
       }
     ]
@@ -250,23 +257,23 @@
     "stores": {
       "bjornborg": {
         "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
-        "price": 35.96,
+        "price": 22.48,
         "original_price": 44.95,
         "available": true,
         "error": null
       }
     },
     "current_lowest": {
-      "price": 35.96,
+      "price": 22.48,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
-      "date": "2026-08-05"
+      "date": "2026-11-24"
     },
     "all_time_lowest": {
-      "price": 31.47,
+      "price": 22.48,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005071-mp001/",
-      "date": "2025-11-25"
+      "date": "2026-11-24"
     },
     "price_changes": [
       {
@@ -329,6 +336,13 @@
         "date": "2026-08-05",
         "store": "bjornborg",
         "price": 35.96,
+        "original_price": 44.95,
+        "available": true
+      },
+      {
+        "date": "2026-11-24",
+        "store": "bjornborg",
+        "price": 22.48,
         "original_price": 44.95,
         "available": true
       }
@@ -442,23 +456,23 @@
     "stores": {
       "bjornborg": {
         "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
-        "price": 35.96,
+        "price": 22.48,
         "original_price": 44.95,
         "available": true,
         "error": null
       }
     },
     "current_lowest": {
-      "price": 35.96,
+      "price": 22.48,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
-      "date": "2026-08-05"
+      "date": "2026-11-24"
     },
     "all_time_lowest": {
-      "price": 31.47,
+      "price": 22.48,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005412-mp001/",
-      "date": "2025-11-25"
+      "date": "2026-11-24"
     },
     "price_changes": [
       {
@@ -521,6 +535,13 @@
         "date": "2026-08-05",
         "store": "bjornborg",
         "price": 35.96,
+        "original_price": 44.95,
+        "available": true
+      },
+      {
+        "date": "2026-11-24",
+        "store": "bjornborg",
+        "price": 22.48,
         "original_price": 44.95,
         "available": true
       }
@@ -613,23 +634,23 @@
     "stores": {
       "bjornborg": {
         "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
-        "price": 55.96,
+        "price": 34.98,
         "original_price": 69.95,
         "available": true,
         "error": null
       }
     },
     "current_lowest": {
-      "price": 55.96,
+      "price": 34.98,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
-      "date": "2026-08-05"
+      "date": "2026-11-24"
     },
     "all_time_lowest": {
-      "price": 41.97,
+      "price": 34.98,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-bl183/",
-      "date": "2025-07-05"
+      "date": "2026-11-24"
     },
     "price_changes": [
       {
@@ -708,6 +729,13 @@
         "price": 55.96,
         "original_price": 69.95,
         "available": true
+      },
+      {
+        "date": "2026-11-24",
+        "store": "bjornborg",
+        "price": 34.98,
+        "original_price": 69.95,
+        "available": true
       }
     ]
   },
@@ -716,7 +744,7 @@
     "stores": {
       "bjornborg": {
         "url": "https://www.bjornborg.com/fi/centre-crew-9999-1431-90741/",
-        "price": 55.96,
+        "price": 34.98,
         "original_price": 69.95,
         "available": false,
         "error": null
@@ -811,6 +839,13 @@
         "price": 55.96,
         "original_price": 69.95,
         "available": false
+      },
+      {
+        "date": "2026-11-24",
+        "store": "bjornborg",
+        "price": 34.98,
+        "original_price": 69.95,
+        "available": false
       }
     ]
   },
@@ -880,17 +915,17 @@
     "stores": {
       "bjornborg": {
         "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp002/",
-        "price": 44.95,
-        "original_price": null,
+        "price": 35.96,
+        "original_price": 44.95,
         "available": true,
         "error": null
       }
     },
     "current_lowest": {
-      "price": 44.95,
+      "price": 35.96,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp002/",
-      "date": "2026-08-04"
+      "date": "2026-11-24"
     },
     "all_time_lowest": {
       "price": 35.96,
@@ -918,6 +953,13 @@
         "store": "bjornborg",
         "price": 44.95,
         "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-11-24",
+        "store": "bjornborg",
+        "price": 35.96,
+        "original_price": 44.95,
         "available": true
       }
     ]
@@ -1990,23 +2032,23 @@
     "stores": {
       "bjornborg": {
         "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp003/",
-        "price": 44.95,
-        "original_price": null,
+        "price": 35.96,
+        "original_price": 44.95,
         "available": true,
         "error": null
       }
     },
     "current_lowest": {
-      "price": 44.95,
+      "price": 35.96,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp003/",
-      "date": "2026-11-17"
+      "date": "2026-11-24"
     },
     "all_time_lowest": {
-      "price": 44.95,
+      "price": 35.96,
       "store": "bjornborg",
       "url": "https://www.bjornborg.com/fi/essential-socks-10-pack-10005576-mp003/",
-      "date": "2026-11-17"
+      "date": "2026-11-24"
     },
     "price_changes": [
       {
@@ -2014,6 +2056,13 @@
         "store": "bjornborg",
         "price": 44.95,
         "original_price": null,
+        "available": true
+      },
+      {
+        "date": "2026-11-24",
+        "store": "bjornborg",
+        "price": 35.96,
+        "original_price": 44.95,
         "available": true
       }
     ]
